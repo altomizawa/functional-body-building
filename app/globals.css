@@ -71,6 +71,11 @@ body {
   }
 }
 
+input{
+  @apply border border-gray-300 rounded-md p-2
+}
+
+
 .programListItems {
   @apply text-sm text-gray-500 border-t-[1px] border-gray-300 py-2
 }
