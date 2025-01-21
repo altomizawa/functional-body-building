@@ -12,13 +12,20 @@ import connectDB from '@/lib/database/db'
 
 
 const Page = () => {
+  const API_TOKEN = process.env.DBACCESSTOKEN
+
   const [workout, setWorkout] = useState({})
   const [date, setDate] = useState(new Date())
-
+  console.log(process.env)
   useEffect(() => {
     async function fetchData() {
       fetch('http://localhost:3000/api/programs/pillars',
         {method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + API_TOKEN
+        },
+        
          body: JSON.stringify(date.toISOString().split('T')[0]),
         }
       )
