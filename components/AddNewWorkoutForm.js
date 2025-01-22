@@ -139,7 +139,7 @@ const AddNewWorkoutForm = () => {
   }
 
   return (
-    <div className='w-[90%] mx-auto flex justify-center'>
+    <div className='w-[90%] mx-auto block md:grid md:grid-cols-2 justify-center'>
       <form name="newWorkout" onSubmit={getFormData} className='flex flex-col w-[50%] min-w-[400px] space-y-4'>
         <h2 className='text-2xl font-bold'>Add New Workout</h2>
         
