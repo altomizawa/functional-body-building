@@ -33,7 +33,7 @@ const AddNewWorkoutForm = () => {
     .then(res => res.json())
     .then(data => console.log(data))
     .catch(err => console.log(err))
-    setNewWorkout(...newWorkout, section)
+    // setNewWorkout(...newWorkout, section)
 
     console.log(newWorkout)
   }
@@ -145,6 +145,7 @@ const AddNewWorkoutForm = () => {
               handleSectionChange={handleSectionChange} 
               handleExerciseChange={handleExerciseChange} 
               addExercise={addExercise} exercise={exercise}
+              section={section}
             />}
 
         <div className='grid grid-cols-2 w-full justify-center gap-4 mt-8'>

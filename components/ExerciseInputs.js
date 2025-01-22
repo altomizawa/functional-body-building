@@ -1,13 +1,13 @@
 'use client'
 import { useState } from 'react'
 
-const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise, exercise }) => {
+const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise, exercise, section }) => {
   const [numberOfSections, setNumberOfSections] = useState(1)
     
   return (
     <>
       <label htmlFor="section">Section</label>
-      <input type="text" name="section" onChange={handleSectionChange} />
+      <input type="text" name="section" onChange={handleSectionChange} value={section.section} />
       
       <div className='m-4 border-2 flex flex-col gap-2 p-4'>
         <label htmlFor="name" >Only Exercise Name Here:</label>
