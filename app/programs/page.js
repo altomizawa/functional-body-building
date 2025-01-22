@@ -51,12 +51,12 @@ const Page = () => {
         <Image src="/images/Vitinho.jpg" alt="idea icon" width={200} height={200} className='absolute top-[-25%] -z-10 left-0 w-full' />
         {
           workout !== null ? 
-          (<>
+          <>
             <h1 className="font-bold text-2xl text-white uppercase">{workout.program}</h1>
-            <h2 className="font-bold text-lg text-white uppercase">Week {workout.week} | day {workout.day}</h2>): 
-          </>) : (
+            <h2 className="font-bold text-lg text-white uppercase">Week {workout.week} | day {workout.day}</h2> 
+          </> : 
             <h1 className="font-bold text-2xl text-white uppercase">No workout found</h1>
-          )
+          
         }
         
       </div>
