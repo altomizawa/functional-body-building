@@ -25,6 +25,7 @@ const Page = () => {
     async function fetchData() {
       fetch(`${API_ACCESS_POINT}/api/programs/pillars`,
         {method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
           // 'Authorization': 'Bearer ' + API_TOKEN
