@@ -18,7 +18,6 @@ const AddNewWorkoutForm = () => {
     section: '',
     icon: '',
     exercises: [],
-    notes: ''
   })
 
  function getFormData(e) {
@@ -184,8 +183,12 @@ const AddNewWorkoutForm = () => {
                   </div>
                 )
               })}
-              <h3>{section.section} Notes</h3>
-              <p>{section.notes}</p>
+              {section.notes && (
+                <>
+                  <h3>{section.section} Notes</h3>
+                  <p>{section.notes}</p>
+                </>
+              )}
             </div>)
         }
         )}
