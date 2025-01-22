@@ -47,7 +47,8 @@ const Page = () => {
         </div>
         <h3 className='font-bold text-lg'>@altomizawa</h3>
       </div>
-      <div className="bg-black p-4">
+      <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden">
+        <Image src="/images/Vitinho.jpg" alt="idea icon" width={200} height={200} className='absolute top-[-25%] -z-10 left-0 w-full' />
         {
           workout !== null ? 
           (<>
