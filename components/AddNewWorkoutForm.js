@@ -17,27 +17,31 @@ const AddNewWorkoutForm = () => {
   const [section, setSection] = useState({
     section: '',
     icon: '',
-    exercises: []
+    exercises: [],
+    notes: ''
   })
 
  function getFormData(e) {
     e.preventDefault()
 
-    fetch('/api/programs/pillars/workouts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newWorkout)
-    })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
-    // setNewWorkout(...newWorkout, section)
+    // fetch('/api/programs/pillars/workouts', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(newWorkout)
+    // })
+    // .then(res => res.json())
+    // .then(data => console.log(data))
+    // .catch(err => console.log(err))
+
+
+    // setNewWorkout(...newWorkout, section) // I don't think this line is needed...
 
     console.log(newWorkout)
   }
 
+  // HANDLE FIRST SECTION CHANGES
   const handleChange = (e) => {
     console.log(e.target.value, e.target.name)
     setNewWorkout( prev => {
@@ -61,7 +65,7 @@ const AddNewWorkoutForm = () => {
     // addSectionValue(e.target.value)
   }
 
-  // HANDLE EXERCICES CHANGES
+  // HANDLE EXERCISES CHANGES
   const handleExerciseChange = (e) => {
     console.log(e.target.value, e.target.name)
     setExercise( prev => {
@@ -88,7 +92,8 @@ const AddNewWorkoutForm = () => {
           {
             section: value,
             icon: 'ideaIcon',
-            exercises: []
+            exercises: [],
+            notes: ''
           }
           ]
       }
@@ -136,7 +141,7 @@ const AddNewWorkoutForm = () => {
 
   return (
     <div className='w-[90%] mx-auto flex justify-center'>
-      <form name="newWorkout" onSubmit={getFormData} className='flex flex-col w-[50%] min-w-[400px]'>
+      <form name="newWorkout" onSubmit={getFormData} className='flex flex-col w-[50%] min-w-[400px] space-y-4'>
         <h2 className='text-2xl font-bold'>Add New Workout</h2>
         
         {sectionNumber === 0 ? 
@@ -153,8 +158,39 @@ const AddNewWorkoutForm = () => {
           {/* <button type="button" onClick={nextStep} className='bg-gray-500 text-white rounded-md p-2'>NEXT</button> */}
           <button type="submit"className='bg-gray-500 text-white rounded-md p-2'>FINISH</button>
         </div>
-        {sectionNumber > 0 && <button type="button" onClick={()=>{setSectionNumber(0)}} className='bg-red-700 text-white rounded-md p-2 mt-12'>BACK</button>}
+        {/* {sectionNumber > 0 && <button type="button" onClick={()=>{setSectionNumber(0)}} className='bg-red-700 text-white rounded-md p-2 mt-12'>BACK</button>} */}
       </form>
+      <div className='pl-8 space-y-2'>
+        <h2 className='font-bold uppercase text-xl underline'>PREVIEW</h2>
+        <h3>Data:</h3>
+        <p>{newWorkout.date}</p>
+        <h3>Program Type:</h3>
+        <p>{newWorkout.program}</p>
+        <h3>Week:</h3>
+        <p>{newWorkout.week}</p>
+        <h3>Day:</h3>
+        <p>{newWorkout.day}</p>
+        {newWorkout.workout && newWorkout.workout.map((section, index) => {
+          return (
+            <div key={index}>
+              {/* <h3>Section {index + 1}</h3> */}
+              <h3 className='uppercase'>{section.section}</h3>
+              {section.exercises.map((exercise, index) => {
+                return (
+                  <div key={index}>
+                    <p>{exercise.name}</p>
+                    <p>{exercise.description}</p>
+                    <p>{exercise.video}</p>
+                  </div>
+                )
+              })}
+              <h3>{section.section} Notes</h3>
+              <p>{section.notes}</p>
+            </div>)
+        }
+        )}
+        {/* <pre>{JSON.stringify(newWorkout, null, 2)}</pre> */}
+      </div>
     </div>
   )
 }
