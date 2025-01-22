@@ -13,8 +13,6 @@ import connectDB from '@/lib/database/db'
 
 const Page = () => {
   const API_TOKEN = process.env.DBACCESSTOKEN
-  const API_ACCESS_POINT = "https://functional-body-building-553rp1om3-als-projects-8e4ff020.vercel.app"
-  // const API_ACCESS_POINT = "http://localhost:3000"
 
   console.log(API_TOKEN, API_ACCESS_POINT)
 
@@ -23,9 +21,8 @@ const Page = () => {
 
   useEffect(() => {
     async function fetchData() {
-      fetch(`${API_ACCESS_POINT}/api/programs/pillars`,
+      fetch('/api/programs/pillars',
         {method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
           // 'Authorization': 'Bearer ' + API_TOKEN
