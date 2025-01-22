@@ -23,16 +23,16 @@ const AddNewWorkoutForm = () => {
  function getFormData(e) {
     e.preventDefault()
 
-    // fetch('/api/programs/pillars/workouts', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(newWorkout)
-    // })
-    // .then(res => res.json())
-    // .then(data => console.log(data))
-    // .catch(err => console.log(err))
+    fetch('/api/programs/pillars/workouts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newWorkout)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
 
 
     // setNewWorkout(...newWorkout, section) // I don't think this line is needed...
