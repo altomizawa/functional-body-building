@@ -13,24 +13,28 @@ import connectDB from '@/lib/database/db'
 
 const Page = () => {
   const API_TOKEN = process.env.DBACCESSTOKEN
+  const API_ACCESS_POINT = "https://functional-body-building-553rp1om3-als-projects-8e4ff020.vercel.app"
+  // const API_ACCESS_POINT = "http://localhost:3000"
+
+  console.log(API_TOKEN, API_ACCESS_POINT)
 
   const [workout, setWorkout] = useState({})
   const [date, setDate] = useState(new Date())
-  console.log(process.env)
+
   useEffect(() => {
     async function fetchData() {
-      fetch('http://localhost:3000/api/programs/pillars',
+      fetch(`${API_ACCESS_POINT}/api/programs/pillars`,
         {method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + API_TOKEN
+          // 'Authorization': 'Bearer ' + API_TOKEN
         },
         
          body: JSON.stringify(date.toISOString().split('T')[0]),
         }
       )
       .then(response => response.json())
-      .then(data => setWorkout(data))
+      .then(data => {setWorkout(data)})
       .catch(err => console.error(err))
     }
     fetchData();
