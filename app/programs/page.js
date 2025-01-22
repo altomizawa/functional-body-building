@@ -14,7 +14,6 @@ import connectDB from '@/lib/database/db'
 const Page = () => {
   const API_TOKEN = process.env.DBACCESSTOKEN
 
-  console.log(API_TOKEN, API_ACCESS_POINT)
 
   const [workout, setWorkout] = useState({})
   const [date, setDate] = useState(new Date())
