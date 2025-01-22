@@ -47,10 +47,17 @@ const Page = () => {
         </div>
         <h3 className='font-bold text-lg'>@altomizawa</h3>
       </div>
-      
       <div className="bg-black p-4">
-        <h1 className="font-bold text-2xl text-white uppercase">{workout.program}</h1>
-        <h2 className="font-bold text-lg text-white uppercase">Week {workout.week} | day {workout.day}</h2>
+        {
+          workout !== null ? 
+          (<>
+            <h1 className="font-bold text-2xl text-white uppercase">{workout.program}</h1>
+            <h2 className="font-bold text-lg text-white uppercase">Week {workout.week} | day {workout.day}</h2>): 
+          </>) : (
+            <h1 className="font-bold text-2xl text-white uppercase">No workout found</h1>
+          )
+        }
+        
       </div>
 
       {/* DATE AND PROGRAM SELECTION */}
@@ -60,9 +67,20 @@ const Page = () => {
       </div>
 
       {/* WORKOUT */}
-      <div className="mt-4 mb-12">
-       <TrainingSection dailyWorkout={workout.workout} />
-      </div>
+      {
+          workout !== null ? 
+          (<>
+            <div className="mt-4 mb-12">
+              <TrainingSection dailyWorkout={workout.workout} />
+            </div>
+          </>) : (
+            <div className='flex justify-center items-center h-[80vh]'>
+                <h1 className="font-bold text-2xl text-black uppercase">No workout found</h1>
+
+            </div>
+          )
+        }
+      
     </>
   )
 }
