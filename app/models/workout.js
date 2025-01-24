@@ -16,7 +16,7 @@ const SectionSchema = new Schema({
 });
 
 const PillarSchema = new Schema({
-  date: { type: Date, required: false, unique: true },
+  date: { type: Date, required: false},
   program: { type: String, required: false },
   week: { type: Number, required: false },
   day: { type: Number, required: false },

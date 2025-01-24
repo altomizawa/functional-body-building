@@ -23,7 +23,7 @@ const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise
       <div className='my-4 border-2 flex flex-col gap-2 p-4 rounded-md overflow-hidden'>
         <div className='flex justify-center items-center gap-2'>
           <p className={`${!isItExercise && 'font-bold'}`}>TEXT</p>
-          <button onClick={() => setIsItExercise(prev => !prev)} className='h-8 w-16 bg-gray-200 rounded-full flex relative'>
+          <button type='button' onClick={() => setIsItExercise(prev => !prev)} className='h-8 w-16 bg-gray-200 rounded-full flex relative'>
             <div className={`w-1/2 absolute top-[50%] translate-y-[-50%] left-0 h-[90%] aspect-square border-2 rounded-full bg-white ${isItExercise ? "translate-x-[100%]" : "translate-x-[0]"}`}></div>
           </button>
           <p className={`${isItExercise && 'font-bold'}`}>EXERCISE</p>
@@ -32,7 +32,7 @@ const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise
           isItExercise ? (
             <>
               <label htmlFor="name" >CHOOSE MOVEMENT:</label>
-              <select className='border-2 py-2 px-2 text-sm' name="name" onChange={handleExerciseChange} >
+              <select className='border-2 py-2 px-2 text-sm' id="exercise-input" name="name" onChange={handleExerciseChange} >
                 {orderedMovements.map((movement, index) => (
                   <option key={index} value={movement.name} >{movement.name}</option>)
                 )}
