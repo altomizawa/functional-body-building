@@ -33,11 +33,24 @@ const AddNewWorkoutForm = () => {
     .then(res => res.json())
     .then(data => console.log(data))
     .catch(err => console.log(err))
+    .finally(() => {
+      console.log(newWorkout)
+      setNewWorkout({})
+      setSectionNumber(0)
+    })
 
 
     // setNewWorkout(...newWorkout, section) // I don't think this line is needed...
+    // console.log(newWorkout)
+    // setNewWorkout({})
+    // setSectionNumber(0)
+    
+  }
 
-    console.log(newWorkout)
+  // RESET FORM
+  const resetForm = () => {
+    setNewWorkout({})
+    setSectionNumber(0)
   }
 
   // HANDLE FIRST SECTION CHANGES
@@ -154,16 +167,17 @@ const AddNewWorkoutForm = () => {
               section={section}
             />}
 
-        <div className='grid grid-cols-2 w-full justify-center gap-4 mt-8'>
-          <button type="button" onClick={addSection} className='bg-gray-500 text-white rounded-md p-2'>ADD SECTION</button>
-          {/* <button type="button" onClick={nextStep} className='bg-gray-500 text-white rounded-md p-2'>NEXT</button> */}
-          <button type="submit"className='bg-gray-500 text-white rounded-md p-2'>FINISH</button>
-        </div>
+
+        <button type="button" onClick={addSection} className='bg-gray-500 text-white rounded-md p-2 w-max justify-self-end'>+ SECTION</button>
         {/* {sectionNumber > 0 && <button type="button" onClick={()=>{setSectionNumber(0)}} className='bg-red-700 text-white rounded-md p-2 mt-12'>BACK</button>} */}
+        <div className='flex gap-4'>
+          <button type="button" onClick={resetForm} className='bg-red-500 text-white rounded-md p-2 w-full duration-500 hover:bg-red-400'>RESET</button>
+          <button type="submit"className='bg-green-500 text-white rounded-md p-2 w-full duration-500 hover:bg-green-400'>SUBMIT</button>
+        </div>
       </form>
-      <div className='pl-8 space-y-2'>
-        <h2 className='font-bold uppercase text-xl underline'>PREVIEW</h2>
-        <h3>Data:</h3>
+      <div className='space-y-2 border-2 my-4 p-4 rounded-md'>
+        <h2 className='font-bold uppercase text-xl underline w-full'>PREVIEW</h2>
+        <h3>Date:</h3>
         <p>{newWorkout.date}</p>
         <h3>Program Type:</h3>
         <p>{newWorkout.program}</p>
