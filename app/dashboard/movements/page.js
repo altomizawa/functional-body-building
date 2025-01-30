@@ -4,6 +4,7 @@ import AddNewMovementForm from '@/components/AddNewMovementForm'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import { set } from 'mongoose'
+import Link from 'next/link'
 
 const AddNewMovement = () => {
   const [formData, setFormData] = useState({
@@ -71,7 +72,10 @@ const AddNewMovement = () => {
         <h2 className='font-bold border-b-2'>FOUND MATCHES:</h2>
         <ul className='space-y-2 mt-4'>
           {filteredMovements.map(movement => (
-           <li key={movement._id}>{movement.name.toUpperCase()}</li> 
+            <div key={movement._id} className='flex justify-between w-full items-center border-b-2 pb-2'>
+              <li>{movement.name.toUpperCase()}</li>
+              <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link> 
+            </div>
           ))}
         </ul>
       </div>
