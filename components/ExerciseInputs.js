@@ -30,7 +30,7 @@ const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise
         </div> */}
 
         <label htmlFor="name" >Only Text Here:</label>
-        <input type="text" name="name"  onChange={handleExerciseChange} value={exercise.name} />
+        <input type="text" name="name"  onChange={handleExerciseChange} value={exercise.name} id="exercise-name" />
 
         <label htmlFor="description">Description / rep Scheme:</label>
         {/* <input type="text" name="description" onChange={handleExerciseChange} value={exercise.description}  /> */}

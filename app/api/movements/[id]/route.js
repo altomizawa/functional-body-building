@@ -3,8 +3,8 @@ import connectDB from '@/lib/database/db';
 // import Movements from '../../models/movementList';
 
 export async function GET( {params} ) {
-  const id = (await params).id
-  console.log('this is the params: ', id)
+
+  console.log('this is the params: ', params)
 
   return NextResponse.json({ message: 'GET /api/movements/[id]' });
   // await connectDB();

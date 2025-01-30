@@ -149,7 +149,7 @@ const AddNewWorkoutForm = () => {
       description: ' ',
       video: ''
     })
-    const exerciseInput = document.getElementById('exercise-input')
+    const exerciseInput = document.getElementById('exercise-name')
     exerciseInput && exerciseInput.focus()
   }
 
