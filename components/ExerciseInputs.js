@@ -1,19 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-import movements from '@/lib/movements'
+// import movements from '@/lib/movements'
 
-const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise, exercise, section }) => {
+const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise, exercise, section, movements }) => {
   const [numberOfSections, setNumberOfSections] = useState(1)
   const [isItExercise, setIsItExercise] = useState(true)
   const orderedMovements = movements.sort((a, b) => a.name.localeCompare(b.name))
 
-  // CREATE VIDEO LINK
-  const createVideoLink = (name) => {
-    const movement = movements.find((item=> item.name === name))
-    return console.log(movement)
-  }
-    
   return (
     <>
       <label htmlFor="section">STEP 1 - Add Section Name</label>
@@ -21,14 +15,6 @@ const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise
       
       <p>STEP 2 - Add All Exercises</p>
       <div className='my-4 border-2 flex flex-col gap-2 p-4 rounded-md overflow-hidden'>
-        {/* <div className='flex justify-center items-center gap-2'>
-          <p className={`${!isItExercise && 'font-bold'}`}>TEXT</p>
-          <button type='button' onClick={() => setIsItExercise(prev => !prev)} className='h-8 w-16 bg-gray-200 rounded-full flex relative'>
-            <div className={`w-1/2 absolute top-[50%] translate-y-[-50%] left-0 h-[90%] aspect-square border-2 rounded-full bg-white ${isItExercise ? "translate-x-[100%]" : "translate-x-[0]"}`}></div>
-          </button>
-          <p className={`${isItExercise && 'font-bold'}`}>EXERCISE</p>
-        </div> */}
-
         <label htmlFor="name" >Only Text Here:</label>
         <input type="text" name="name"  onChange={handleExerciseChange} value={exercise.name} id="exercise-name" />
 

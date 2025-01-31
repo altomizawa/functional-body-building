@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, use } from 'react'
 import WorkoutIntroInputs from './WorkoutIntroInputs'
 import ExerciseInputs from './ExerciseInputs'
-import { set } from 'mongoose'
 
 const AddNewWorkoutForm = () => {  
   //Create empty object to store new workout data
+  const [movements, setMovements] = useState([])
   const [newWorkout, setNewWorkout] = useState({})
   const [sectionNumber, setSectionNumber] = useState(0)
   const [exerciseNumber, setExerciseNumber] = useState(0)
@@ -38,13 +38,6 @@ const AddNewWorkoutForm = () => {
       setNewWorkout({})
       setSectionNumber(0)
     })
-
-
-    // setNewWorkout(...newWorkout, section) // I don't think this line is needed...
-    // console.log(newWorkout)
-    // setNewWorkout({})
-    // setSectionNumber(0)
-    
   }
 
   // RESET FORM
@@ -55,7 +48,6 @@ const AddNewWorkoutForm = () => {
 
   // HANDLE FIRST SECTION CHANGES
   const handleChange = (e) => {
-    console.log(e.target.value, e.target.name)
     setNewWorkout( prev => {
       return {
         ...prev,
@@ -66,7 +58,6 @@ const AddNewWorkoutForm = () => {
 
   // HANDLE SECTION CHANGES
   const handleSectionChange = (e) => {
-    console.log(e.target.name, e.target.value)
     setSection( prev => {
       return {
         ...prev,
@@ -79,20 +70,12 @@ const AddNewWorkoutForm = () => {
 
   // HANDLE EXERCISES CHANGES
   const handleExerciseChange = (e) => {
-    console.log(e.target.value, e.target.name)
     setExercise( prev => {
       return {
         ...prev,
         [e.target.name]: e.target.value
       }
     })
-
-    // setExercise( prev => {
-    //   return {
-    //     ...prev,
-    //     [e.target.name]: e.target.value
-    //   }
-    // })
   }
 
   // ADD SECTION TO WORKOUT
@@ -153,6 +136,13 @@ const AddNewWorkoutForm = () => {
     exerciseInput && exerciseInput.focus()
   }
 
+  useEffect(() => {
+    fetch('/api/movements')
+    .then(res => res.json())
+    .then(data => setMovements(data))
+    .catch(err => console.log(err))
+  }, [])
+
   return (
     <div className='w-[90%] mx-auto block md:grid md:grid-cols-2 justify-center'>
       <form name="newWorkout" onSubmit={getFormData} className='flex flex-col w-[50%] min-w-[400px] space-y-4'>
@@ -165,6 +155,7 @@ const AddNewWorkoutForm = () => {
               handleExerciseChange={handleExerciseChange} 
               addExercise={addExercise} exercise={exercise}
               section={section}
+              movements={movements}
             />}
 
 
