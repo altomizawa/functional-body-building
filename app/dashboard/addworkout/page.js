@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import movements from '@/lib/movements'
-import { set } from 'mongoose'
 import Preview from '@/components/Preview'
 
 
@@ -56,13 +55,15 @@ export default function WorkoutForm() {
       video: ''
     })
   }
+  
+  const [alert, setAlert] = useState('')
 
 
   const onSubmit = (e) => {
     e.preventDefault()
     
     newWorkout.workout = sections
-
+    
     fetch('/api/programs/pillars/workouts', {
       method: 'POST',
       headers: {
@@ -72,7 +73,7 @@ export default function WorkoutForm() {
     })
     .then(res => res.json())
     .then(data => console.log(data))
-    .catch(err => console.log(err))
+    .catch(err =>setAlert(err.error))
     .finally(() => {
       console.log(newWorkout)
       resetForm()
@@ -129,7 +130,6 @@ export default function WorkoutForm() {
 
   return (
     <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
-
       {/* FORM */}
       <div>
         <label htmlFor="date">Date</label>
@@ -184,6 +184,8 @@ export default function WorkoutForm() {
       </div>
       <button type='button' onClick={addNewSection}>add section</button>
       <button className='border-2 p-4 bg-green-400'>submit</button>
+      {/* ALERT MESSAGE */}
+      {/* {alert && <div>{alert}</div>} */}
     </form>
   )
 }

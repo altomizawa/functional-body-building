@@ -31,10 +31,15 @@ const AddNewWorkoutForm = () => {
       body: JSON.stringify(newWorkout)
     })
     .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
+    .then(data => {
+      if (data.status === 404) {
+        window.alert(data.message)
+      } else {
+        console.log(data)
+      }
+    })
+    .catch(err => console.log('Error:', err.message, 'Status:', err.status))
     .finally(() => {
-      console.log(newWorkout)
       setNewWorkout({})
       setSectionNumber(0)
     })
@@ -76,6 +81,10 @@ const AddNewWorkoutForm = () => {
         [e.target.name]: e.target.value
       }
     })
+    const currentMovement = movements.find(movement => movement.name === e.target.value.toLowerCase())
+    if (currentMovement){
+      console.log('found')
+    } else console.log('not found')
   }
 
   // ADD SECTION TO WORKOUT
@@ -166,6 +175,9 @@ const AddNewWorkoutForm = () => {
           <button type="submit"className='bg-green-500 text-white rounded-md p-2 w-full duration-500 hover:bg-green-400'>SUBMIT</button>
         </div>
       </form>
+
+      {/* PREVIEW WORKOUT */}
+
       <div className='space-y-2 border-2 my-4 p-4 rounded-md'>
         <h2 className='font-bold uppercase text-xl underline w-full'>PREVIEW</h2>
         <h3>Date:</h3>

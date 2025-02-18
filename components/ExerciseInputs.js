@@ -24,9 +24,10 @@ const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise
         
 
         <label htmlFor="video">Demo Video:</label>
-        <select className='border-2 py-2 px-2 text-sm' name="video" onChange={handleExerciseChange} >
+        <select className='border-2 py-2 px-2 text-sm' name="video" onChange={handleExerciseChange}>
+          <option value="">Select a Movement</option>
           {orderedMovements.map((movement, index) => (
-            <option key={index} value={movement.link} >{movement.name}</option>)
+            <option key={index} value={movement.link}>{movement.name}</option>)
           )}
         </select>
 
