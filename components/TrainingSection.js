@@ -29,7 +29,7 @@ const TrainingSection = ({dailyWorkout}) => {
           ))}
           {workout.notes && <div className='w-[90%] mx-auto mt-2 space-y-2'>
             <h3>NOTES:</h3>
-            <p>{workout.notes}</p>
+            <p className='whitespace-pre-line'>{workout.notes}</p>
           </div>}
         </div>
       ))}
