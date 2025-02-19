@@ -7,14 +7,20 @@ import ideaIcon from '@/public/icons/idea.svg'
 import { getCurrentWorkout } from '@/lib/actions'
 import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
-
-
+import { YouTubeEmbed } from "@next/third-parties/google";
+import { get } from 'mongoose'
 
 
 const Page = () => {
   const [workout, setWorkout] = useState({})
   const [date, setDate] = useState(new Date())
   const [movements, setMovements] = useState([])
+
+  async function getWorkout(date) {
+    const response = await getCurrentWorkout(date)
+    const data = await response.json()
+    console.log(data)
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -52,12 +58,22 @@ const Page = () => {
       .catch(err => console.error(err))
     }
     fetchData();
+    getWorkout(date)
   }, [date])
 
   function createVideoArray(sectionDescription) {
-    console.log(sectionDescription, console.log(movements[0]))
-    let videoArray = ["https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6"]
+    let videoArray = []
+    for (let i=0; i<movements.length; i++) {
+      if (sectionDescription.toLowerCase().includes(movements[i].name)) {
+        videoArray.push(movements[i])
+      }
+    }
     return videoArray
+  }
+
+  function getQueryValue (url) {
+    const parts = url.split("=");
+    return parts.length > 1 ? parts[1] : null;
   }
   
 
@@ -110,12 +126,12 @@ const Page = () => {
 
               {workout.videoDemo.length > 0 && <div className='w-[90%] mx-auto mt-4 space-y-2'>
                 <h3>VIDEOS:</h3>
-                <div className='w-[90%] mx-auto mt-2 space-y-2 flex gap-2 items-center justify-center border-2 overflow-auto'>
-                  {workout.videoDemo.map((video, index) => (
-                    <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
-                  ))}
+                <div className='w-full mx-auto mt-2 space-y-2 flex gap-4 items-center overflow-auto'>
                   {createVideoArray(workout.description).map((video, index) => (
-                    <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                    <div key={index} className='flex flex-col'>
+                      <h3>{video.name.toUpperCase()}</h3>
+                      <YouTubeEmbed videoid={getQueryValue(video.link)} height={320} width={640} />
+                    </div>
                   ))}
                 </div>
               </div>}
