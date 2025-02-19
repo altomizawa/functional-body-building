@@ -19,14 +19,8 @@ export default function WorkoutForm() {
     section: '',
     icon: '',
     description: '',
-    videoDemo: [],
     notes: ''
   })
-
-  const [sections, setSections] = useState([])
-
-  const [exercises, setExercises] = useState([])
-
 
   const orderedMovements = movements.sort((a, b) => a.name.localeCompare(b.name))
 
@@ -44,7 +38,6 @@ export default function WorkoutForm() {
       section: '',
       icon: '',
       description: '',
-      videoDemo: [],
       notes: ''
     })
   }
@@ -54,21 +47,20 @@ export default function WorkoutForm() {
   const onSubmit = (e) => {
     e.preventDefault()
     console.log(newWorkout)
-    // fetch('/api/programs/workouts/add', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(newWorkout)
-    // })
-    // .then(res => res.json())
-    // .then(data => console.log(data))
-    // .catch(err =>setAlert(err.error))
-    // .finally(() => {
-    //   console.log(newWorkout)
-    //   resetForm()
-    // })
-    resetForm()
+    fetch('/api/workouts/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newWorkout)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err =>console.error(err))
+    .finally(() => {
+      console.log(newWorkout)
+      resetForm()
+    })
   }
 
   const handleWorkoutChange = (e) => {
@@ -125,7 +117,6 @@ export default function WorkoutForm() {
           <input onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
         </div>
 
-        {/* PREVIEW */}
         <div id='sections' className='bg-gray-200 p-4'>
           {/* SECTION */}
           <div className='mt-8 space-y-4'>
@@ -147,8 +138,10 @@ export default function WorkoutForm() {
         <button className='border-2 p-4 bg-green-400'>submit</button>
       </form>
       <div>
-        <h2>PREVIEW</h2>
-        <Preview workout={newWorkout} />
+        <h2>PREVIEW WORKOUT</h2>
+        <div className='h-screen overflow-auto'>
+          <Preview workout={newWorkout} />
+        </div>
       </div>
     </div>
   )

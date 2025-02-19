@@ -125,7 +125,7 @@ const Page = () => {
                 <div className='w-full mx-auto mt-2 space-y-2 flex gap-4 items-center overflow-auto'>
                   {createVideoArray(workout.description).map((video, index) => (
                     <div key={index} className='flex flex-col'>
-                      <h3>{video.name.toUpperCase()}</h3>
+                      <p className='text-xs font-bold'>{video.name.toUpperCase()}</p>
                       <YouTubeEmbed videoid={getQueryValue(video.link)}  width={400} />
                     </div>
                   ))}
