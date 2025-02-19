@@ -1,21 +1,22 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Workout from '@/app/models/workout';
-import Pillar from '@/app/models/workout';
-import { Icon } from 'lucide-react';
+import Workout from '@/app/models/Workout';
 
 export async function POST(req) {
+  console.log(req)
   const body = await req.json();
   console.log('this is the body: ', body)
   await connectDB();
   try {
-    const dailyWorkout = await Workout.findOne({date: new Date(body)});
+    const dailyWorkout = await Workout.findOne({date: new Date(body.date)});
+    // console.log('this is the daily workout: ', dailyWorkout)
     return NextResponse.json(dailyWorkout);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to fetch workouts' }, { status: 500 });
   }
 }
+
 export async function PATCH(req, res) {
   const body = await req.json();
   console.log('this is the body: ', body)

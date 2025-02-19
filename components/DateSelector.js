@@ -28,7 +28,6 @@ const DateSelector = ({date, setDate}) => {
   const addOneDay = () => {
     const newDate = new Date(date)
     newDate.setDate(date.getDate() + 1)
-    console.log('next day')
     setDate(newDate)
   }
 
