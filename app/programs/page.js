@@ -58,17 +58,13 @@ const Page = () => {
       .catch(err => console.error(err))
     }
     fetchData();
-    getWorkout(date)
+    // getWorkout(date)
   }, [date])
 
   function createVideoArray(sectionDescription) {
-    let videoArray = []
-    for (let i=0; i<movements.length; i++) {
-      if (sectionDescription.toLowerCase().includes(movements[i].name)) {
-        videoArray.push(movements[i])
-      }
-    }
-    return videoArray
+    return movements.filter(movement => 
+      sectionDescription.toLowerCase().includes(movement.name.toLowerCase())
+    );
   }
 
   function getQueryValue (url) {
@@ -124,13 +120,13 @@ const Page = () => {
                 <p className='whitespace-pre-line'>{workout.description}</p>
               </div>
 
-              {workout.videoDemo.length > 0 && <div className='w-[90%] mx-auto mt-4 space-y-2'>
+              {createVideoArray(workout.description).length > 0 && <div className='w-[90%] mx-auto mt-4 space-y-2'>
                 <h3>VIDEOS:</h3>
                 <div className='w-full mx-auto mt-2 space-y-2 flex gap-4 items-center overflow-auto'>
                   {createVideoArray(workout.description).map((video, index) => (
                     <div key={index} className='flex flex-col'>
                       <h3>{video.name.toUpperCase()}</h3>
-                      <YouTubeEmbed videoid={getQueryValue(video.link)} height={320} width={640} />
+                      <YouTubeEmbed videoid={getQueryValue(video.link)}  width={400} />
                     </div>
                   ))}
                 </div>
