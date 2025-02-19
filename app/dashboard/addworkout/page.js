@@ -99,27 +99,30 @@ export default function WorkoutForm() {
 
 
   return (
-    <div className='grid grid-cols-2 gap-4'>
+    <div className='flex flex-col md:grid md:grid-cols-2 gap-4 h-full'>
       <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
         {/* FORM */}
-        <div>
-          <label htmlFor="date">Date</label>
-          <input onChange={handleWorkoutChange} type='date' name='date' value={newWorkout.date} required />
+        <div className='flex items-center gap-4'>
+          <div>
+            <label htmlFor="date">Date: </label>
+            <input onChange={handleWorkoutChange} type='date' name='date' value={newWorkout.date} required />
+          </div>
+            <label htmlFor="program">Program: </label>
+            <input onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
+          <div>
+
         </div>
-        <div>
-          <label htmlFor="program">Program</label>
-          <input onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
         </div>
         <div className='flex items-center gap-2'>
-          <label htmlFor="week">Week</label>
+          <label htmlFor="week">Week:</label>
           <input onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
-          <label htmlFor="day">Day</label>
+          <label htmlFor="day">Day:</label>
           <input onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
         </div>
 
-        <div id='sections' className='bg-gray-200 p-4'>
+        <div id='sections' className='bg-gray-200 px-4 py-4 border-[1px] rounded-lg border-black'>
           {/* SECTION */}
-          <div className='mt-8 space-y-4'>
+          <div className='space-y-4'>
             <div className='w-full space-y-4'>
               <label htmlFor="section">SECTION NAME:</label>
               <input className='w-full' onChange={handleSectionChange} type="text" name="section" placeholder="Section" value={section.section} />
@@ -130,12 +133,12 @@ export default function WorkoutForm() {
             </div>
             <div className='w-full space-y-4'>
               <label htmlFor="notes">NOTES:</label>
-              <textarea className='w-full min-h-48 p-2' onChange={handleSectionChange} type="text" name="notes" placeholder="Notes" value={section.notes} />
+              <textarea className='w-full min-h-24 p-2' onChange={handleSectionChange} type="text" name="notes" placeholder="Notes" value={section.notes} />
             </div>
           </div>
-          <button type='button' className='w-full bg-black text-white uppercase py-2' onClick={addNewSection}>add section</button>
+          <button type='button' className='w-full bg-black text-white uppercase py-2 rounded-lg my-2' onClick={addNewSection}>add section</button>
         </div>
-        <button className='border-2 p-4 bg-green-400'>submit</button>
+        <button className='border-2 p-4 bg-green-600 rounded-lg font-bold text-white'>SUBMIT</button>
       </form>
       <div>
         <h2>PREVIEW WORKOUT</h2>

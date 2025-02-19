@@ -121,7 +121,7 @@ const Page = () => {
               </div>
 
               {createVideoArray(workout.description).length > 0 && <div className='w-[90%] mx-auto mt-4 space-y-2'>
-                <h3>VIDEOS:</h3>
+                <h3>VIDEOS ({createVideoArray(workout.description).length}):</h3>
                 <div className='w-full mx-auto mt-2 space-y-2 flex gap-4 items-center overflow-auto'>
                   {createVideoArray(workout.description).map((video, index) => (
                     <div key={index} className='flex flex-col'>
@@ -130,6 +130,10 @@ const Page = () => {
                     </div>
                   ))}
                 </div>
+              </div>}
+              {workout.notes && <div className='w-[90%] mx-auto mt-4'>
+                <h3>NOTES:</h3>
+                <p className='whitespace-pre-line text-sm'>{workout.notes}</p>
               </div>}
             </div>
             
