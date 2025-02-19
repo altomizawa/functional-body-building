@@ -19,9 +19,9 @@ const Preview = ({workout}) => {
 
             {workout.videoDemo.length > 0 && <div className='w-[90%] mx-auto mt-4 space-y-2'>
               <h3>VIDEOS:</h3>
-              <div className='w-[90%] mx-auto mt-2 space-y-2 flex gap-2 items-center justify-center border-2 overflow-auto'>
+              <div className='w-[90%] mx-auto mt-2 space-y-2 flex gap-2 items-center justify-left border-2 overflow-auto'>
                 {workout.videoDemo.map((video, index) => (
-                  <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen='true'></iframe>
+                  <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
                 ))}
               </div>
             </div>}
