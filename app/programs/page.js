@@ -14,10 +14,13 @@ import connectDB from '@/lib/database/db'
 const Page = () => {
   const [workout, setWorkout] = useState({})
   const [date, setDate] = useState(new Date())
+  const [movements, setMovements] = useState([])
 
   useEffect(() => {
     async function fetchData() {
       await connectDB()
+
+      // FETCH WORKOUTES FROM API
       fetch('/api/workouts',
         {method: 'POST',
          headers: {
@@ -33,11 +36,32 @@ const Page = () => {
         setWorkout(data)
       })
       .catch(err => console.error(err))
-
+      
+      // FETCH MOVEMENTS FROM API
+      fetch('/api/movements',
+        {method: 'GET',
+         headers: {
+          'Content-Type': 'application/json'
+         },
+        }
+      )
+      .then(response => response.json())
+      .then(data => {
+        setMovements(data)
+      })
+      .catch(err => console.error(err))
     }
     fetchData();
   }, [date])
+
+  function createVideoArray(sectionDescription) {
+    console.log(sectionDescription, console.log(movements[0]))
+    let videoArray = ["https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6"]
+    return videoArray
+  }
   
+
+
   return (
     <>
 
@@ -88,7 +112,10 @@ const Page = () => {
                 <h3>VIDEOS:</h3>
                 <div className='w-[90%] mx-auto mt-2 space-y-2 flex gap-2 items-center justify-center border-2 overflow-auto'>
                   {workout.videoDemo.map((video, index) => (
-                    <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen='true'></iframe>
+                    <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                  ))}
+                  {createVideoArray(workout.description).map((video, index) => (
+                    <iframe key={index} width="560" height="315" src="https://www.youtube.com/embed/fJigBduO3d8?si=y2AJhNMkDFc5dkn6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
                   ))}
                 </div>
               </div>}
