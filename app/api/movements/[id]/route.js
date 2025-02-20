@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-// import Movements from '../../models/movementList';
+import Movements from '@/app/models/movementList';
 
 export async function GET( {params} ) {
 

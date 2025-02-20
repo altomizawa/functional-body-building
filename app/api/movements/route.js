@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
 import Movements from '@/app/models/movementList';
 
+
 // POST NEW MOVEMENT
 export async function POST(req) {
   const body = await req.json();
