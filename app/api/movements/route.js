@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Movements from '@/app/models/movementList';
+import Exercise from '@/app/models/Exercise';
 
 
 // POST NEW MOVEMENT
@@ -10,12 +10,12 @@ export async function POST(req) {
 
   await connectDB();
   try {
-    const existingMovement = await Movements.findOne({ name: name.toLowerCase() });
+    const existingMovement = await Exercise.findOne({ name: name.toLowerCase() });
     if (existingMovement) {
       return NextResponse.json({ error: 'Movement already exists' }, { status: 400 });
     }
     console.log( 'fine until here')
-    const newMovement = await Movements.create(
+    const newMovement = await Exercise.create(
       {
         name: name.toLowerCase(),
         link: link
@@ -31,8 +31,8 @@ export async function POST(req) {
 export async function GET() {
   await connectDB();
   try {
-    const movements = await Movements.find().sort({ name: 1 });
-    return NextResponse.json(movements);
+    const exercises = await Exercise.find().sort({ name: 1 });
+    return NextResponse.json(exercises);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to fetch movements' }, { status: 500 });

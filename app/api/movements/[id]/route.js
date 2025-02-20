@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Movements from '@/app/models/movementList';
+import Exercise from '@/app/models/Exercise';
 
 export async function GET( {params} ) {
 
@@ -22,7 +22,7 @@ export async function PATCH(req, res) {
   
   await connectDB();
   try {
-    const dailyWorkout = await Workout.findOne({date: new Date("2012-01-26")});
+    const dailyWorkout = await Exercise.findOne({date: new Date("2012-01-26")});
     return NextResponse.json(dailyWorkout);
   } catch (error) {
     console.error(error);
