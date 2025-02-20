@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server'
 import connectDB from '@/lib/database/db'
-import Workout from '@/app/models/Workout'
+import Workout from '@/app/models/workout'
 
 export async function POST(req) {
   await connectDB()
   const body = await req.json()
   const { date } = body
-  console.log(body)
 
   try {
     const dailyWorkout = await Workout.findOne({date: new Date(date)})
@@ -20,3 +19,4 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Failed to fetch workouts' }, { status: 500 })
   }
 }
+
