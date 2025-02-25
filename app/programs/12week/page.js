@@ -1,65 +1,26 @@
-'use client'
+
 import ProgramSelection from '@/components/ProgramSelection'
 import TrainingSection from '@/components/TrainingSection'
 import DateSelector from '@/components/DateSelector'
 import Image from 'next/image'
 import ideaIcon from '@/public/icons/idea.svg'
-import { getCurrentWorkout } from '@/lib/actions'
-import { useEffect, useState } from 'react'
+import { getCurrentWorkout, getMovements,  getTwelveWeekWorkout } from '@/lib/actions'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
 import { get } from 'mongoose'
 
 
-const TwelveWeek = () => {
-  const [workout, setWorkout] = useState({})
-  const [date, setDate] = useState(new Date())
-  const [movements, setMovements] = useState([])
+const TwelveWeek = async () => {
+  // const response = await getCurrentWorkout('2025-01-08')
+  let day=1
+  const response = await getTwelveWeekWorkout({week: 1, day:day})
 
-  async function getWorkout(date) {
-    const response = await getCurrentWorkout(date)
-    const data = await response.json()
-    console.log(data)
-  }
+  const workout = await response.json()
+  
+  const movementsres = await getMovements()
+  const movements = await movementsres.json()
+  console.log(movements)
 
-  useEffect(() => {
-    async function fetchData() {
-      await connectDB()
-
-      // FETCH WORKOUTES FROM API
-      fetch('/api/workouts',
-        {method: 'POST',
-         headers: {
-          'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-          date: date.toISOString().split('T')[0]
-         }),
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-        setWorkout(data)
-      })
-      .catch(err => console.error(err))
-      
-      // FETCH MOVEMENTS FROM API
-      fetch('/api/movements',
-        {method: 'GET',
-         headers: {
-          'Content-Type': 'application/json'
-         },
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-        setMovements(data)
-      })
-      .catch(err => console.error(err))
-    }
-    fetchData();
-    // getWorkout(date)
-  }, [date])
 
   function createVideoArray(sectionDescription) {
     return movements.filter(movement => 
@@ -71,11 +32,16 @@ const TwelveWeek = () => {
     const parts = url.split("=");
     return parts.length > 1 ? parts[1] : null;
   }
-  
+
+
 
 
   return (
     <>
+      {/* <div>
+        <button onClick={() => {changeDay("add")}} className='p-2 border-2 bg-black text-white mr-8'>PREVIOUS DAY</button>
+        <button onClick={() => {changeDay("remove")}} className='p-2 border-2 bg-black text-white mr-8'>NEXT DAY</button>
+      </div> */}
 
       {/* PROFILE DETAILS */}
       <div className="flex gap-3 items-center">
@@ -96,12 +62,6 @@ const TwelveWeek = () => {
           
         }
         
-      </div>
-
-      {/* DATE AND PROGRAM SELECTION */}
-      <div className="flex mt-4">
-        <DateSelector date={date} setDate={setDate} />
-        <ProgramSelection />
       </div>
 
       {/* WORKOUT */}

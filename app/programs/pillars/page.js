@@ -4,7 +4,7 @@ import TrainingSection from '@/components/TrainingSection'
 import DateSelector from '@/components/DateSelector'
 import Image from 'next/image'
 import ideaIcon from '@/public/icons/idea.svg'
-import { getCurrentWorkout } from '@/lib/actions'
+// import { getCurrentWorkout } from '@/lib/actions'
 import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
