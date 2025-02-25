@@ -69,13 +69,52 @@ const TwelveWeeks = () => {
     return parts.length > 1 ? parts[1] : null;
   }
 
-  const addWeek = () => {
-    setDailyWorkout(prev => {
-      return {
-        ...prev,
-        week: prev.week + 1
+  const changeWeek = ({type}) => {
+    if (type === 'add') {
+      if(dailyWorkout.week === 12) return
+      setDailyWorkout(prev => {
+        return {
+          ...prev,
+          week: prev.week + 1
+        }
+      })
+    } else if (type === 'subtract') {
+      if(dailyWorkout.week === 1) return
+      setDailyWorkout(prev => {
+        return {
+          ...prev,
+          week: prev.week - 1
+        }
+      })
+    }
+  }
+  
+  const changeDay = ({type}) => {
+    if (type === 'add') {
+      if(dailyWorkout.day === 7) {
+        setDailyWorkout(prev => {
+          return {
+            ...prev,
+            week: prev.week + 1
+          }
+        })
+        return
       }
-    })
+      setDailyWorkout(prev => {
+        return {
+          ...prev,
+          week: prev.week + 1
+        }
+      })
+    } else if (type === 'subtract') {
+      if(dailyWorkout.week === 1) return
+      setDailyWorkout(prev => {
+        return {
+          ...prev,
+          week: prev.week - 1
+        }
+      })
+    }
   }
   
   return (
@@ -105,32 +144,30 @@ const TwelveWeeks = () => {
       {/* DATE AND PROGRAM SELECTION */}
       <div className="flex mt-4 gap-4">
         <div className='flex items-center gap-2 justify-between'>
-          <button onClick={() => {
-            setDailyWorkout(prev => {
-              return {
-                ...prev,
-                week: prev.week - 1
-              }
-            })}} 
-          className='border-2 py-2 w-24 rounded-md font-bold'>PREV</button>
+          <button onClick={() => {changeWeek({type: 'subtract'})}} className='border-2 py-2 w-24 rounded-md font-bold'>PREV</button>
           <h2 className='w-full text-center'>WEEK: {dailyWorkout.week}</h2>
-          <button onClick={() => {
-            setDailyWorkout(prev => {
-              return {
-                ...prev,
-                week: prev.week + 1
-              }
-            })}} 
-          className='border-2 py-2 w-24 rounded-md font-bold'>NEXT</button>
+          <button onClick={() => {changeWeek({type: 'add'})}} className='border-2 py-2 w-24 rounded-md font-bold'>NEXT</button>
+
         </div>
         <div className='flex items-center gap-2 justify-between'>
           <button onClick={() => {
-            setDailyWorkout(prev => {
-              return {
-                ...prev,
-                day: prev.day - 1
-              }
-            })}} 
+            if (dailyWorkout.day >= 2) {
+              setDailyWorkout(prev => {
+                return {
+                  ...prev,
+                  day: prev.day - 1
+                }
+              })
+            } else {
+              setDailyWorkout(prev => {
+                return {
+                  ...prev,
+                  week: prev.week - 1,
+                  day: 7
+                }
+              })
+            }
+          }} 
           className='border-2 py-2 w-24 rounded-md font-bold'>PREV</button>
           <h2 className='w-full text-center'>DAY: {dailyWorkout.day}</h2>
           <button onClick={() => {
