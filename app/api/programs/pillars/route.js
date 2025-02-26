@@ -6,9 +6,10 @@ import Pillar from '@/app/models/pillar';
 
 export async function POST(req) {
   const body = await req.json();
+  console.log(body)
   await connectDB();
   try {
-    const dailyWorkout = await Pillar.findOne({week: body.week, day: body.day});
+    const dailyWorkout = await Pillar.findOne({program: body.program, week: body.week, day: body.day});
     // console.log('this is the daily workout: ', dailyWorkout)
     return NextResponse.json(dailyWorkout);
   } catch (error) {

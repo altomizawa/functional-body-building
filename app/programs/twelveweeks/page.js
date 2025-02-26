@@ -13,6 +13,7 @@ import { get } from 'mongoose'
 const TwelveWeeks = () => {
   const [workout, setWorkout] = useState({})
   const [dailyWorkout, setDailyWorkout] = useState({
+    program: 'Cycle 2',
     week: 6,
     day: 3,
   })
@@ -29,6 +30,7 @@ const TwelveWeeks = () => {
           'Content-Type': 'application/json'
          },
          body: JSON.stringify({
+          program: dailyWorkout.program,
           week: dailyWorkout.week,
           day: dailyWorkout.day,
          }),

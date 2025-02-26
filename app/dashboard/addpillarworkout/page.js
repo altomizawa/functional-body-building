@@ -25,7 +25,6 @@ export default function PillarWorkoutForm() {
   // RESET ALL FORMS
   const resetForm = () => {
     setNewWorkout({
-      date: '',
       program: '',
       week: '',
       day: '',
