@@ -87,3 +87,7 @@ h3{
 .description {
   @apply text-base font-normal
 }
+
+.workout-button{
+  @apply text-gray-600 border-x-[2px] text-xl font-bold p-2 min-w-12
+}

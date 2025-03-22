@@ -1,65 +1,62 @@
 'use client'
 import ProgramSelection from '@/components/ProgramSelection'
-import TrainingSection from '@/components/TrainingSection'
 import DateSelector from '@/components/DateSelector'
 import Image from 'next/image'
 import ideaIcon from '@/public/icons/idea.svg'
-// import { getCurrentWorkout } from '@/lib/actions'
 import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
-import { get } from 'mongoose'
 
 
 const Page = () => {
   const [workout, setWorkout] = useState({})
-  const [date, setDate] = useState(new Date())
+  const [week, setWeek] = useState(1)
+  const [day, setDay] = useState(1)
   const [movements, setMovements] = useState([])
 
-  async function getWorkout(date) {
-    const response = await getCurrentWorkout(date)
-    const data = await response.json()
-    console.log(data)
-  }
 
   useEffect(() => {
     async function fetchData() {
       await connectDB()
-
-      // FETCH WORKOUTES FROM API
-      fetch('/api/workouts',
-        {method: 'POST',
-         headers: {
-          'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-          date: date.toISOString().split('T')[0]
-         }),
+      try{
+        // FETCH WORKOUTS FROM API
+        const resWorkout = await fetch('/api/programs/pillars',
+          {method: 'POST',
+           headers: {
+            'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({
+            program: 'Pillars',
+            week: week,
+            day: day,
+           }),
+          }
+        )
+        if (!resWorkout.ok){
+          console.error('No workouts found')
+          return
         }
-      )
-      .then(response => response.json())
-      .then(data => {
+        const data = await resWorkout.json()
         setWorkout(data)
-      })
-      .catch(err => console.error(err))
-      
-      // FETCH MOVEMENTS FROM API
-      fetch('/api/movements',
-        {method: 'GET',
-         headers: {
-          'Content-Type': 'application/json'
-         },
+        
+        // FETCH MOVEMENTS FROM API
+        const resMovements = await fetch('/api/movements',
+          {method: 'GET',
+           headers: {
+            'Content-Type': 'application/json'
+           },
+          }
+        )
+        if (resMovements.ok){
+          const movements = await resMovements.json()
+          setMovements(movements)
         }
-      )
-      .then(response => response.json())
-      .then(data => {
-        setMovements(data)
-      })
-      .catch(err => console.error(err))
+      } catch (err) {
+        console.error(err)
+      }
     }
     fetchData();
-    // getWorkout(date)
-  }, [date])
+  }, [week, day])
 
   function createVideoArray(sectionDescription) {
     return movements.filter(movement => 
@@ -72,7 +69,32 @@ const Page = () => {
     return parts.length > 1 ? parts[1] : null;
   }
   
-
+  function changeDay(type) {
+    if (type === 'increment' && day < 7) {
+      setDay(prev => prev+1)
+    } else if (type === 'increment' && day === 7) {
+      setDay(1)
+      setWeek(prev => prev+1)
+    } else if(type ==='decrement' && week === 1 && day === 1){
+      return
+    } else if(type === 'decrement' && day === 1) {
+      setDay(7)
+      setWeek(prev => prev-1)
+    } else {
+      setDay(prev => prev-1)
+    }
+  }
+  function changeWeek(type) {
+    if (type === 'increment') {
+      setWeek(prev => prev+1)
+      setDay(1)
+    } else if (type === 'decrement' && week === 1) {
+      return
+    } else{
+      setWeek(prev => prev-1)
+      setDay(1)
+    }
+  }
 
   return (
     <>
@@ -93,15 +115,27 @@ const Page = () => {
             <h2 className="font-bold text-lg text-white uppercase">Week {workout.week} | day {workout.day}</h2> 
           </> : 
             <h1 className="font-bold text-2xl text-white uppercase">No workout found</h1>
-          
         }
-        
       </div>
 
       {/* DATE AND PROGRAM SELECTION */}
       <div className="flex mt-4">
-        <DateSelector date={date} setDate={setDate} />
-        <ProgramSelection />
+        <div>
+          <h1 className='text-center font-bold'>WEEK</h1>
+          <div className='flex items-center gap-4 border-2'>
+            <button onClick={() => changeWeek('decrement')} className='workout-button'>&lt;</button>
+            <p>{week}</p>
+            <button onClick={() => changeWeek('increment')} className='workout-button'>&gt;</button>
+          </div>
+        </div>
+        <div>
+          <h1 className='text-center font-bold'>DAY</h1>
+          <div className='flex items-center gap-4 border-2'>
+            <button onClick={() => changeDay('decrement')} className='workout-button'>&lt;</button>
+            <p>{day}</p>
+            <button onClick={() => changeDay('increment')} className='workout-button'>&gt;</button>
+          </div>
+        </div>
       </div>
 
       {/* WORKOUT */}

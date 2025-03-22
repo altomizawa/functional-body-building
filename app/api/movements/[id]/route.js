@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Exercise from '@/app/models/Exercise';
+import Exercise from '@/app/models/Movement';
 
 export async function GET( {params} ) {
 
