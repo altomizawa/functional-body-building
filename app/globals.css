@@ -87,3 +87,7 @@ h3{
 .description {
   @apply text-base font-normal
 }
+
+.workout__input{
+  @apply  p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+}

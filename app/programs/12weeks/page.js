@@ -7,69 +7,78 @@ import ideaIcon from '@/public/icons/idea.svg'
 import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
-import { get } from 'mongoose'
+import { getQueryValue } from '@/app/utils/utils'
 
 
 const TwelveWeeks = () => {
   const [workout, setWorkout] = useState({})
   const [dailyWorkout, setDailyWorkout] = useState({
-    program: 'Cycle 2',
-    week: 6,
-    day: 3,
+    program: 'Pillars',
+    week: 1,
+    day: 1,
   })
   const [movements, setMovements] = useState([])
 
+  // FETCH WORKOUTES FROM API
+  const fetchWorkouts = () => {
+    fetch('/api/programs/pillars/',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        program: dailyWorkout.program,
+        week: dailyWorkout.week,
+        day: dailyWorkout.day,
+      }),
+      }
+    )
+    .then(response => response.json())
+    .then(data => {
+      setWorkout(data)
+    })
+    .catch(err => console.error(err))
+  }
+
+  // FETCH MOVEMENTS FROM API
+  const fetchMovements = () => {
+    fetch('/api/movements',
+      {method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      }
+    )
+    .then(response => response.json())
+    .then(data => {
+      setMovements(data)
+    })
+    .catch(err => console.error(err))
+  }
+
   useEffect(() => {
     async function fetchData() {
-      await connectDB()
-
-      // FETCH WORKOUTES FROM API
-      fetch('/api/programs/pillars/',
-        {method: 'POST',
-         headers: {
-          'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-          program: dailyWorkout.program,
-          week: dailyWorkout.week,
-          day: dailyWorkout.day,
-         }),
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-        setWorkout(data)
-      })
-      .catch(err => console.error(err))
-      
-      // FETCH MOVEMENTS FROM API
-      fetch('/api/movements',
-        {method: 'GET',
-         headers: {
-          'Content-Type': 'application/json'
-         },
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-        setMovements(data)
-      })
-      .catch(err => console.error(err))
+      await connectDB();
+      fetchWorkouts();
+      fetchMovements();
     }
     fetchData();
-    // getWorkout(date)
+
   }, [dailyWorkout])
 
   function createVideoArray(sectionDescription) {
+    console.log(movements)
+    // const matches = movements.filter(movement => 
+    //   sectionDescription.toLowerCase().includes(movement.name.toLowerCase())
+    // );
+    // console.log(matches)
     return movements.filter(movement => 
       sectionDescription.toLowerCase().includes(movement.name.toLowerCase())
     );
   }
 
-  function getQueryValue (url) {
-    const parts = url.split("=");
-    return parts.length > 1 ? parts[1] : null;
-  }
+  const programList = ["Pillars", "Cycle 2", "Bridge Week 1", "Cycle 3", "Cycle 4", "Bridge Week 2"]
 
   const changeWeek = ({type}) => {
     if (type === 'add') {
@@ -93,11 +102,13 @@ const TwelveWeeks = () => {
   
   const changeDay = ({type}) => {
     if (type === 'add') {
+      console.log('add')
       if(dailyWorkout.day === 7) {
+        changeWeek({type: 'add'})
         setDailyWorkout(prev => {
           return {
             ...prev,
-            week: prev.week + 1
+            day: 1,
           }
         })
         return
@@ -105,15 +116,24 @@ const TwelveWeeks = () => {
       setDailyWorkout(prev => {
         return {
           ...prev,
-          week: prev.week + 1
+          day: prev.day + 1
         }
       })
     } else if (type === 'subtract') {
-      if(dailyWorkout.week === 1) return
+      if(dailyWorkout.day === 1) {
+        changeWeek({type: 'subtract'})
+        setDailyWorkout(prev => {
+          return {
+            ...prev,
+            day: 7,
+          }
+        })
+        return
+      }
       setDailyWorkout(prev => {
         return {
           ...prev,
-          week: prev.week - 1
+          day: prev.day - 1,
         }
       })
     }
@@ -144,44 +164,39 @@ const TwelveWeeks = () => {
       </div>
 
       {/* DATE AND PROGRAM SELECTION */}
-      <div className="flex mt-4 gap-4">
-        <div className='flex items-center gap-2 justify-between'>
-          <button onClick={() => {changeWeek({type: 'subtract'})}} className='border-2 py-2 w-24 rounded-md font-bold'>PREV</button>
-          <h2 className='w-full text-center'>WEEK: {dailyWorkout.week}</h2>
-          <button onClick={() => {changeWeek({type: 'add'})}} className='border-2 py-2 w-24 rounded-md font-bold'>NEXT</button>
-
-        </div>
-        <div className='flex items-center gap-2 justify-between'>
-          <button onClick={() => {
-            if (dailyWorkout.day >= 2) {
-              setDailyWorkout(prev => {
+      <div className="flex mt-4 gap-4 border-2 p-12">
+        <div className='bg-orange-500 rounded-lg p-4'>
+          <h3 className='text-white text-center uppercase text-4xl'>{dailyWorkout.program}</h3>
+          <div className='flex  gap-4 border-t-2'>
+            {programList.map((program, index) => (
+              <button onClick={() => setDailyWorkout( prev => {
                 return {
                   ...prev,
-                  day: prev.day - 1
+                  program: program,
+                  week: 1,
+                  day: 1,
                 }
-              })
-            } else {
-              setDailyWorkout(prev => {
-                return {
-                  ...prev,
-                  week: prev.week - 1,
-                  day: 7
-                }
-              })
-            }
-          }} 
-          className='border-2 py-2 w-24 rounded-md font-bold'>PREV</button>
-          <h2 className='w-full text-center'>DAY: {dailyWorkout.day}</h2>
-          <button onClick={() => {
-            setDailyWorkout(prev => {
-              return {
-                ...prev,
-                day: prev.day + 1
-              }
-            })}} 
-          className='border-2 py-2 w-24 rounded-md font-bold'>NEXT</button>
+              }) } key={index} className={`text-md text-white uppercase`}>{program}</button>
+            ))}
+          </div>
         </div>
-        <ProgramSelection />
+        <div className=' bg-orange-500 rounded-lg'>
+          <h3 className='text-white font-bold text-center text-3xl border-b-2 border-white'>WEEK</h3>
+            <div className='flex items-center gap-2 justify-between bg-orange-500 px-4 py-2 rounded-md'>
+              <button onClick={() => {changeWeek({type: 'subtract'})}} className='text-white text-3xl font-bold'>-</button>
+              <h2 className='w-24 text-center font-bold text-4xl text-white'>{dailyWorkout.week}</h2>
+              <button onClick={() => {changeWeek({type: 'add'})}} className='text-white text-3xl font-bold '>+</button>
+            </div>
+        </div>
+        <div className=' bg-orange-500 rounded-lg'>
+          <h3 className='text-white font-bold text-center text-3xl border-b-2 border-white'>DAY</h3>
+            <div className='flex items-center gap-2 justify-between bg-orange-500 px-4 py-2 rounded-md'>
+              <button onClick={() => {changeDay({type: 'subtract'})}} className='text-white text-3xl font-bold'>-</button>
+              <h2 className='w-24 text-center font-bold text-4xl text-white'>{dailyWorkout.day}</h2>
+              <button onClick={() => {changeDay({type: 'add'})}} className='text-white text-3xl font-bold '>+</button>
+            </div>
+        </div>
+        {/* <ProgramSelection /> */}
       </div>
 
       {/* WORKOUT */}

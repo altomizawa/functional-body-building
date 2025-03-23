@@ -100,17 +100,17 @@ export default function PillarWorkoutForm() {
       <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
         {/* FORM */}
         <div className='flex items-center gap-4'>
-            <label htmlFor="program">Program: </label>
-            <input onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
+            <label className='font-bold text-4xl' htmlFor="program">Program: </label>
+            <input className='workout__input' onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
           <div>
 
         </div>
         </div>
         <div className='flex items-center gap-2'>
-          <label htmlFor="week">Week:</label>
-          <input onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
-          <label htmlFor="day">Day:</label>
-          <input onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
+          <label className='font-bold text-4xl' htmlFor="week">Week:</label>
+          <input className='workout__input' onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
+          <label className='font-bold text-4xl' htmlFor="day">Day:</label>
+          <input className='workout__input' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
         </div>
 
         <div id='sections' className='bg-gray-200 px-4 py-4 border-[1px] rounded-lg border-black'>
