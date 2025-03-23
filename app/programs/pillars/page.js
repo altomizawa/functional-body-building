@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
 
+import { getMovements, getWorkout } from '@/lib/actions'
+
 
 const Page = () => {
   const [workout, setWorkout] = useState({})
@@ -17,7 +19,6 @@ const Page = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await connectDB()
       try{
         // FETCH WORKOUTS FROM API
         const resWorkout = await fetch('/api/programs/pillars',
@@ -40,17 +41,8 @@ const Page = () => {
         setWorkout(data)
         
         // FETCH MOVEMENTS FROM API
-        const resMovements = await fetch('/api/movements',
-          {method: 'GET',
-           headers: {
-            'Content-Type': 'application/json'
-           },
-          }
-        )
-        if (resMovements.ok){
-          const movements = await resMovements.json()
-          setMovements(movements)
-        }
+        const movements = await getMovements()
+        setMovements(movements)
       } catch (err) {
         console.error(err)
       }
