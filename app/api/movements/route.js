@@ -38,39 +38,3 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to fetch movements' }, { status: 500 });
   }
 }
-
-// MODIFY MOVEMENT
-export async function PATCH (req) {
-  const body = await req.json();
-  const { id, name, link } = body;
-  console.log('body:', body)
-
-  await connectDB();
-  try {
-    const updatedMovement = await Movement.findByIdAndUpdate(id, { name, link }, { new: true });
-    if (!updatedMovement) {
-      throw new Error({ error: 'Movement not found' }, { status: 404 });
-    }
-    return NextResponse.json(updatedMovement);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Failed to update movement' }, { status: 500 });
-  }
-}
-// DELETE MOVEMENT
-export async function DELETE (req) {
-  const body = await req.json();
-  const { id } = body;
-
-  await connectDB();
-  try{
-    const deletedMovement = await Movement.findByIdAndDelete(id);
-    if (!deletedMovement) {
-      throw new Error({ error: 'Movement not found' }, { status: 404 });
-    }
-    return NextResponse.json(deletedMovement);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Failed to delete movement' }, { status: 500 });
-  }
-}

@@ -14,7 +14,7 @@ const EditMovementForm = ({setShowEditForm, movement}) => {
   const updateMovement = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch(`/api/movements/`, {
+      const response = await fetch(`/api/movements/${movement._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

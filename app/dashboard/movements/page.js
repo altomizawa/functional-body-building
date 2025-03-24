@@ -63,9 +63,9 @@ const AddNewMovement = () => {
   
   const handleDeleteMovement = async (movement) => {
     console.log(movement._id)
-    const res = await fetch('/api/movements/', {
+    const res = await fetch(`/api/movements/${movement._id}`, {
       method: 'DELETE',
-      body: JSON.stringify({ id: movement._id })
+      // body: JSON.stringify({ id: movement._id })
     })
     if (res.ok) {
       const deletedMovement = await res.json()
