@@ -3,6 +3,7 @@ import Image from 'next/image'
 import ideaIcon from '@/public/icons/idea.svg'
 import { useEffect, useState } from 'react'
 import { YouTubeEmbed } from "@next/third-parties/google";
+import { set } from 'mongoose';
 
 
 const Page = () => {
@@ -10,7 +11,9 @@ const Page = () => {
   const [week, setWeek] = useState(1)
   const [day, setDay] = useState(1)
   const [movements, setMovements] = useState([])
+  const [program, setProgram] = useState(2)
 
+  const programList = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4']
   const getMovements = async () => {
     try{
       // FETCH MOVEMENTS FROM API
@@ -32,7 +35,7 @@ const Page = () => {
     }
   }
 
-  const getWorkout = async () => {
+  const getWorkout = async (program) => {
     try{
       // FETCH WORKOUTS FROM API
       const resWorkout = await fetch('/api/programs/pillars',
@@ -41,7 +44,7 @@ const Page = () => {
           'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-          program: 'Pillars',
+          program: programList[program],
           week: week,
           day: day,
          }),
@@ -59,9 +62,9 @@ const Page = () => {
   }
 
   useEffect(() => {
-    getWorkout()
+    getWorkout(program)
     getMovements()
-  }, [week, day])
+  }, [week, day, program])
 
   function createVideoArray(sectionDescription) {
     return movements.filter(movement => 
@@ -100,6 +103,21 @@ const Page = () => {
       setDay(1)
     }
   }
+  function changeProgram(type) {
+    if (type === 'increment' && program >= programList.length-1) {
+      return
+    } else if (type === 'increment') {
+      setProgram(prev => prev+1);
+      setDay(1);
+      setWeek(1);
+    } else if (type === 'decrement' && program === 0) {
+      return
+    } else{
+      setProgram(prev => prev-1)
+      setDay(1);
+      setWeek(1);
+    }
+  }
 
   return (
     <>
@@ -125,6 +143,14 @@ const Page = () => {
 
       {/* DATE AND PROGRAM SELECTION */}
       <div className="flex mt-4">
+        <div>
+          <h1 className='text-center font-bold'>PROGRAM</h1>
+          <div className='flex items-center gap-4 border-2'>
+            <button onClick={() => changeProgram('decrement')} className='workout-button'>&lt;</button>
+            <p>{programList[program]}</p>
+            <button onClick={() => changeProgram('increment')} className='workout-button'>&gt;</button>
+          </div>
+        </div>
         <div>
           <h1 className='text-center font-bold'>WEEK</h1>
           <div className='flex items-center gap-4 border-2'>
