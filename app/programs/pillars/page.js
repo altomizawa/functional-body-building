@@ -11,7 +11,7 @@ const Page = () => {
   const [week, setWeek] = useState(1)
   const [day, setDay] = useState(1)
   const [movements, setMovements] = useState([])
-  const [program, setProgram] = useState(2)
+  const [program, setProgram] = useState(0)
 
   const programList = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4']
   const getMovements = async () => {
