@@ -1,12 +1,8 @@
 'use client'
-import ProgramSelection from '@/components/ProgramSelection'
-import DateSelector from '@/components/DateSelector'
 import Image from 'next/image'
 import ideaIcon from '@/public/icons/idea.svg'
 import { useEffect, useState } from 'react'
-import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
-import { get } from 'mongoose'
 
 
 const Page = () => {
@@ -64,32 +60,6 @@ const Page = () => {
 
   useEffect(() => {
     getWorkout()
-    // async function fetchData() {
-    //   try{
-    //     // FETCH WORKOUTS FROM API
-    //     const resWorkout = await fetch('/api/programs/pillars',
-    //       {method: 'POST',
-    //        headers: {
-    //         'Content-Type': 'application/json'
-    //        },
-    //        body: JSON.stringify({
-    //         program: 'Pillars',
-    //         week: week,
-    //         day: day,
-    //        }),
-    //       }
-    //     )
-    //     if (!resWorkout.ok){
-    //       console.error('No workouts found')
-    //       return
-    //     }
-    //     const data = await resWorkout.json()
-    //     setWorkout(data)
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    // }
-    // fetchData();
     getMovements()
   }, [week, day])
 
