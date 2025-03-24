@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import { set } from 'mongoose'
 import Link from 'next/link'
+import { getMovements } from '@/lib/actions'
+import EditMovementForm from '@/components/EditMovementForm'
 
 const AddNewMovement = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,8 @@ const AddNewMovement = () => {
   })
   const [movements, setMovements] = useState([])
   const [filteredMovements, setFilteredMovements] = useState([])
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [currentMovement, setCurrentMovement] = useState(null)
   // const [toast, setToast] = useState(false)
   const toast = useToast().toast
 
@@ -52,6 +56,12 @@ const AddNewMovement = () => {
     })
   }
 
+  const handleEditMovement = (movement) => {
+    setShowEditForm(true)
+    setCurrentMovement(movement)
+  }
+
+
   useEffect(() => {
     async function getMovements() {
       const response = await fetch('/api/movements', {
@@ -66,6 +76,7 @@ const AddNewMovement = () => {
   return (
     <div className='border-2 m-8 p-4 rounded-lg'>
       <Toaster />
+      {showEditForm && <EditMovementForm setShowEditForm={setShowEditForm} movement={currentMovement} />}
       <h1>Add New Movement</h1>
       <AddNewMovementForm handleSubmit={handleSubmit} handleFormChange={handleFormChange} formData={formData} />
       <div className='mt-8 border-[1px] border-gray-500 p-4 rounded-lg'>
@@ -74,7 +85,10 @@ const AddNewMovement = () => {
           {filteredMovements.map(movement => (
             <div key={movement._id} className='flex justify-between w-full items-center border-b-2 pb-2'>
               <li>{movement.name.toUpperCase()}</li>
-              <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link> 
+              <div className='space-x-4'>
+                <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
+                <button type='button' onClick={() => handleEditMovement(movement)} className='rounded-md bg-blue-500 text-white px-4 py-1'>edit</button>
+              </div>
             </div>
           ))}
         </ul>

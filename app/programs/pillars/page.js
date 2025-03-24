@@ -27,7 +27,7 @@ const Page = () => {
             'Content-Type': 'application/json'
            },
            body: JSON.stringify({
-            program: 'Cycle 2',
+            program: 'Pillars',
             week: week,
             day: day,
            }),
