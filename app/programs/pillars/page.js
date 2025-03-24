@@ -6,8 +6,7 @@ import ideaIcon from '@/public/icons/idea.svg'
 import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
-
-import { getMovements, getWorkout } from '@/lib/actions'
+import { get } from 'mongoose'
 
 
 const Page = () => {
@@ -16,38 +15,82 @@ const Page = () => {
   const [day, setDay] = useState(1)
   const [movements, setMovements] = useState([])
 
+  const getMovements = async () => {
+    try{
+      // FETCH MOVEMENTS FROM API
+      const res = await fetch('/api/movements',
+        {method: 'GET',
+         headers: {
+          'Content-Type': 'application/json'
+         },
+        }
+      )
+      if (!res.ok){
+        console.error('No movements found')
+        return
+      }
+      const data = await res.json()
+      setMovements(data)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const getWorkout = async () => {
+    try{
+      // FETCH WORKOUTS FROM API
+      const resWorkout = await fetch('/api/programs/pillars',
+        {method: 'POST',
+         headers: {
+          'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+          program: 'Pillars',
+          week: week,
+          day: day,
+         }),
+        }
+      )
+      if (!resWorkout.ok){
+        console.error('No workouts found')
+        return
+      }
+      const data = await resWorkout.json()
+      setWorkout(data)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      try{
-        // FETCH WORKOUTS FROM API
-        const resWorkout = await fetch('/api/programs/pillars',
-          {method: 'POST',
-           headers: {
-            'Content-Type': 'application/json'
-           },
-           body: JSON.stringify({
-            program: 'Pillars',
-            week: week,
-            day: day,
-           }),
-          }
-        )
-        if (!resWorkout.ok){
-          console.error('No workouts found')
-          return
-        }
-        const data = await resWorkout.json()
-        setWorkout(data)
-        
-        // FETCH MOVEMENTS FROM API
-        const movements = await getMovements()
-        setMovements(movements)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchData();
+    getWorkout()
+    // async function fetchData() {
+    //   try{
+    //     // FETCH WORKOUTS FROM API
+    //     const resWorkout = await fetch('/api/programs/pillars',
+    //       {method: 'POST',
+    //        headers: {
+    //         'Content-Type': 'application/json'
+    //        },
+    //        body: JSON.stringify({
+    //         program: 'Pillars',
+    //         week: week,
+    //         day: day,
+    //        }),
+    //       }
+    //     )
+    //     if (!resWorkout.ok){
+    //       console.error('No workouts found')
+    //       return
+    //     }
+    //     const data = await resWorkout.json()
+    //     setWorkout(data)
+    //   } catch (err) {
+    //     console.error(err)
+    //   }
+    // }
+    // fetchData();
+    getMovements()
   }, [week, day])
 
   function createVideoArray(sectionDescription) {
