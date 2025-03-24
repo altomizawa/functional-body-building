@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import AddNewMovementForm from '@/components/AddNewMovementForm'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
-import { set } from 'mongoose'
 import Link from 'next/link'
 import { getMovements } from '@/lib/actions'
 import EditMovementForm from '@/components/EditMovementForm'
@@ -17,6 +16,7 @@ const AddNewMovement = () => {
   const [filteredMovements, setFilteredMovements] = useState([])
   const [showEditForm, setShowEditForm] = useState(false)
   const [currentMovement, setCurrentMovement] = useState(null)
+  const [confirmation, setConfirmation] = useState(true)
   // const [toast, setToast] = useState(false)
   const toast = useToast().toast
 
@@ -34,17 +34,17 @@ const AddNewMovement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const response = await fetch('/api/movements', {
-      method: 'POST',
+      method: 'POST', 
       body: JSON.stringify(formData)
     })
-    const data = await response.json()
-    if (data.error) {
-      console.log(data.error)
+    if (!response.ok) {
       toast({
         title: 'Error',
         description: data.error,
       })
     } else {
+      const data = await response.json()
+      console.log(data)
       toast({
         title: 'Success',
         description: 'Movement added successfully',
@@ -60,6 +60,28 @@ const AddNewMovement = () => {
     setShowEditForm(true)
     setCurrentMovement(movement)
   }
+  
+  const handleDeleteMovement = async (movement) => {
+    console.log(movement._id)
+    const res = await fetch('/api/movements/', {
+      method: 'DELETE',
+      body: JSON.stringify({ id: movement._id })
+    })
+    if (res.ok) {
+      const deletedMovement = await res.json()
+      toast({
+        title: 'Success',
+        description: `${deletedMovement.name} deleted successfully`,
+      })
+    } else {
+      console.log(deletedMovement.error)
+      toast({
+        title: 'Error',
+        description: deletedMovement.error,
+      })
+    }
+  }
+  
 
 
   useEffect(() => {
@@ -88,6 +110,7 @@ const AddNewMovement = () => {
               <div className='space-x-4'>
                 <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
                 <button type='button' onClick={() => handleEditMovement(movement)} className='rounded-md bg-blue-500 text-white px-4 py-1'>edit</button>
+                <button type='button' onClick={() => handleDeleteMovement(movement)} className='rounded-md bg-red-500 text-white px-4 py-1'>delete</button>
               </div>
             </div>
           ))}

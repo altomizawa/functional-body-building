@@ -2,30 +2,20 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
 import Exercise from '@/app/models/Movement';
 
-export async function GET( {params} ) {
+export async function PATCH ({params}) {
+  const { id } = params;
 
-  console.log('this is the params: ', params)
 
-  return NextResponse.json({ message: 'GET /api/movements/[id]' });
+  console.log(id, name, link)
   // await connectDB();
   // try {
-  //   const dailyWorkout = await Workout.findOne({date: new Date(body)});
-  //   return NextResponse.json(dailyWorkout);
+  //   const updatedMovement = await Movement.findByIdAndUpdate(id, { name, link }, { new: true });
+  //   if (!updatedMovement) {
+  //     return NextResponse.json({ error: 'Movement not found' }, { status: 404 });
+  //   }
+  //   return NextResponse.json(updatedMovement);
   // } catch (error) {
   //   console.error(error);
-  //   return NextResponse.json({ error: 'Failed to fetch workouts' }, { status: 500 });
+  //   return NextResponse.json({ error: 'Failed to update movement' }, { status: 500 });
   // }
-}
-export async function PATCH(req, res) {
-  const body = await req.json();
-  console.log('this is the body: ', {name: name, link: link})
-  
-  await connectDB();
-  try {
-    const dailyWorkout = await Exercise.findOne({date: new Date("2012-01-26")});
-    return NextResponse.json(dailyWorkout);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Failed to fetch workouts' }, { status: 500 });
-  }
 }
