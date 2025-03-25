@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import KOR__logo from '@/public/images/KOR_Somente_Red.svg';
 
+
 export default function ProgramSelection() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">

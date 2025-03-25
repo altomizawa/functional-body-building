@@ -7,14 +7,14 @@ import { redirect } from 'next/navigation'
 
 export function SigninForm() {
   const [showPassword, setShowPassword] = useState(false)
-  const [state, formAction, isPending] = useActionState(signinUser)
+  const [state, action, isPending] = useActionState(signinUser)
   
   if (state?.success) {
     localStorage.setItem('token', JSON.stringify(state.token))
     redirect('/programs')
   }
   return (
-    <form action={formAction} className="space-y-6">
+    <form action={action} className="space-y-6">
       <div className="space-y-4 border-2 border-gray-200 p-4 rounded-md">
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
           Email
