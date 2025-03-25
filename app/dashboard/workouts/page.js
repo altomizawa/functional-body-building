@@ -3,6 +3,7 @@
 import { useState } from "react"
 import movements from '@/lib/movements'
 import Preview from '@/components/Preview'
+import Link from 'next/link'
 
 
 
@@ -99,45 +100,44 @@ export default function PillarWorkoutForm() {
     <div className='flex flex-col md:grid md:grid-cols-2 gap-4 h-full'>
       <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
         {/* FORM */}
-        <div className='flex items-center gap-4'>
-            <label htmlFor="program">Program: </label>
-            <input onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
-          <div>
+        <h1 className="text-4xl font-bold text-center sm:text-left">ADD NEW WORKOUT</h1>
 
-        </div>
-        </div>
         <div className='flex items-center gap-2'>
-          <label htmlFor="week">Week:</label>
-          <input onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
-          <label htmlFor="day">Day:</label>
-          <input onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
+          {/* <label htmlFor="program">Program: </label> */}
+          
+          <input className='w-full' onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
+          {/* <label htmlFor="week">Week:</label> */}
+          <input className='w-16' onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
+          {/* <label htmlFor="day">Day:</label> */}
+          <input className='w-16' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
         </div>
 
-        <div id='sections' className='bg-gray-200 px-4 py-4 border-[1px] rounded-lg border-black'>
+        <div id='sections' className='py-4 border-y-[1px] border-black my-4'>
           {/* SECTION */}
-          <div className='space-y-4'>
-            <div className='w-full space-y-4'>
+          <div className='space-y-8'>
+            <div className='w-full space-y-2'>
               <label htmlFor="section">SECTION NAME:</label>
               <input className='w-full' onChange={handleSectionChange} type="text" name="section" placeholder="Section" value={section.section} />
             </div>
-            <div className='w-full space-y-4'>
+            <div className='w-full space-y-2'>
               <label htmlFor="description">DESCRIPTION:</label>
               <textarea className='w-full min-h-48 p-2' onChange={handleSectionChange} type="text" name="description" placeholder="Description" value={section.description} />
             </div>
-            <div className='w-full space-y-4'>
+            <div className='w-full space-y-2'>
               <label htmlFor="notes">NOTES:</label>
               <textarea className='w-full min-h-24 p-2' onChange={handleSectionChange} type="text" name="notes" placeholder="Notes" value={section.notes} />
             </div>
           </div>
           <button type='button' className='w-full bg-black text-white uppercase py-2 rounded-lg my-2' onClick={addNewSection}>add section</button>
         </div>
-        <button className='border-2 p-4 bg-green-600 rounded-lg font-bold text-white'>SUBMIT</button>
+        <Link href="/" className='button__back'>BACK</Link>
+        <button className='button__submit'>SUBMIT</button>
       </form>
       <div>
-        <h2>PREVIEW WORKOUT</h2>
-        <div className='h-screen overflow-auto'>
-          <Preview workout={newWorkout} />
-        </div>
+      <h1 className="text-4xl font-bold text-center sm:text-left mt-12 w-[90%] mx-auto">PREVIEW WORKOUT</h1>
+      <div className='h-screen overflow-auto border-[1px] border-gray-600 mx-auto rounded-lg w-[90%]'>
+        <Preview workout={newWorkout} />
+      </div>
       </div>
     </div>
   )

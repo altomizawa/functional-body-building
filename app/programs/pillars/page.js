@@ -142,28 +142,25 @@ const Page = () => {
       </div>
 
       {/* DATE AND PROGRAM SELECTION */}
-      <div className="flex mt-4">
+      <div className="flex justify-center gap-8 px-24 items-center bg-slate-400 py-8">
         <div>
-          <h1 className='text-center font-bold'>PROGRAM</h1>
-          <div className='flex items-center gap-4 border-2'>
+          <div className='flex items-center gap-4'>
             <button onClick={() => changeProgram('decrement')} className='workout-button'>&lt;</button>
-            <p>{programList[program]}</p>
+            <p className='uppercase text-white text-xl'>{programList[program]}</p>
             <button onClick={() => changeProgram('increment')} className='workout-button'>&gt;</button>
           </div>
         </div>
         <div>
-          <h1 className='text-center font-bold'>WEEK</h1>
-          <div className='flex items-center gap-4 border-2'>
+          <div className='flex items-center gap-4 w-max'>
             <button onClick={() => changeWeek('decrement')} className='workout-button'>&lt;</button>
-            <p>{week}</p>
+            <p className='uppercase text-white text-xl'>WEEK {week}</p>
             <button onClick={() => changeWeek('increment')} className='workout-button'>&gt;</button>
           </div>
         </div>
         <div>
-          <h1 className='text-center font-bold'>DAY</h1>
-          <div className='flex items-center gap-4 border-2'>
+          <div className='flex items-center gap-4 w-max'>
             <button onClick={() => changeDay('decrement')} className='workout-button'>&lt;</button>
-            <p>{day}</p>
+            <p className='uppercase text-white text-xl'>DAY {day}</p>
             <button onClick={() => changeDay('increment')} className='workout-button'>&gt;</button>
           </div>
         </div>

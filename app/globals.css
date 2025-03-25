@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Gidole&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Gidole", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 @layer base {
@@ -89,5 +94,16 @@ h3{
 }
 
 .workout-button{
-  @apply text-gray-600 border-x-[2px] text-xl font-bold p-2 min-w-12
+  @apply text-white uppercase text-2xl font-bold
+}
+
+.button__main-menu{
+  @apply w-full border-[1px] border-black text-center text-black px-4 py-2 rounded-md duration-300 hover:bg-slate-200
+}
+
+.button__back{
+  @apply w-full bg-red-400 text-center text-white px-4 py-2 rounded-md duration-300 hover:bg-red-300 
+}
+.button__submit{
+  @apply w-full bg-green-400 text-center text-gray-600 px-4 py-2 rounded-md duration-300 hover:bg-green-300
 }

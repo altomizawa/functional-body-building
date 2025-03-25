@@ -33,6 +33,20 @@ const AddNewMovement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (formData.name === '') {
+      toast({
+        title: 'Error',
+        description: 'Please enter a movement name',
+      })
+      return
+    } else if (formData.link === '') {
+      toast({
+        title: 'Error',
+        description: 'Please enter a video link',
+      })
+      return
+    }
+
     const response = await fetch('/api/movements', {
       method: 'POST', 
       body: JSON.stringify(formData)
@@ -96,28 +110,38 @@ const AddNewMovement = () => {
   }, [])
 
   return (
-    <div className='border-2 m-8 p-4 rounded-lg'>
-      <Toaster />
-      {showEditForm && <EditMovementForm setShowEditForm={setShowEditForm} movement={currentMovement} />}
-      <h1>Add New Movement</h1>
-      <AddNewMovementForm handleSubmit={handleSubmit} handleFormChange={handleFormChange} formData={formData} />
-      <div className='mt-8 border-[1px] border-gray-500 p-4 rounded-lg'>
-        <h2 className='font-bold border-b-2'>FOUND MATCHES:</h2>
-        <ul className='space-y-2 mt-4'>
-          {filteredMovements.map(movement => (
-            <div key={movement._id} className='flex justify-between w-full items-center border-b-2 pb-2'>
-              <li>{movement.name.toUpperCase()}</li>
-              <div className='space-x-4'>
-                <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
-                <button type='button' onClick={() => handleEditMovement(movement)} className='rounded-md bg-blue-500 text-white px-4 py-1'>edit</button>
-                <button type='button' onClick={() => handleDeleteMovement(movement)} className='rounded-md bg-red-500 text-white px-4 py-1'>delete</button>
+    <main className='flex flex-col items-center h-screen'>
+      <div className='m-8 p-4 rounded-lg w-[90%] md:w-3/4 lg:w-1/2'>
+        <h1 className="text-4xl font-bold text-center sm:text-center w-full mb-12">ADD NEW MOVEMENT</h1>
+        <Toaster />
+        {showEditForm && <EditMovementForm setShowEditForm={setShowEditForm} movement={currentMovement} />}
+        <AddNewMovementForm handleSubmit={handleSubmit} handleFormChange={handleFormChange} formData={formData} />
+        <div className='mt-8 border-[1px] border-gray-500 p-4 rounded-lg'>
+          <h2 className='font-bold border-b-[1px] border-black'>FOUND MATCHES:</h2>
+          <ul className='space-y-2 mt-4'>
+            {filteredMovements.map(movement => (
+              <div key={movement._id} className='flex justify-between w-full items-center border-b-2 pb-2'>
+                <li>{movement.name.toUpperCase()}</li>
+                <div className='space-x-4'>
+                  <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
+                  <button type='button' onClick={() => handleEditMovement(movement)} className='rounded-md bg-blue-500 text-white px-4 py-1'>edit</button>
+                  <button type='button' onClick={() => handleDeleteMovement(movement)} className='rounded-md bg-red-500 text-white px-4 py-1'>delete</button>
+                </div>
               </div>
-            </div>
-          ))}
-        </ul>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </main>
   )
 }
 
 export default AddNewMovement
+
+
+{/* <main className="flex flex-col gap-8 items-center sm:items-start w-[90%] md:w-3/4 lg:w-1/2">
+        <h1 className="text-4xl font-bold text-center sm:text-center w-full">KOR FUNCTIONAL BODYBUILDING</h1>	
+        <Link href="/dashboard/workouts" className='button__main-menu'>ADD WORKOUT</Link>
+        <Link href="dashboard/movements" className='button__main-menu'>ADD EXERCISE</Link>
+        <Link href="/programs" className='button__main-menu'>GO TO WORKOUTS</Link>
+      </main> */}
