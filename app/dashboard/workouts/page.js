@@ -100,16 +100,16 @@ export default function PillarWorkoutForm() {
     <div className='flex flex-col md:grid md:grid-cols-2 gap-4 h-full'>
       <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
         {/* FORM */}
-        <h1 className="text-4xl font-bold text-center sm:text-left">ADD NEW WORKOUT</h1>
+        <h1 className="text-4xl font-bold text-left">ADD NEW WORKOUT</h1>
 
         <div className='flex items-center gap-2'>
           {/* <label htmlFor="program">Program: </label> */}
           
           <input className='w-full' onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
           {/* <label htmlFor="week">Week:</label> */}
-          <input className='w-16' onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
+          <input className='w-16' onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} min={1} required />
           {/* <label htmlFor="day">Day:</label> */}
-          <input className='w-16' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
+          <input className='w-16' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} max={7} min={1} required />
         </div>
 
         <div id='sections' className='py-4 border-y-[1px] border-black my-4'>
@@ -134,8 +134,8 @@ export default function PillarWorkoutForm() {
         <button className='button__submit'>SUBMIT</button>
       </form>
       <div>
-      <h1 className="text-4xl font-bold text-center sm:text-left mt-12 w-[90%] mx-auto">PREVIEW WORKOUT</h1>
-      <div className='h-max overflow-auto border-[1px] border-gray-600 mx-auto rounded-lg w-[90%]'>
+      <h1 className="text-4xl font-bold text-left mt-12 w-[90%] mx-auto">PREVIEW WORKOUT</h1>
+      <div className='h-max overflow-auto border-[1px] border-gray-600 mx-auto rounded-lg w-[90%] mt-4'>
         <Preview workout={newWorkout} />
       </div>
       </div>
