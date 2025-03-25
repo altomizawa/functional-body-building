@@ -128,14 +128,14 @@ export default function PillarWorkoutForm() {
               <textarea className='w-full min-h-24 p-2' onChange={handleSectionChange} type="text" name="notes" placeholder="Notes" value={section.notes} />
             </div>
           </div>
-          <button type='button' className='w-full bg-black text-white uppercase py-2 rounded-lg my-2' onClick={addNewSection}>add section</button>
+          <button type='button' className='button__main-menu my-2 uppercase' onClick={addNewSection}>add section</button>
         </div>
         <Link href="/" className='button__back'>BACK</Link>
         <button className='button__submit'>SUBMIT</button>
       </form>
       <div>
       <h1 className="text-4xl font-bold text-center sm:text-left mt-12 w-[90%] mx-auto">PREVIEW WORKOUT</h1>
-      <div className='h-screen overflow-auto border-[1px] border-gray-600 mx-auto rounded-lg w-[90%]'>
+      <div className='h-max overflow-auto border-[1px] border-gray-600 mx-auto rounded-lg w-[90%]'>
         <Preview workout={newWorkout} />
       </div>
       </div>
