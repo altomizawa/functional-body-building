@@ -34,7 +34,7 @@ const EditMovementForm = ({setShowEditForm, movement}) => {
       })
       setShowEditForm(false)
     } catch (error) {
-      console.(error)
+      console.log(error)
     }
   }
 
