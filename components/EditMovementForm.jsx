@@ -34,7 +34,7 @@ const EditMovementForm = ({setShowEditForm, movement}) => {
       })
       setShowEditForm(false)
     } catch (error) {
-      console.log(error)
+      console.(error)
     }
   }
 
@@ -43,7 +43,6 @@ const EditMovementForm = ({setShowEditForm, movement}) => {
       ...formData,
       [e.target.name]: e.target.value
     })
-    console.log(formData)
   }
 
   return ( 

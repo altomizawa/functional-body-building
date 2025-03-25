@@ -58,7 +58,6 @@ const AddNewMovement = () => {
       })
     } else {
       const data = await response.json()
-      console.log(data)
       toast({
         title: 'Success',
         description: 'Movement added successfully',
@@ -76,7 +75,6 @@ const AddNewMovement = () => {
   }
   
   const handleDeleteMovement = async (movement) => {
-    console.log(movement._id)
     const res = await fetch(`/api/movements/${movement._id}`, {
       method: 'DELETE',
       // body: JSON.stringify({ id: movement._id })
@@ -88,7 +86,6 @@ const AddNewMovement = () => {
         description: `${deletedMovement.name} deleted successfully`,
       })
     } else {
-      console.log(deletedMovement.error)
       toast({
         title: 'Error',
         description: deletedMovement.error,

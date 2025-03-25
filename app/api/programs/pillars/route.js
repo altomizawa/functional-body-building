@@ -4,7 +4,6 @@ import Pillar from '@/app/models/Pillar';
 
 export async function POST (req, res) {
   const body = await req.json();
-  console.log('route.js body:' , body)
   await connectDB();
   try{
     // check if there's an existing workout for the day

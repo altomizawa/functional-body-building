@@ -44,7 +44,6 @@ export default function PillarWorkoutForm() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log(newWorkout)
     fetch('/api/programs/pillars/add', {
       method: 'POST',
       headers: {
@@ -56,7 +55,6 @@ export default function PillarWorkoutForm() {
     .then(data => console.log(data))
     .catch(err =>console.error(err))
     .finally(() => {
-      console.log(newWorkout)
       resetForm()
     })
   }

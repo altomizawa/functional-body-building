@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Preview = ({workout}) => {
-  console.log(workout)
   return (
     <>
       <div className="mt-4 mb-12">

@@ -5,7 +5,6 @@ import Movement from '@/app/models/Movement.js';
 
 export async function GET(req, { params }) {
   const { id } = await params // 'a', 'b', or 'c'
-  console.log(id);
   return NextResponse.json({ id });
 }
 

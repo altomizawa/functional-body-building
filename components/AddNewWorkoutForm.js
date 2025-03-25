@@ -69,8 +69,6 @@ const AddNewWorkoutForm = () => {
         [e.target.name]: e.target.value
       }
     })
-    console.log(section)
-    // addSectionValue(e.target.value)
   }
 
   // HANDLE EXERCISES CHANGES
