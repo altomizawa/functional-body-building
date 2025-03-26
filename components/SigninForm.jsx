@@ -28,7 +28,7 @@ export function SigninForm() {
     try {
       // Check if user already exists
       // const existingUser = await User.findOne({email: email})
-      const existingUser = await fetch(`${process.env.BASE_URL}api/auth/signin`, {
+      const existingUser = await fetch(`/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
