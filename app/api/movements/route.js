@@ -2,13 +2,12 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
 import Movement from '@/app/models/Movement.js';
-
+import { verifySession, createSession } from '@/lib/session';
 
 // POST NEW MOVEMENT
 export async function POST(req) {
   const body = await req.json();
   const { name, link } = body;
-
   await connectDB();
   try {
     const existingMovement = await Movement.findOne({ name: name.toLowerCase() });
@@ -27,14 +26,21 @@ export async function POST(req) {
   }
 }
 
+
 // GET ALL MOVEMENTS
 export async function GET() {
   await connectDB();
+  // const isThereSession = await verifySession()
+  // if (!isThereSession) {
+  //   throw new Error('Unauthorized');
+  // }
+  // createSession('alyssontomizawa')
+
   try {
     const exercises = await Movement.find().sort({ name: 1 });
     return NextResponse.json(exercises, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Failed to fetch movements' }, { status: 500 });
+    return NextResponse.json({ error: 'User not authorized' }, { status: 401 });
   }
 }

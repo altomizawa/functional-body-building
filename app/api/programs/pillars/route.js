@@ -3,6 +3,8 @@ import connectDB from '@/lib/database/db';
 import Pillar from '@/app/models/Pillar';
 
 export async function POST (req, res) {
+  console.log('POST request received');
+
   const body = await req.json();
   await connectDB();
   try{

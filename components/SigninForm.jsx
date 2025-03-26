@@ -13,6 +13,8 @@ export function SigninForm() {
     localStorage.setItem('token', JSON.stringify(state.token))
     redirect('/programs')
   }
+  
+
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-4 border-2 border-gray-200 p-4 rounded-md">
