@@ -3,6 +3,7 @@
 import { useState, useActionState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { signinUserAction } from '@/lib/actions';
+import Link from 'next/link';
 
 export function SigninForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,8 +19,8 @@ export function SigninForm() {
   }, [state]);
 
   return (
-    <form action={formAction} className="space-y-6">
-      <div className="space-y-4 border-2 border-gray-200 p-4 rounded-md">
+    <form action={formAction} className="space-y-6 bg-white shadow-md rounded-md">
+      <div className="space-y-4 p-4 rounded-md">
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
           Email
           <input
@@ -54,6 +55,14 @@ export function SigninForm() {
           {isPending ? 'Loading...' : 'Let me in'}
         </button>
         {!state?.success && <p className="text-red-500 text-sm">{state?.error}</p>}
+        <div className="flex justify-center p-4 ">
+          <div className="text-sm text-muted-foreground">
+            Not registered yet?{" "}
+            <Link href="/signup" className="underline underline-offset-4 text-black hover:text-primary">
+              Sign up
+            </Link>
+          </div>
+      </div>
       </div>
     </form>
   );
