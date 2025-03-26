@@ -6,6 +6,10 @@ import { verifySession, createSession } from '@/lib/session';
 
 // POST NEW MOVEMENT
 export async function POST(req) {
+  const isThereSession = await verifySession();
+  if (!isThereSession) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const body = await req.json();
   const { name, link } = body;
   await connectDB();
@@ -31,7 +35,6 @@ export async function POST(req) {
 export async function GET(req) {
   await connectDB();
   // const isThereSession = await verifySession();
-  // console.log('session:', isThereSession)
   // if (!isThereSession) {
   //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   // }

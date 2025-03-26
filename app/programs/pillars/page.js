@@ -6,7 +6,7 @@ import { verifySession } from '@/lib/session';
 
 async function getMovements() {
   try {
-    const res = await fetch(`http://localhost:3000/api/movements`, {
+    const res = await fetch(`${process.env.BASE_URL}/api/movements`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ async function getMovements() {
 
 async function getWorkout(program, week, day) {
   try {
-    const resWorkout = await fetch(`http://localhost:3000/api/programs/pillars`, {
+    const resWorkout = await fetch(`${process.env.BASE_URL}/api/programs/pillars`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,8 +62,8 @@ async function Page({ searchParams }) {
   const day = parseInt(awaitedSearchParams.day || 1);
 
   const program = programList[programIndex];
-  const workout = await getWorkout(program, week, day);
   const movements = await getMovements();
+  const workout = await getWorkout(program, week, day);
 
   function createVideoArray(sectionDescription) {
     return movements.filter(movement =>

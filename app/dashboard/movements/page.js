@@ -47,7 +47,7 @@ const AddNewMovement = () => {
       return
     }
 
-    const response = await fetch('/api/movements', {
+    const response = await fetch(`/api/movements`, {
       method: 'POST', 
       body: JSON.stringify(formData)
     })
@@ -98,7 +98,7 @@ const AddNewMovement = () => {
   useEffect(() => {
     console.log('movements page')
     async function getMovements() {
-      const response = await fetch('/api/movements', {
+      const response = await fetch(`/api/movements`, {
         method: 'GET'
       })
       const data = await response.json()

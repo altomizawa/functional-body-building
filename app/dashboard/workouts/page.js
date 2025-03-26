@@ -44,7 +44,7 @@ export default function PillarWorkoutForm() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    fetch('/api/programs/pillars/add', {
+    fetch(`${process.env.BASE_URL}/api/programs/pillars/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
 import Movement from '@/app/models/Movement.js';
-
+import { verifySession } from '@/lib/session';
 
 export async function GET(req, { params }) {
   const { id } = await params // 'a', 'b', or 'c'
@@ -11,6 +11,11 @@ export async function GET(req, { params }) {
 
 // MODIFY MOVEMENT
 export async function PATCH (req, { params }) {
+  const isThereSession = await verifySession();
+  if (!isThereSession) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const body = await req.json();
   const { name, link } = body;
   const { id } = await params 
