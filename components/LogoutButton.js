@@ -1,7 +1,8 @@
 'use client'
-const LogoutButton = ({logout}) => {
+import { logout } from '@/lib/actions'
+const LogoutButton = () => {
   return (
-    <button onClick={logout} className="fixed top-8 left-8 border-[1px] px-4 py-2 border-black rounded-lg">logout</button>
+    <button onClick={logout} className="border-[1px] px-4 py-2 border-black rounded-lg">logout</button>
   )
 }
 

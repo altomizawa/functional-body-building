@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { createSession } from '@/lib/session';
 import { jwt } from "jsonwebtoken";
 import User from '@/app/models/User';
+import { redirect } from 'next/dist/server/api-utils';
 
 export async function POST(req) {
  
@@ -24,9 +25,15 @@ export async function POST(req) {
     if (!isPasswordValid) {
       throw new Error("Email or password is incorrect")
     }
-    
+  
     // Create a session for the user
-    createSession(existingUser._id) 
+    const sanitizedUser = {
+      id: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+      role: existingUser.role,
+    };
+    await createSession(sanitizedUser) 
     // create json web token
     // const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
     return NextResponse.json({ message: 'New Session Created',  success: true }, { status: 200 });

@@ -18,7 +18,6 @@ const AddNewMovement = () => {
   const [showEditForm, setShowEditForm] = useState(false)
   const [currentMovement, setCurrentMovement] = useState(null)
   const [confirmation, setConfirmation] = useState(true)
-  // const [toast, setToast] = useState(false)
   const toast = useToast().toast
 
   const handleFormChange = (e) => {
@@ -97,6 +96,7 @@ const AddNewMovement = () => {
 
 
   useEffect(() => {
+    console.log('movements page')
     async function getMovements() {
       const response = await fetch('/api/movements', {
         method: 'GET'

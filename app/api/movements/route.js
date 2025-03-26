@@ -28,19 +28,18 @@ export async function POST(req) {
 
 
 // GET ALL MOVEMENTS
-export async function GET() {
+export async function GET(req) {
   await connectDB();
-  // const isThereSession = await verifySession()
+  // const isThereSession = await verifySession();
+  // console.log('session:', isThereSession)
   // if (!isThereSession) {
-  //   throw new Error('Unauthorized');
+  //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   // }
-  // createSession('alyssontomizawa')
-
   try {
     const exercises = await Movement.find().sort({ name: 1 });
     return NextResponse.json(exercises, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'User not authorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Failed to fetch movements' }, { status: 500 });
   }
 }
