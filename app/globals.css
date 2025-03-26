@@ -94,7 +94,7 @@ h3{
 }
 
 .workout-button{
-  @apply text-white uppercase text-2xl font-bold
+  @apply text-white uppercase text-3xl font-bold
 }
 
 .button__main-menu{

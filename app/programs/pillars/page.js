@@ -105,14 +105,12 @@ async function Page({ searchParams }) {
       </div>
 
       {/* DATE AND PROGRAM SELECTION */}
-      <div className="flex justify-center gap-8 px-24 items-center bg-slate-400 py-8">
-        <div>
-          <div className="flex items-center gap-4">
-            <a href={`?program=${programIndex - 1}&week=${week}&day=${day}`} className='workout-button'>&lt;</a>
-            <p className="uppercase text-white text-xl">{program}</p>
-            <a href={`?program=${programIndex + 1}&week=${week}&day=${day}`} className='workout-button'>&gt;</a>
-          </div>
-        </div>
+      <div className="flex justify-center items-center gap-8 py-4 bg-black">
+        <a href={`?program=${programIndex - 1}&week=${week}&day=${day}`} className='workout-button'>&lt;</a>
+        <p className="uppercase text-white text-xl">{program}</p>
+        <a href={`?program=${programIndex + 1}&week=${week}&day=${day}`} className='workout-button'>&gt;</a>
+      </div>
+      <div className="flex gap-12 justify-center items-center bg-slate-400 py-2">
         <div>
           <div className="flex items-center gap-4 w-max">
             <a href={`?program=${programIndex}&week=${week - 1}&day=1`} className='workout-button'>&lt;</a>
