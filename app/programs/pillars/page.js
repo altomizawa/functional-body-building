@@ -113,16 +113,16 @@ async function Page({ searchParams }) {
       <div className="flex gap-12 justify-center items-center bg-slate-400 py-2">
         <div>
           <div className="flex items-center gap-4 w-max">
-            <a href={`?program=${programIndex}&week=${week - 1}&day=1`} className='workout-button'>&lt;</a>
+            <a href={`?program=${programIndex}&week=${week - 1}&day=1`} className={`${week === 1 ? 'workout-button pointer-events-none opacity-40' : 'workout-button'}`}>&lt;</a>
             <p className="uppercase text-white text-xl">WEEK {week}</p>
-            <a href={`?program=${programIndex}&week=${week + 1}&day=1`} className='workout-button'>&gt;</a>
+            <a href={`?program=${programIndex}&week=${week + 1}&day=1`} className={`${week === 6 ? 'workout-button pointer-events-none opacity-40' : 'workout-button'}`}>&gt;</a>
           </div>
         </div>
         <div>
           <div className="flex items-center gap-4 w-max">
-            <a href={`?program=${programIndex}&week=${week}&day=${day - 1}`} className='workout-button'>&lt;</a>
+            <a href={`?program=${programIndex}&week=${week}&day=${day - 1}`} className={`${day === 1 ? 'workout-button pointer-events-none opacity-40' : 'workout-button'}`}>&lt;</a>
             <p className="uppercase text-white text-xl">DAY {day}</p>
-            <a href={`?program=${programIndex}&week=${week}&day=${day + 1}`} className='workout-button'>&gt;</a>
+            <a href={`?program=${programIndex}&week=${week}&day=${day + 1}`} className={`${day === 7 ? 'workout-button pointer-events-none opacity-40' : 'workout-button'}`}>&gt;</a>
           </div>
         </div>
       </div>
