@@ -31,8 +31,6 @@ const ExerciseInputs = ({ handleSectionChange, handleExerciseChange, addExercise
           )}
         </select>
 
-        {/* <input type="text" name="video" onChange={handleExerciseChange} value={exercise.link} placeholder={exercise.name}  /> */}
-
         <button onClick={addExercise} type="button" className='bg-black rounded-md py-2 mt-4 mb-4 text-white'>ADD EXERCISE</button>
       </div>
       

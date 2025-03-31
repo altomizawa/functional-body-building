@@ -23,7 +23,7 @@ const AddNewWorkoutForm = () => {
  function getFormData(e) {
     e.preventDefault()
 
-    fetch('/api/programs/pillars/workouts', {
+    fetch(`${process.env.BASE_URL}/api/programs/pillars/workouts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -69,8 +69,6 @@ const AddNewWorkoutForm = () => {
         [e.target.name]: e.target.value
       }
     })
-    console.log(section)
-    // addSectionValue(e.target.value)
   }
 
   // HANDLE EXERCISES CHANGES
@@ -146,7 +144,7 @@ const AddNewWorkoutForm = () => {
   }
 
   useEffect(() => {
-    fetch('/api/movements')
+    fetch(`${process.env.BASE_URL}/api/movements`)
     .then(res => res.json())
     .then(data => setMovements(data))
     .catch(err => console.log(err))

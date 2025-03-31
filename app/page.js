@@ -1,16 +1,22 @@
 import Image from "next/image";
 import Link from 'next/link';
+import KOR__logo from '@/public/images/KOR_Somente_Red.svg';
+import { verifySession } from '@/lib/session';
 
-export default function ProgramSelection() {
+export default async function ProgramSelection() {
+  const session = await verifySession(); // CHECK IF THERE'S A SESSION AND REDIRECT TO LOGIN IF NOT
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-4xl font-bold text-center sm:text-left">main</h1>	
-        <Link href="/programs" className='bg-black text-white px-4 py-2 rounded-md'>GO TO PROGRAMS</Link>
+    <div className="h-screen flex flex-col justify-center items-center">
+      <div className='absolute top-8 lef-0 w-full'>
+        <Image src={KOR__logo} alt="logo" width={200} height={200} className="w-16 md:w-[240px] h-auto mx-auto" />
+        <h1 className="text-sm md:text-3xl text-center">FUNCTIONAL BODYBUILDING</h1>
+      </div>
+      <main className="flex flex-col gap-8 items-center sm:items-start w-[90%] md:w-3/4 lg:w-1/2">
+        {session.role !=='user' && <Link href="/dashboard/workouts" className='button__main-menu'>ADD WORKOUT</Link>}
+        {session.role !== 'user' && <Link href="dashboard/movements" className='button__main-menu'>ADD EXERCISE</Link>}
+        <Link href="/programs" className='button__main-menu'>GO TO WORKOUTS</Link>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <p className="text-sm text-gray-500">footer</p>
-      </footer>
     </div>
   );
 }

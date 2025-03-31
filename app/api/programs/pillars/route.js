@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Pillar from '@/app/models/pillar';
+import Pillar from '@/app/models/Pillar';
+
 
 export async function POST (req, res) {
   const body = await req.json();
+<<<<<<< HEAD
+=======
+  console.log('this is the body', body)
+>>>>>>> dev
   await connectDB();
   try{
     // check if there's an existing workout for the day
