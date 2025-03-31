@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Workout from '@/app/models/workout';
+import Workout from '@/models/workout';
 
 export async function POST (req, res) {
   const body = await req.json();

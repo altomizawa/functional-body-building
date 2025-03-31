@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { createSession } from '@/lib/session';
 import { jwt } from "jsonwebtoken";
-import User from '@/app/models/User';
+import User from '@/models/User';
 import { redirect } from 'next/dist/server/api-utils';
 
 export async function POST(req) {
