@@ -4,6 +4,7 @@ import { useState } from "react"
 import movements from '@/lib/movements'
 import Preview from '@/components/Preview'
 import Link from 'next/link'
+import  { createWorkout } from '@/lib/actions'
 
 
 
@@ -42,9 +43,9 @@ export default function PillarWorkoutForm() {
   
 
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    fetch(`${process.env.BASE_URL}/api/programs/pillars/add`, {
+    fetch(`/api/programs/pillars/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -98,22 +99,9 @@ export default function PillarWorkoutForm() {
     <div className='flex flex-col md:grid md:grid-cols-2 gap-4 h-full'>
       <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
         {/* FORM */}
-<<<<<<< HEAD:app/dashboard/addpillarworkout/page.js
-        <div className='flex items-center gap-4'>
-            <label className='font-bold text-4xl' htmlFor="program">Program: </label>
-            <input className='workout__input' onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
-          <div>
-=======
         <h1 className="text-4xl font-bold text-left">ADD NEW WORKOUT</h1>
->>>>>>> dev:app/dashboard/workouts/page.js
 
         <div className='flex items-center gap-2'>
-<<<<<<< HEAD:app/dashboard/addpillarworkout/page.js
-          <label className='font-bold text-4xl' htmlFor="week">Week:</label>
-          <input className='workout__input' onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} required />
-          <label className='font-bold text-4xl' htmlFor="day">Day:</label>
-          <input className='workout__input' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} required />
-=======
           {/* <label htmlFor="program">Program: </label> */}
           
           <input className='w-full' onChange={handleWorkoutChange} type="text" name="program" placeholder="Program" value={newWorkout.program} required />
@@ -121,7 +109,6 @@ export default function PillarWorkoutForm() {
           <input className='w-16' onChange={handleWorkoutChange} type="number" name="week" placeholder="Week" value={newWorkout.week} min={1} required />
           {/* <label htmlFor="day">Day:</label> */}
           <input className='w-16' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} max={7} min={1} required />
->>>>>>> dev:app/dashboard/workouts/page.js
         </div>
 
         <div id='sections' className='py-4 border-y-[1px] border-black my-4'>

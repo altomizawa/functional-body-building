@@ -22,27 +22,27 @@ const AddNewWorkoutForm = () => {
 
  function getFormData(e) {
     e.preventDefault()
-
-    fetch(`${process.env.BASE_URL}/api/programs/pillars/workouts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newWorkout)
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 404) {
-        window.alert(data.message)
-      } else {
-        console.log(data)
-      }
-    })
-    .catch(err => console.log('Error:', err.message, 'Status:', err.status))
-    .finally(() => {
-      setNewWorkout({})
-      setSectionNumber(0)
-    })
+    console.log('Form submitted')
+    // fetch(`${process.env.BASE_URL}/api/programs/pillars/workouts`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(newWorkout)
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   if (data.status === 404) {
+    //     window.alert(data.message)
+    //   } else {
+    //     console.log(data)
+    //   }
+    // })
+    // .catch(err => console.log('Error:', err.message, 'Status:', err.status))
+    // .finally(() => {
+    //   setNewWorkout({})
+    //   setSectionNumber(0)
+    // })
   }
 
   // RESET FORM

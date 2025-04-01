@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Movement from '@/models/movement.js';
+import Movement from '@/models/Movement.js';
 import { verifySession, createSession } from '@/lib/session';
 
 
