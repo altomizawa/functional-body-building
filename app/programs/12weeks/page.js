@@ -7,7 +7,7 @@ import ideaIcon from '@/public/icons/idea.svg'
 import { useEffect, useState } from 'react'
 import connectDB from '@/lib/database/db'
 import { YouTubeEmbed } from "@next/third-parties/google";
-import { getQueryValue } from '@/app/utils/utils'
+import { getQueryValue } from '@/utils/utils'
 
 
 const TwelveWeeks = () => {
