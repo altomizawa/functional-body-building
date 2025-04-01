@@ -9,8 +9,8 @@ export default async function ProgramSelection() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className='absolute top-8 lef-0 w-full'>
-        <Image src={KOR__logo} alt="logo" width={200} height={200} className="w-16 md:w-[240px] h-auto mx-auto" />
-        <h1 className="text-sm md:text-3xl text-center">FUNCTIONAL BODYBUILDING</h1>
+        <Image src={KOR__logo} alt="logo" width={200} height={200} className="w-16 md:w-[120px] h-auto mx-auto" />
+        <h1 className="text-sm md:text-xl text-center">FUNCTIONAL BODYBUILDING</h1>
       </div>
       <main className="flex flex-col gap-8 items-center sm:items-start w-[90%] md:w-3/4 lg:w-1/2">
         {session.role !=='user' && <Link href="/dashboard/workouts" className='button__main-menu'>ADD WORKOUT</Link>}
