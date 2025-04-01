@@ -107,3 +107,7 @@ h3{
 .button__submit{
   @apply w-full bg-green-500 text-center text-white px-4 py-2 rounded-md duration-300 hover:bg-green-400
 }
+
+h2{
+  @apply text-2xl font-bold uppercase
+}
