@@ -1,13 +1,9 @@
 
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-<<<<<<< HEAD
-import Movement from '@/app/models/movement';
-
-=======
-import Movement from '@/app/models/Movement.js';
+import Movement from '@/models/movement.js';
 import { verifySession, createSession } from '@/lib/session';
->>>>>>> dev
+
 
 // POST NEW MOVEMENT
 export async function POST(req) {
@@ -44,13 +40,8 @@ export async function GET(req) {
   //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   // }
   try {
-<<<<<<< HEAD
-    const movements = await Movement.find().sort({ name: 1 });
-    return NextResponse.json(movements);
-=======
     const exercises = await Movement.find().sort({ name: 1 });
     return NextResponse.json(exercises, { status: 200 });
->>>>>>> dev
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to fetch movements' }, { status: 500 });

@@ -7,8 +7,8 @@ const Signin = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gray-50">
       <div className='absolute top-8 lef-0 w-full'>
-        <Image src={KOR__logo} alt="logo" width={200} height={200} className="w-16 md:w-[240px] h-auto mx-auto" />
-        <h1 className="text-sm md:text-3xl text-center">FUNCTIONAL BODYBUILDING</h1>
+        <Image src={KOR__logo} alt="logo" width={200} height={200} className="w-16 md:w-[120px] h-auto mx-auto" />
+        <h1 className="text-sm md:text-xl text-center">FUNCTIONAL BODYBUILDING</h1>
       </div>
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">

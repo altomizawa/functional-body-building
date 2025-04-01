@@ -55,6 +55,8 @@ export function SigninForm() {
           {isPending ? 'Loading...' : 'Let me in'}
         </button>
         {!state?.success && <p className="text-red-500 text-sm">{state?.error}</p>}
+        {!state?.success && state?.error === 'Email or password is incorrect' && <Link href='/forgot-password' className="text-red-500 text-sm underline">Forgot your password?</Link>}
+        
         <div className="flex justify-center p-4 ">
           <div className="text-sm text-muted-foreground">
             Not registered yet?{" "}

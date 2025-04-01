@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Movement from '@/app/models/Movement.js';
+import Movement from '@/models/Movement.js';
 import { verifySession } from '@/lib/session';
 
 export async function GET(req, { params }) {

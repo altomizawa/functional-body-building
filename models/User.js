@@ -22,6 +22,8 @@ const UserSchema = new Schema({
   avatar: { type: String },
   completed:{type: [CompletedWorkoutSchema], required: true, default: []},
   role: { type: String, required: true, default: 'user' },
+  resetToken: { type: String, default: null },
+  resetTokenExpires: { type: Date, default: null },
 }, {
   timestamps: true // Automatically adds createdAt and updatedAt fields
 });
