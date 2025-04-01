@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/database/db';
-import Pillar from '@/app/models/Pillar';
+import Pillar from '@/models/Pillar';
 
 
 export async function POST (req, res) {
