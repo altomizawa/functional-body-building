@@ -11,9 +11,6 @@ export default async function layout ({ children }) {
 
   return (
     <div>
-      <div className='absolute top-4 right-4'>
-        <LogoutButton />
-      </div>
       {children}
     </div>
   )

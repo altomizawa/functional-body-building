@@ -79,7 +79,7 @@ async function Page({ searchParams }) {
   return (
     <>
       {/* PROFILE DETAILS */}
-      <div className="flex gap-3 items-center">
+      {/* <div className="flex gap-3 items-center">
         <div className="rounded-full overflow-hidden border-2 aspect-square w-[100px]">
           <Image
             src="https://media.istockphoto.com/id/1371301832/photo/excited-young-man-wearing-denim-shirt.jpg?s=612x612&w=0&k=20&c=AtgXnYVh2GpkMGlLwjIYDAwQ6fFvr0ii591bsEaJyLk="
@@ -89,13 +89,13 @@ async function Page({ searchParams }) {
           />
         </div>
         <h3 className="font-bold text-lg">{session.name}</h3>
-      </div>
+      </div> */}
       <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden">
         <Image src="/images/Vitinho.jpg" alt="idea icon" width={200} height={200} className="absolute top-[-25%] -z-10 left-0 w-full h-auto" />
         {workout ? (
           <>
-            <h1 className="font-bold text-2xl text-white uppercase">{workout.program}</h1>
-            <h2 className="font-bold text-lg text-white uppercase">
+            <h1 className="font-bold text-2xl text-white uppercase text-center">{workout.program}</h1>
+            <h2 className="font-bold text-lg text-white uppercase text-center">
               Week {workout.week} | day {workout.day}
             </h2>
           </>
