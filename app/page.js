@@ -7,7 +7,6 @@ import { use } from 'react';
 
 export default async function ProgramSelection() {
   const session = await verifySession(); // CHECK IF THERE'S A SESSION AND REDIRECT TO LOGIN IF NOT
-  console.log(session)
   if (session?.role !== 'admin') {
     redirect('/programs/pillars')
   }
