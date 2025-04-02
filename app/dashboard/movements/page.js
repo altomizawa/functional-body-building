@@ -4,10 +4,8 @@ import AddNewMovementForm from '@/components/AddNewMovementForm'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import Link from 'next/link'
-import { getMovements, addNewMovement } from '@/lib/actions'
+import { getAllMovements, addNewMovement } from '@/lib/actions'
 import EditMovementForm from '@/components/EditMovementForm'
-import { add } from 'date-fns'
-import { get, set } from 'mongoose'
 
 
 const AddNewMovement = () => {
@@ -52,19 +50,20 @@ const AddNewMovement = () => {
     const response = await addNewMovement(formData)
     if (response.error) {
       toast({
+        variant: 'destructive',
         title: 'Error',
         description: `${response.error}, status: ${response.status}`,
       })
     } else {  
       toast({
         title: 'Success',
-        description: `${response.movement.name} added successfully.`,
+        description: `${response.data.name} added successfully.`,
       })
       setFormData({
         name: '',
         link: ''
       })
-      getMovements();
+      fetchAllMovements();
     }
   }
 
@@ -76,9 +75,14 @@ const AddNewMovement = () => {
   const handleDeleteMovement = async (movement) => {
     const res = await fetch(`/api/movements/${movement._id}`, {
       method: 'DELETE',
-      // body: JSON.stringify({ id: movement._id })
     })
-    if (res.ok) {
+    if (!res.ok) {
+      toast({
+        title: 'Error',
+        description: deletedMovement.error,
+        variant: 'destructive',
+      })
+    } else {
       const deletedMovement = await res.json()
       toast({
         title: 'Success',
@@ -88,28 +92,25 @@ const AddNewMovement = () => {
         name: '',
         link: ''
       })
-      getMovements();
-      setFilteredMovements(movements.filter(movement => !movement.name.includes(deletedMovement.name.toLowerCase())));
-
-    } else {
-      toast({
-        title: 'Error',
-        description: deletedMovement.error,
-      })
+      fetchAllMovements();
+      setFilteredMovements([]);
     }
   }
   
-  async function getMovements() {
-    const response = await fetch(`/api/movements`, {
-      method: 'GET'
-    })
-    const data = await response.json()
-    setMovements(data)
+  async function fetchAllMovements() {
+    const response = await getAllMovements()
+    if (response.error) {
+      toast({
+        title: 'Error',
+        description: response.error,
+      })
+    }
+    setMovements(response.data)
   }
 
 
   useEffect(() => {
-    getMovements()
+    fetchAllMovements()
   }, [])
 
   return (
