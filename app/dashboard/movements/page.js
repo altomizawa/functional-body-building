@@ -4,8 +4,10 @@ import AddNewMovementForm from '@/components/AddNewMovementForm'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import Link from 'next/link'
-import { getMovements } from '@/lib/actions'
+import { getMovements, addNewMovement } from '@/lib/actions'
 import EditMovementForm from '@/components/EditMovementForm'
+import { add } from 'date-fns'
+import { get, set } from 'mongoose'
 
 
 const AddNewMovement = () => {
@@ -47,26 +49,23 @@ const AddNewMovement = () => {
       return
     }
 
-    const response = await fetch(`/api/movements`, {
-      method: 'POST', 
-      body: JSON.stringify(formData)
-    })
-    if (!response.ok) {
+    const response = await addNewMovement(formData)
+    if (response.error) {
       toast({
         title: 'Error',
-        description: data.error,
+        description: `${response.error}, status: ${response.status}`,
       })
-    } else {
-      const data = await response.json()
+    } else {  
       toast({
         title: 'Success',
-        description: 'Movement added successfully',
+        description: `${response.movement.name} added successfully.`,
       })
+      setFormData({
+        name: '',
+        link: ''
+      })
+      getMovements();
     }
-    setFormData({
-      name: '',
-      link: '' 
-    })
   }
 
   const handleEditMovement = (movement) => {
@@ -85,6 +84,13 @@ const AddNewMovement = () => {
         title: 'Success',
         description: `${deletedMovement.name} deleted successfully`,
       })
+      setFormData({
+        name: '',
+        link: ''
+      })
+      getMovements();
+      setFilteredMovements(movements.filter(movement => !movement.name.includes(deletedMovement.name.toLowerCase())));
+
     } else {
       toast({
         title: 'Error',
@@ -93,42 +99,41 @@ const AddNewMovement = () => {
     }
   }
   
+  async function getMovements() {
+    const response = await fetch(`/api/movements`, {
+      method: 'GET'
+    })
+    const data = await response.json()
+    setMovements(data)
+  }
 
 
   useEffect(() => {
-    console.log('movements page')
-    async function getMovements() {
-      const response = await fetch(`/api/movements`, {
-        method: 'GET'
-      })
-      const data = await response.json()
-      setMovements(data)
-    }
     getMovements()
   }, [])
 
   return (
-    <main className='mt-12 flex flex-col items-center h-screen'>
-      <div className='p-4 rounded-lg w-[90%] md:w-3/4 lg:w-1/2'>
-        <h1 className="text-4xl font-bold text-center sm:text-center w-full mb-12">ADD NEW MOVEMENT</h1>
-        <Toaster />
-        {showEditForm && <EditMovementForm setShowEditForm={setShowEditForm} movement={currentMovement} />}
-        <AddNewMovementForm handleSubmit={handleSubmit} handleFormChange={handleFormChange} formData={formData} />
-        <div className='mt-8 border-[1px] border-gray-500 p-4 rounded-lg'>
-          <h2 className='font-bold border-b-[1px] border-black'>FOUND MATCHES:</h2>
-          <ul className='space-y-2 mt-4'>
-            {filteredMovements.map(movement => (
-              <div key={movement._id} className='flex justify-between w-full items-center border-b-2 pb-2'>
+    <main className='flex flex-col h-full px-6 my-16 max-w-[1024px] mx-auto'>
+      <h1 className="text-2xl md:text-3xl font-bold text-left w-full mb-12">ADD NEW MOVEMENT</h1>
+      <Toaster />
+      {showEditForm && <EditMovementForm setShowEditForm={setShowEditForm} movement={currentMovement} />}
+      <AddNewMovementForm handleSubmit={handleSubmit} handleFormChange={handleFormChange} formData={formData} />
+      <div className='mt-8 border-[1px] border-gray-500 p-4 rounded-lg'>
+        <h2 className='text-2xl md:text-3xl font-bold border-b-[1px] border-black'>FOUND MATCHES:</h2>
+        <ul className='space-y-2 mt-4'>
+          {filteredMovements.length!==0 ? filteredMovements.map(movement => (
+            <div key={movement._id} className='flex flex-col md:flex-row items-start justify-between w-full md:items-center border-b-2 pb-2'>
+              <div className='flex flex-col md:flex-row w-full md:gap-4 flex-wrap'>
                 <li>{movement.name.toUpperCase()}</li>
-                <div className='space-x-4'>
-                  <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
-                  <button type='button' onClick={() => handleEditMovement(movement)} className='rounded-md bg-blue-500 text-white px-4 py-1'>edit</button>
-                  <button type='button' onClick={() => handleDeleteMovement(movement)} className='rounded-md bg-red-500 text-white px-4 py-1'>delete</button>
-                </div>
+                <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
               </div>
-            ))}
-          </ul>
-        </div>
+              <div className='space-x-4 w-full flex justify-end'>
+                <button type='button' onClick={() => handleEditMovement(movement)} className='bg-blue-400 text-white px-4 py-1'>edit</button>
+                <button type='button' onClick={() => handleDeleteMovement(movement)} className='rounded-md bg-red-400 text-white px-4 py-1'>delete</button>
+              </div>
+            </div>
+          )) : <p className='text-gray-500'>No matches found</p>}
+        </ul>
       </div>
     </main>
   )
