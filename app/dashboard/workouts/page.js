@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import movements from '@/lib/movements'
 import Preview from '@/components/Preview'
 import Link from 'next/link'
 import  { createWorkout } from '@/lib/actions'
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from '@/hooks/use-toast'
 
 
 
@@ -22,7 +23,7 @@ export default function PillarWorkoutForm() {
     notes: ''
   })
 
-  const orderedMovements = movements.sort((a, b) => a.name.localeCompare(b.name))
+   const toast = useToast().toast
 
   // RESET ALL FORMS
   const resetForm = () => {
@@ -44,20 +45,20 @@ export default function PillarWorkoutForm() {
 
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    fetch(`/api/programs/pillars/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newWorkout)
+    e.preventDefault();
+    const response = await createWorkout(newWorkout)
+    if (!response.success) {
+      toast({
+        title: 'Error',
+        description: response.error,
+      })
+      return
+    }
+    toast({
+      title: 'Success',
+      description: 'Workout added successfully',
     })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err =>console.error(err))
-    .finally(() => {
-      resetForm()
-    })
+    resetForm()
   }
 
   const handleWorkoutChange = (e) => {
@@ -91,14 +92,11 @@ export default function PillarWorkoutForm() {
     })
   }
 
-
-
-
-
   return (
       <form onSubmit={onSubmit} className='flex flex-col md:grid md:grid-cols-2 gap-12 h-full px-6 my-16 max-w-[1440px] mx-auto'>
         {/* FORM */}
         <div>
+          <Toaster />
           <h1 className="text-2xl md:text-3xl font-bold text-left">ADD NEW WORKOUT</h1>
           <div className='flex items-center gap-2 mt-4'>
             {/* <label htmlFor="program">Program: </label> */}
@@ -110,7 +108,7 @@ export default function PillarWorkoutForm() {
             <input className='w-16' onChange={handleWorkoutChange} type="number" name="day" placeholder="Day" value={newWorkout.day} max={7} min={1} required />
           </div>
 
-          <div id='sections' className='py-4 border-y-[1px] border-black my-4'>
+          <div id='sections' className='py-4  my-4'>
             {/* SECTION */}
             <div className='space-y-8'>
               <div className='w-full space-y-2'>
