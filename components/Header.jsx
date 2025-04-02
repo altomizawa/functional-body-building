@@ -16,7 +16,6 @@ const Header = ({ session }) => {
 
   useEffect(() => {
     setCurrentUser(session?.user)
-    session ? console.log('header loaded') : console.log('header not loaded')
   }, [session])
 
   if (!session) {
