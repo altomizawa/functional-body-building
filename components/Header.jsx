@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { logout } from '@/lib/actions'
 
 
+
 const Header = ({ session }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -15,16 +16,17 @@ const Header = ({ session }) => {
 
   useEffect(() => {
     setCurrentUser(session?.user)
-  }, [currentUser])
+    session ? console.log('header loaded') : console.log('header not loaded')
+  }, [session])
 
   if (!session) {
     return null
   } else return (
-    <div className='aspect-square fixed top-0 right-0 w-min h-[320px] z-10'>
-      <button className='absolute top-4 right-4 flex flex-col gap-2  border-black w-10 aspect-square' onClick={() => setIsOpen(!isOpen)}>
-        <div className={`${isOpen ? "absolute top-4 left-0 rotate-45 w-full h-1 bg-gray-800" : "w-10 h-1 bg-gray-600"}`}></div>
-        <div className={`${isOpen ? "hidden" : "w-full h-1 bg-gray-600"}`}></div>
-        <div className={`${isOpen ? "absolute top-4 left-0 -rotate-45 w-full h-1 bg-gray-800" :"w-10 h-1 bg-gray-600" }`}></div>
+    <div className='fixed top-0 right-0 h-[320px] z-10'>
+      <button className='absolute top-4 right-4 flex flex-col gap-2  border-black w-8 aspect-square' onClick={() => setIsOpen(!isOpen)}>
+        <div className={`${isOpen ? "absolute top-4 left-0 rotate-45 w-full h-[2px] bg-gray-400" : "h-[2px] bg-gray-200"}`}></div>
+        <div className={`${isOpen ? "hidden" : "w-full h-[2px] bg-gray-200"}`}></div>
+        <div className={`${isOpen ? "absolute top-4 left-0 -rotate-45 w-full h-[2px] bg-gray-400" :"h-[2px] bg-gray-200" }`}></div>
       </button>
       {isOpen && 
         <div className='bg-white w-screen md:w-full h-screen p-8 pt-24'>
