@@ -96,10 +96,10 @@ export default function PillarWorkoutForm() {
 
 
   return (
-    <div className='flex flex-col md:grid md:grid-cols-2 gap-4 h-full'>
-      <form onSubmit={onSubmit} className='flex flex-col gap-4 m-12'>
+    <div className='flex flex-col md:grid md:grid-cols-2 gap-4 h-full px-6 mt-16 '>
+      <form onSubmit={onSubmit} className='flex flex-col gap-4'>
         {/* FORM */}
-        <h1 className="text-4xl font-bold text-left">ADD NEW WORKOUT</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-left">ADD NEW WORKOUT</h1>
 
         <div className='flex items-center gap-2'>
           {/* <label htmlFor="program">Program: </label> */}
@@ -120,11 +120,11 @@ export default function PillarWorkoutForm() {
             </div>
             <div className='w-full space-y-2'>
               <label htmlFor="description">DESCRIPTION:</label>
-              <textarea className='w-full min-h-48 p-2' onChange={handleSectionChange} type="text" name="description" placeholder="Description" value={section.description} />
+              <textarea className='w-full min-h-48 p-2 border-2' onChange={handleSectionChange} type="text" name="description" placeholder="Description" value={section.description} />
             </div>
             <div className='w-full space-y-2'>
               <label htmlFor="notes">NOTES:</label>
-              <textarea className='w-full min-h-24 p-2' onChange={handleSectionChange} type="text" name="notes" placeholder="Notes" value={section.notes} />
+              <textarea className='w-full min-h-24 p-2 border-2' onChange={handleSectionChange} type="text" name="notes" placeholder="Notes" value={section.notes} />
             </div>
           </div>
           <button type='button' className='button__main-menu my-2 uppercase' onClick={addNewSection}>add section</button>
@@ -133,7 +133,7 @@ export default function PillarWorkoutForm() {
         <button className='button__submit'>SUBMIT</button>
       </form>
       <div>
-      <h1 className="text-4xl font-bold text-left mt-12 w-[90%] mx-auto">PREVIEW WORKOUT</h1>
+      <h1 className="text-2xl md:text-4xl font-bold text-left mt-12 w-[90%] mx-auto">PREVIEW WORKOUT</h1>
       <div className='h-max overflow-auto border-[1px] border-gray-600 mx-auto rounded-lg w-[90%] mt-4'>
         <Preview workout={newWorkout} />
       </div>

@@ -108,8 +108,8 @@ const AddNewMovement = () => {
   }, [])
 
   return (
-    <main className='flex flex-col items-center h-screen'>
-      <div className='m-8 p-4 rounded-lg w-[90%] md:w-3/4 lg:w-1/2'>
+    <main className='mt-12 flex flex-col items-center h-screen'>
+      <div className='p-4 rounded-lg w-[90%] md:w-3/4 lg:w-1/2'>
         <h1 className="text-4xl font-bold text-center sm:text-center w-full mb-12">ADD NEW MOVEMENT</h1>
         <Toaster />
         {showEditForm && <EditMovementForm setShowEditForm={setShowEditForm} movement={currentMovement} />}
