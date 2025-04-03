@@ -47,6 +47,11 @@ const UserSchema = new Schema({
     default: 'user', 
     enum: ['user', 'admin'] 
   },
+  status: {
+    type: String, 
+    default: 'active', 
+    enum: ['active', 'inactive', 'expired'] 
+  },
   resetToken: { type: String, default: null },
   resetTokenExpires: { type: Date, default: null },
 }, {
