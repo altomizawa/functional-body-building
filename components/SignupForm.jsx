@@ -159,7 +159,7 @@ export function SignupForm() {
 
             {error && <div className="text-sm font-medium text-destructive">{error}</div>}
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
