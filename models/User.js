@@ -48,7 +48,8 @@ const UserSchema = new Schema({
     enum: ['user', 'admin'] 
   },
   status: {
-    type: String, 
+    type: String,
+    required: true,
     default: 'active', 
     enum: ['active', 'inactive', 'expired'] 
   },
