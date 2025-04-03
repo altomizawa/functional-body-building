@@ -16,12 +16,37 @@ const CompletedWorkoutSchema = new Schema({
 });
 
 const UserSchema = new Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 2,
+    maxlength: 50,
+    lowercase: true 
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true 
+  },
+  password: {
+    type: String,
+    required: true 
+  },
   avatar: { type: String },
-  completed:{type: [CompletedWorkoutSchema], required: true, default: []},
-  role: { type: String, required: true, default: 'user' },
+  completed:{
+    type: [CompletedWorkoutSchema],
+    required: true,
+    default: []
+  },
+  role: {
+    type: String, 
+    required: true, 
+    default: 'user', 
+    enum: ['user', 'admin'] 
+  },
   resetToken: { type: String, default: null },
   resetTokenExpires: { type: Date, default: null },
 }, {
