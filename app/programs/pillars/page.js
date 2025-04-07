@@ -2,6 +2,7 @@ import Image from 'next/image';
 import ideaIcon from '@/public/icons/idea.svg';
 import { YouTubeEmbed } from "@next/third-parties/google";
 import { verifySession } from '@/lib/session';
+import Link from 'next/link';
 
 
 async function getMovements() {
@@ -79,18 +80,10 @@ async function Page({ searchParams }) {
   return (
     <>
       {/* PROFILE DETAILS */}
-      {/* <div className="flex gap-3 items-center">
-        <div className="rounded-full overflow-hidden border-2 aspect-square w-[100px]">
-          <Image
-            src="https://media.istockphoto.com/id/1371301832/photo/excited-young-man-wearing-denim-shirt.jpg?s=612x612&w=0&k=20&c=AtgXnYVh2GpkMGlLwjIYDAwQ6fFvr0ii591bsEaJyLk="
-            alt="profile picture"
-            width={200}
-            height={200}
-          />
-        </div>
-        <h3 className="font-bold text-lg">{session.name}</h3>
-      </div> */}
       <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden">
+          <Link href="/programs" className='w-max text-center text-white px-4 py-2 rounded-md duration-300 hover:text-gray-400 flex items-center gap-2 justify-center'>
+            <span className="material-symbols-outlined">arrow_back</span>BACK
+          </Link>
         <Image src="/images/Vitinho.jpg" alt="idea icon" width={200} height={200} className="absolute top-[-25%] -z-10 left-0 w-full h-auto" />
         {workout ? (
           <>
