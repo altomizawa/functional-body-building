@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Gidole&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
 
 @tailwind base;
 @tailwind components;
@@ -46,4 +47,13 @@ h3{
 
 h2{
   @apply text-2xl font-bold uppercase
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 100,
+  'GRAD' 0,
+  'opsz' 24
 }

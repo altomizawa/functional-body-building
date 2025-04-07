@@ -8,7 +8,9 @@ const programs = async () => {
         <h1 className="text-4xl font-bold text-center sm:text-left">CHOOSE YOUR PROGRAM</h1>
         <div className='w-full flex flex-col gap-4'>
           <Link href="/programs/pillars" className='button__main-menu'>PILLARS</Link>
-          <Link href="/" className='button__back'>BACK</Link>
+          <Link href="/" className='button__back flex items-center gap-2 justify-center'>
+            <span className="material-symbols-outlined">arrow_back</span>BACK
+          </Link>
         
         </div>	
       </main>

@@ -134,7 +134,9 @@ export default function PillarWorkoutForm() {
             <Preview workout={newWorkout} />
           </div>
           <div className='flex flex-col gap-4 mt-4'>
-            <Link href="/" className='button__back'>BACK</Link>
+            <Link href="/" className='button__back flex justify-center items-center'>
+              <span className="material-symbols-outlined">arrow_back</span>BACK
+            </Link>
             <button className='button__submit'>SUBMIT</button>
           </div>
         </div>

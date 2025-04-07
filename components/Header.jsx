@@ -23,9 +23,9 @@ const Header = ({ session }) => {
   } else return (
     <div className='fixed top-0 right-0 h-[320px] z-10'>
       <button className='absolute top-6 right-6 flex flex-col gap-2  border-black w-8 aspect-square' onClick={() => setIsOpen(!isOpen)}>
-        <div className={`${isOpen ? "absolute top-4 left-0 rotate-45 w-full h-[2px] bg-gray-400" : "h-[2px] bg-gray-400"}`}></div>
+        <div className={`${isOpen ? "absolute top-4 left-0 rotate-45 w-full h-[2px] bg-gray-400 duration-300" : "h-[2px] bg-gray-400 duration-300"}`}></div>
         <div className={`${isOpen ? "hidden" : "w-full h-[2px] bg-gray-400"}`}></div>
-        <div className={`${isOpen ? "absolute top-4 left-0 -rotate-45 w-full h-[2px] bg-gray-400" :"h-[2px] bg-gray-400" }`}></div>
+        <div className={`${isOpen ? "absolute top-4 left-0 -rotate-45 w-full h-[2px] bg-gray-400 duration-300" :"h-[2px] bg-gray-400 duration-300" }`}></div>
       </button>
       {isOpen && 
         <div className='bg-white w-screen md:w-full h-screen p-8 pt-24'>

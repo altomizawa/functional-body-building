@@ -7,4 +7,12 @@ function getQueryValue (url) {
   return parts.length > 1 ? parts[1] : null;
 }
 
-export { cleanDate, getQueryValue }
+function convertPhoneToDisplay(phoneNumber) {
+  // Remove non-numeric characters
+  const numericPhone = phoneNumber.replace(/\D/g, '');
+  // Format the phone number
+  const formattedPhone = numericPhone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+  console.log(formattedPhone, numericPhone)
+}
+
+export { cleanDate, getQueryValue, convertPhoneToDisplay }
