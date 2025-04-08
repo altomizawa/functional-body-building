@@ -44,7 +44,6 @@ async function getWorkout(program, week, day) {
       console.error('No workouts found');
       return null; // Return null if no workouts found
     }
-
     return await resWorkout.json();
   } catch (err) {
     console.error(err);
@@ -54,7 +53,6 @@ async function getWorkout(program, week, day) {
 
 async function Page({ searchParams }) {
   const session = await verifySession();
-  console.log(session.role);
   const programList = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
 
   const awaitedSearchParams = await searchParams;
@@ -66,6 +64,7 @@ async function Page({ searchParams }) {
   const program = programList[programIndex];
   const movements = await getMovements();
   const workout = await getWorkout(program, week, day);
+  console.log(workout._id)
 
   function createVideoArray(sectionDescription) {
     return movements.filter(movement =>
