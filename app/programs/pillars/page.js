@@ -54,6 +54,7 @@ async function getWorkout(program, week, day) {
 
 async function Page({ searchParams }) {
   const session = await verifySession();
+  console.log(session.role);
   const programList = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
 
   const awaitedSearchParams = await searchParams;
@@ -81,9 +82,10 @@ async function Page({ searchParams }) {
     <>
       {/* PROFILE DETAILS */}
       <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden">
+          {session.role === 'admin' &&
           <Link href="/programs" className='w-max text-center text-white px-4 py-2 rounded-md duration-300 hover:text-gray-400 flex items-center gap-2 justify-center'>
             <span className="material-symbols-outlined">arrow_back</span>BACK
-          </Link>
+          </Link>}
         <Image src="/images/Vitinho.jpg" alt="idea icon" width={200} height={200} className="absolute top-[-25%] -z-10 left-0 w-full h-auto" />
         {workout ? (
           <>
