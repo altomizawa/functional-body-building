@@ -3,6 +3,8 @@ import ideaIcon from '@/public/icons/idea.svg';
 import { YouTubeEmbed } from "@next/third-parties/google";
 import { verifySession } from '@/lib/session';
 import Link from 'next/link';
+import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout} from '@/lib/actions';
+
 
 
 async function getMovements() {
@@ -50,21 +52,136 @@ async function getWorkout(program, week, day) {
     return null; // Return null in case of error
   }
 }
+const programList = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
+
+const handleWorkoutCompletion = async (formData) => {
+  'use server'
+  const userId = formData.get('userId');
+  const workoutId = formData.get('workoutId');
+  try {
+    const response = await markWorkoutAsCompleted({userId, workoutId});
+    if (response.success) {
+      
+      console.log('Workout marked as completed', 'YAY');
+    } else {
+      console.error('Failed to mark workout as completed');
+    }
+  } catch (error) {
+    console.error('Error in handleWorkoutCompletion:', error);
+  }
+};
 
 async function Page({ searchParams }) {
-  const session = await verifySession();
-  const programList = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
+  
+  function getNextWorkout({ program, week, day }) {
+    const MAX_WEEK = 6;
+    const MAX_DAY = 7;
+  
+    let nextDay = day + 1;
+    let nextWeek = week;
+    let nextProgram = program;
+  
+    if (nextDay > MAX_DAY) {
+      nextDay = 1;
+      nextWeek += 1;
+    }
+  
+    if (nextWeek > MAX_WEEK) {
+      // Optional: handle new program or end of cycle
+      nextWeek = MAX_WEEK;
+      nextDay = MAX_DAY;
+    }
+  
+    return { program: nextProgram, week: nextWeek, day: nextDay };
+  }
 
+  
+  let programIndex = 0;
+  let week = 1;
+  let day = 1;
+  
+  const session = await verifySession();
+
+  // Check if there are parameters in the URL
   const awaitedSearchParams = await searchParams;
 
-  const programIndex = parseInt(awaitedSearchParams.program || 0);
-  const week = parseInt(awaitedSearchParams.week || 1);
-  const day = parseInt(awaitedSearchParams.day || 1);
+  // if not, pull the latest workout from the database
+  if (!awaitedSearchParams.program && !awaitedSearchParams.week && !awaitedSearchParams.day) {
+    const nextWorkout = await getLatestCompletedWorkout(session.id);
+    
+    if (nextWorkout.success && nextWorkout.data) {
+      const { program, week: latestWeek, day: latestDay } = nextWorkout.data;
+      programIndex = programList.indexOf(program);
+      week = latestWeek;
+      day = latestDay;
+    }
+  }
+
+  // Set the workout from database as current workout
+  const lastWorkout = await fetchWorkout(session.id);
+  if (lastWorkout.success && lastWorkout.data) {
+    const { program, week: latestWeek, day: latestDay } = lastWorkout.data;
+    programIndex = programList.indexOf(program);
+    week = latestWeek;
+    day = latestDay;
+  } else {
+    programIndex = 0;
+    week = 1;
+    day = 1;
+  }
+  // fetch workout using parameters from Database
+
+  
+  
+  
+  
+
+
+  // if (awaitedSearchParams.program && awaitedSearchParams.week && awaitedSearchParams.day) {
+  //   programIndex = programList.indexOf(awaitedSearchParams.program);
+  //   week = parseInt(awaitedSearchParams.week);
+  //   day = parseInt(awaitedSearchParams.day);
+  // } else if (nextWorkout.success && nextWorkout.data) {
+  //   const { program, week: latestWeek, day: latestDay } = nextWorkout.data;
+  //   const { program: nextProgram, week: nextWeek, day: nextDay } = getNextWorkout({ program, week: latestWeek, day: latestDay });
+  //   programIndex = programList.indexOf(nextProgram);
+  //   week = nextWeek;
+  //   day = nextDay;
+  // } else {
+  //   programIndex = 0;
+  //   week = 1;
+  //   day = 1;
+  // }
+  // const programIndex = parseInt(awaitedSearchParams.program || 0);
+  // const week = parseInt(awaitedSearchParams.week || 1);
+  // const day = parseInt(awaitedSearchParams.day || 1);
+
+  // REVISED CODE
+  
+  
+//   let programIndex = 0;
+//   let week = 1;
+//   let day = 1;
+
+  
+
+//   if (awaitedSearchParams.program && awaitedSearchParams.week && awaitedSearchParams.day) {
+//     programIndex = parseInt(awaitedSearchParams.program);
+//     week = parseInt(awaitedSearchParams.week);
+//     day = parseInt(awaitedSearchParams.day);
+//   } else if (getNextWorkout.success && getNextWorkout.data) {
+//     const { program, week: latestWeek, day: latestDay } = getNextWorkout.data;
+//     const next = getNextWorkout({ program, week: latestWeek, day: latestDay });
+//     programIndex = ['Pillars', 'Cycle 2', 'Cycle 3', 'Cycle 4'].indexOf(next.program);
+//     week = next.week;
+//     day = next.day;
+// } 
+
+  // END OF REVISED CODE
 
   const program = programList[programIndex];
   const movements = await getMovements();
   const workout = await getWorkout(program, week, day);
-  console.log(workout._id)
 
   function createVideoArray(sectionDescription) {
     return movements.filter(movement =>
@@ -158,6 +275,16 @@ async function Page({ searchParams }) {
               )}
             </div>
           ))}
+          <form action={handleWorkoutCompletion}>
+            <input type="hidden" name="userId" value={session.id} />
+            <input type="hidden" name="workoutId" value={workout._id} />
+            <button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
+            >
+              ✅ Mark as Completed
+            </button>
+          </form>
         </div>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { signupUser } from "@/lib/actions"
+import { signupUser } from "@/lib/auth"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 
 const signupSchema = z

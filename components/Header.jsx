@@ -1,8 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { logout } from '@/lib/actions'
-
-
+import { logout } from '@/lib/auth'
 
 const Header = ({ session }) => {
   const [currentUser, setCurrentUser] = useState(null)

@@ -2,7 +2,7 @@
 
 import { useState, useActionState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
-import { signinUserAction } from '@/lib/actions';
+import { signinUserAction } from '@/lib/auth';
 import Link from 'next/link';
 
 export function SigninForm() {
