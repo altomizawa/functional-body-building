@@ -15,5 +15,12 @@ function convertPhoneToDisplay(phoneNumber) {
   console.log(formattedPhone, numericPhone)
 }
 
+function createVideoArray(movements, sectionDescription) {
+  return movements.filter(movement =>
+    sectionDescription.toLowerCase().includes(movement.name.toLowerCase())
+  );
+}
 
-export { cleanDate, getQueryValue, convertPhoneToDisplay }
+
+
+export { cleanDate, getQueryValue, convertPhoneToDisplay, createVideoArray }

@@ -6,6 +6,7 @@ import { YouTubeEmbed } from "@next/third-parties/google";
 import Link from 'next/link';
 import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout, getAllMovements, getSessionFromClient} from '@/lib/actions';
 import { set } from 'mongoose';
+import { getQueryValue, createVideoArray } from '@/utils/utils';
 
 
 
@@ -17,24 +18,27 @@ function Page({ searchParams }) {
   const [day, setDay] = useState(1);
   const [programIndex, setProgramIndex] = useState(0);
   const [movements, setMovements] = useState([]);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   // FETCH WORKOUT FUNCTION
   async function getWorkout(program, week, day) {
     try {
       const workout = await fetchWorkout(program, week, day);
-      setWorkout(workout.data);
+      setWorkout(workout.data)
     } catch (err) {
       console.error(err);
       return null; // Return null in case of error
     }
   }
 
-  // FETCH ALL MOVEMENTS FUNCTION
+  // FETCH ALL MOVEMENTS FUNCTION WITH CACHING
   async function getMovements() {
+    if (movements.length > 0) {
+      return movements; // Use cached movements if available
+    }
     try {
-      const movements = await getAllMovements();
-      console.log('Movements:', movements);
-      setMovements(movements.data);
+      const fetchedMovements = await getAllMovements();
+      console.log('Movements fetched:', fetchedMovements);
+      setMovements(fetchedMovements.data);
     } catch (err) {
       console.error(err);
       return []; // Return an empty array in case of error
@@ -70,16 +74,23 @@ function Page({ searchParams }) {
     }
   }
   // verify session
-  async function getUser() {
+  async function fetchUserSession() {
     try {
-      const sessionUser = await getSessionFromClient();
-      if (sessionUser) {
-        setUser(sessionUser);
+      const response = await fetch('/api/auth/session');
+      const data = await response.json();
+      if (data.success) {
+        setUser(data.user);
+        return 
+      } else {
+        console.error('Session error:', data.error);
+        return
       }
     } catch (error) {
       console.error('Error fetching session:', error);
+      return
     }
   }
+  
   // HANDLE WORKOUT COMPLETION
   const handleWorkoutCompletion = async (formData) => {
     const userId = formData.get('userId');
@@ -95,31 +106,33 @@ function Page({ searchParams }) {
     }
   };
 
-  function createVideoArray(sectionDescription) {
-    return movements.filter(movement =>
-      sectionDescription.toLowerCase().includes(movement.name.toLowerCase())
-    );
+
+
+  function checkIfWorkoutCompleted() {
+    return user?.completed?.some(entry => entry.pillarId.toString() === workout?._id.toString())
   }
 
-  function getQueryValue(url) {
-    const parts = url.split('=');
-    return parts.length > 1 ? parts[1] : null;
-  }
 
   // TRACK CHANGE IN WORKOUT
   useEffect(() => {
-    getMovements();
-    getWorkout(programList[programIndex], week, day);
+    const initPage = async () => {
+      fetchUserSession();
+      getMovements();
+      getWorkout(programList[programIndex], week, day)
+    }
+
+    initPage();
+    
   },[programIndex, week, day]);
   
-  useEffect(() => {
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
   return (
     <>
       {/* PROFILE DETAILS */}
       <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden">
-          {true &&
+          {user?.role==='admin' &&
           <Link href="/programs" className='w-max text-center text-white px-4 py-2 rounded-md duration-300 hover:text-gray-400 flex items-center gap-2 justify-center'>
             <span className="material-symbols-outlined">arrow_back</span>BACK
           </Link>}
@@ -135,6 +148,7 @@ function Page({ searchParams }) {
           <h1 className="font-bold text-2xl text-white uppercase">No workout found</h1>
         )}
       </div>
+
 
       {/* DATE AND PROGRAM SELECTION */}
       <div className="flex justify-center items-center gap-8 py-4 bg-black">
@@ -158,6 +172,17 @@ function Page({ searchParams }) {
           </div>
         </div>
       </div>
+      <form action={handleWorkoutCompletion}>
+        <input type="hidden" name="userId" value={user?.id || ''} />
+        <input type="hidden" name="workoutId" value={workout?._id || ''} />
+        <p>{user.id}</p>
+        {checkIfWorkoutCompleted(workout?._id) ? <button
+          type="submit"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
+        >
+          ✅ Mark as Completed
+        </button> : <p className=''>COMPLETED</p>}
+      </form>
 
       {/* WORKOUT */}
       {workout ? (
@@ -175,11 +200,11 @@ function Page({ searchParams }) {
                 <p className="whitespace-pre-line">{workoutSection.description}</p>
               </div>
 
-              {createVideoArray(workoutSection.description).length > 0 && (
+              {createVideoArray(movements, workoutSection.description).length > 0 && (
                 <div className="w-[90%] mx-auto mt-4 space-y-2">
-                  <h3>VIDEOS ({createVideoArray(workoutSection.description).length}):</h3>
+                  <h3>VIDEOS ({createVideoArray(movements, workoutSection.description).length}):</h3>
                   <div className="w-full mx-auto mt-2 space-y-2 flex gap-4 items-center overflow-auto">
-                    {createVideoArray(workoutSection.description).map((video, index) => (
+                    {createVideoArray(movements, workoutSection.description).map((video, index) => (
                       <div key={index} className="flex flex-col">
                         <p className="text-xs font-bold">{video.name.toUpperCase()}</p>
                         <YouTubeEmbed videoid={getQueryValue(video.link)} width={400} />
@@ -196,16 +221,7 @@ function Page({ searchParams }) {
               )}
             </div>
           ))}
-          <form action={handleWorkoutCompletion}>
-            <input type="hidden" name="userId" value={user?.id || ''} />
-            <input type="hidden" name="workoutId" value={workout?._id || ''} />
-            <button
-              type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
-            >
-              ✅ Mark as Completed
-            </button>
-          </form>
+         
         </div>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">
