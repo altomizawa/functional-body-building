@@ -95,6 +95,8 @@ function Page({ searchParams }) {
   const handleWorkoutCompletion = async (formData) => {
     const userId = formData.get('userId');
     const workoutId = formData.get('workoutId');
+    console.log('userId:', userId);
+    console.log('workoutId:', workoutId);
     try {
       const response = await markWorkoutAsCompleted({userId, workoutId});
       if (!response.success) {
@@ -109,8 +111,10 @@ function Page({ searchParams }) {
 
 
   function checkIfWorkoutCompleted() {
-    return user?.completed?.some(entry => entry.pillarId.toString() === workout?._id.toString())
+    if (!user?.completed || !workout?._id) return false;
+    return user.completed.some(entry => entry.pillarId.toString() === workout._id.toString());
   }
+  
 
 
   // TRACK CHANGE IN WORKOUT
@@ -149,6 +153,7 @@ function Page({ searchParams }) {
         )}
       </div>
 
+      {checkIfWorkoutCompleted() ? <p>✅</p> : <p>❌</p>}
 
       {/* DATE AND PROGRAM SELECTION */}
       <div className="flex justify-center items-center gap-8 py-4 bg-black">
@@ -176,12 +181,12 @@ function Page({ searchParams }) {
         <input type="hidden" name="userId" value={user?.id || ''} />
         <input type="hidden" name="workoutId" value={workout?._id || ''} />
         <p>{user.id}</p>
-        {checkIfWorkoutCompleted(workout?._id) ? <button
+        {checkIfWorkoutCompleted() ?  <p className=''>COMPLETED</p> : <button
           type="submit"
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
         >
           ✅ Mark as Completed
-        </button> : <p className=''>COMPLETED</p>}
+        </button> }
       </form>
 
       {/* WORKOUT */}
