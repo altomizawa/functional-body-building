@@ -4,9 +4,10 @@ import { use, useEffect, useState } from 'react';
 import ideaIcon from '@/public/icons/idea.svg';
 import { YouTubeEmbed } from "@next/third-parties/google";
 import Link from 'next/link';
-import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout, getAllMovements, getSessionFromClient} from '@/lib/actions';
-import { set } from 'mongoose';
+import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout, getAllMovements, getSessionFromClient, getWorkoutById} from '@/lib/actions';
+import { get, set } from 'mongoose';
 import { getQueryValue, createVideoArray } from '@/utils/utils';
+import { late } from 'zod';
 
 
 
@@ -37,7 +38,6 @@ function Page({ searchParams }) {
     }
     try {
       const fetchedMovements = await getAllMovements();
-      console.log('Movements fetched:', fetchedMovements);
       setMovements(fetchedMovements.data);
     } catch (err) {
       console.error(err);
@@ -62,25 +62,31 @@ function Page({ searchParams }) {
     }
     if (e.target.name === 'previous-week' && week > 1) {
       setWeek(week - 1);
+      getWorkout(program, week-1, day);
+
     }
     if (e.target.name === 'next-week' && week < 6) {
       setWeek(week + 1);
+      getWorkout(program, week+1, day);
+
     }  
     if (e.target.name === 'previous-day' && day > 1) {
       setDay(day - 1);
+      getWorkout(program, week, day-1);
     }
     if (e.target.name === 'next-day' && day < 7) {
       setDay(day + 1);
+      getWorkout(program, week, day+1);
     }
   }
+  
   // verify session
   async function fetchUserSession() {
     try {
       const response = await fetch('/api/auth/session');
       const data = await response.json();
       if (data.success) {
-        setUser(data.user);
-        return 
+        return data.user
       } else {
         console.error('Session error:', data.error);
         return
@@ -103,6 +109,7 @@ function Page({ searchParams }) {
         throw new Error(response.message)
       }
       console.log('Workout marked as completed', 'YAY');
+      window.location.reload();
     } catch (error) {
       console.log('Error:', error.message);
     }
@@ -116,25 +123,40 @@ function Page({ searchParams }) {
   }
   
 
-
   // TRACK CHANGE IN WORKOUT
+  // useEffect(() => {
+  //   const initPage = async () => {
+  //     await getWorkout(program, week, day);
+  //   }
+  //   initPage();
+    
+  // },[programIndex, week, day]);
+
   useEffect(() => {
     const initPage = async () => {
-      fetchUserSession();
-      getMovements();
-      getWorkout(programList[programIndex], week, day)
-    }
+      const fetchedUser = await fetchUserSession();
+      setUser(fetchedUser)
 
+      // get latest completed workout Id
+      const latestWorkout = await getLatestCompletedWorkout(fetchedUser._id)
+
+      // check if there's a workout that's been completed
+      if (fetchedUser.completed.length > 0) {
+        await getWorkout(latestWorkout.data.program, latestWorkout.data.week, latestWorkout.data.day)
+        setProgram(latestWorkout.data.program)
+        setWeek(latestWorkout.data.week)
+        setDay(latestWorkout.data.day)        
+      }
+    }
+    getMovements();
     initPage();
-    
-  },[programIndex, week, day]);
+  },[])
   
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
+
   return (
     <>
       {/* PROFILE DETAILS */}
+      {/* {user ? <p>{getLatestCompletedWorkout().program}</p> : <p>no user</p>} */}
       <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden">
           {user?.role==='admin' &&
           <Link href="/programs" className='w-max text-center text-white px-4 py-2 rounded-md duration-300 hover:text-gray-400 flex items-center gap-2 justify-center'>
@@ -152,8 +174,6 @@ function Page({ searchParams }) {
           <h1 className="font-bold text-2xl text-white uppercase">No workout found</h1>
         )}
       </div>
-
-      {checkIfWorkoutCompleted() ? <p>✅</p> : <p>❌</p>}
 
       {/* DATE AND PROGRAM SELECTION */}
       <div className="flex justify-center items-center gap-8 py-4 bg-black">
@@ -178,14 +198,14 @@ function Page({ searchParams }) {
         </div>
       </div>
       <form action={handleWorkoutCompletion}>
-        <input type="hidden" name="userId" value={user?.id || ''} />
+        <input type="hidden" name="userId" value={user?._id || ''} />
         <input type="hidden" name="workoutId" value={workout?._id || ''} />
         <p>{user.id}</p>
-        {checkIfWorkoutCompleted() ?  <p className=''>COMPLETED</p> : <button
+        {checkIfWorkoutCompleted() ?  <p className='bg-red-200 w-full text-center p-4 font-bold'>WORKOUT COMPLETED</p> : <button
           type="submit"
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
         >
-          ✅ Mark as Completed
+          Mark as Completed
         </button> }
       </form>
 
