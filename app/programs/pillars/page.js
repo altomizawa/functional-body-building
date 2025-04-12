@@ -139,11 +139,14 @@ function Page({ searchParams }) {
       const latestWorkout = await getLatestCompletedWorkout(fetchedUser._id)
 
       // check if there's a workout that's been completed
+      console.log(fetchedUser.completed)
       if (fetchedUser.completed.length > 0) {
         await getWorkout(latestWorkout.data.program, latestWorkout.data.week, latestWorkout.data.day)
         setProgram(latestWorkout.data.program)
         setWeek(latestWorkout.data.week)
         setDay(latestWorkout.data.day)        
+      } else {
+        getWorkout(program, week, day)
       }
     }
     getMovements();
@@ -169,7 +172,7 @@ function Page({ searchParams }) {
             </h2>
           </>
         ) : (
-          <h1 className="font-bold text-2xl text-white uppercase">No workout found</h1>
+          null 
         )}
       </div>
 
