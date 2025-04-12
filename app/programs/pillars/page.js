@@ -19,7 +19,9 @@ function Page({ searchParams }) {
   const [day, setDay] = useState(1);
   const [programIndex, setProgramIndex] = useState(0);
   const [movements, setMovements] = useState([]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+
+
   // FETCH WORKOUT FUNCTION
   async function getWorkout(program, week, day) {
     try {
@@ -47,7 +49,6 @@ function Page({ searchParams }) {
 
   // HANDLE PROGRAM CHANGES
   function handleProgramChange(e) {
-    console.log(e.target.name)
     if (e.target.name === 'previous-program' && programIndex > 0) {
       setProgramIndex(programIndex - 1);
       setProgram(programList[programIndex - 1]);
@@ -60,24 +61,22 @@ function Page({ searchParams }) {
       setWeek(1);
       setDay(1);
     }
+  }
+  function handleWeekChange(e) {    
     if (e.target.name === 'previous-week' && week > 1) {
       setWeek(week - 1);
-      getWorkout(program, week-1, day);
-
     }
     if (e.target.name === 'next-week' && week < 6) {
       setWeek(week + 1);
-      getWorkout(program, week+1, day);
-
     }  
+  }
+  function handleDayChange(e) {    
     if (e.target.name === 'previous-day' && day > 1) {
       setDay(day - 1);
-      getWorkout(program, week, day-1);
     }
     if (e.target.name === 'next-day' && day < 7) {
       setDay(day + 1);
-      getWorkout(program, week, day+1);
-    }
+    } 
   }
   
   // verify session
@@ -101,8 +100,7 @@ function Page({ searchParams }) {
   const handleWorkoutCompletion = async (formData) => {
     const userId = formData.get('userId');
     const workoutId = formData.get('workoutId');
-    console.log('userId:', userId);
-    console.log('workoutId:', workoutId);
+
     try {
       const response = await markWorkoutAsCompleted({userId, workoutId});
       if (!response.success) {
@@ -124,19 +122,19 @@ function Page({ searchParams }) {
   
 
   // TRACK CHANGE IN WORKOUT
-  // useEffect(() => {
-  //   const initPage = async () => {
-  //     await getWorkout(program, week, day);
-  //   }
-  //   initPage();
-    
-  // },[programIndex, week, day]);
+  useEffect(() => {
+    console.log('useEffect reload')
+    const initPage = async () => {
+      await getWorkout(program, week, day);
+    }
+    user && initPage()
+    // initPage();
+  },[programIndex, week, day]);
 
   useEffect(() => {
     const initPage = async () => {
       const fetchedUser = await fetchUserSession();
       setUser(fetchedUser)
-
       // get latest completed workout Id
       const latestWorkout = await getLatestCompletedWorkout(fetchedUser._id)
 
@@ -184,23 +182,23 @@ function Page({ searchParams }) {
       <div className="flex gap-12 justify-center items-center bg-slate-400 py-2">
         <div>
           <div className="flex items-center gap-4 w-max">
-            <button type='button' onClick={handleProgramChange} name='previous-week' className='workout-button'>&lt;</button>
+            <button type='button' onClick={handleWeekChange} name='previous-week' className='workout-button'>&lt;</button>
             <p className="uppercase text-white text-xl">WEEK {week}</p>
-            <button type='button' onClick={handleProgramChange} name='next-week' className='workout-button'>&gt;</button>
+            <button type='button' onClick={handleWeekChange} name='next-week' className='workout-button'>&gt;</button>
           </div>
         </div>
         <div>
           <div className="flex items-center gap-4 w-max">
-             <button type='button' onClick={handleProgramChange} name='previous-day' className='workout-button'>&lt;</button>
+             <button type='button' onClick={handleDayChange} name='previous-day' className='workout-button'>&lt;</button>
             <p className="uppercase text-white text-xl">DAY {day}</p>
-            <button type='button' onClick={handleProgramChange} name='next-day' className='workout-button'>&gt;</button>
+            <button type='button' onClick={handleDayChange} name='next-day' className='workout-button'>&gt;</button>
           </div>
         </div>
       </div>
       <form action={handleWorkoutCompletion}>
         <input type="hidden" name="userId" value={user?._id || ''} />
         <input type="hidden" name="workoutId" value={workout?._id || ''} />
-        <p>{user.id}</p>
+        <p>{user?.id}</p>
         {checkIfWorkoutCompleted() ?  <p className='bg-red-200 w-full text-center p-4 font-bold'>WORKOUT COMPLETED</p> : <button
           type="submit"
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
