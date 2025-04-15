@@ -28,7 +28,7 @@ export async function GET(request) {
     // Fetch the complete workout details
     const completedWorkouts = await Pillar.find({
       _id: { $in: workoutIds }
-    }).sort({ program: 1, week: 1, day: 1 });
+    }).sort({ program: -1, week: -1, day: -1 });
 
     // Add completion date to each workout
     const workoutsWithCompletionDate = completedWorkouts.map(workout => {
