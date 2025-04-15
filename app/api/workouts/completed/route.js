@@ -24,13 +24,11 @@ export async function GET(request) {
 
     // Get the workout IDs from the user's completed array
     const workoutIds = user.completed.map(item => item.pillarId);
-    console.log('workoutIds', workoutIds) 
+
     // Fetch the complete workout details
     const completedWorkouts = await Pillar.find({
       _id: { $in: workoutIds }
     }).sort({ program: 1, week: 1, day: 1 });
-
-    console.log(completedWorkouts)
 
     // Add completion date to each workout
     const workoutsWithCompletionDate = completedWorkouts.map(workout => {
