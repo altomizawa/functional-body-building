@@ -59,21 +59,6 @@ function CompletedWorkoutsPage() {
     }
   }
 
-  // Fetch all movements for video display
-  async function getMovements() {
-    if (movements.length > 0) {
-      return movements; // Use cached movements if available
-    }
-    try {
-      const fetchedMovements = await getAllMovements();
-      setMovements(fetchedMovements.data);
-      return fetchedMovements.data;
-    } catch (err) {
-      console.error(err);
-      return []; // Return an empty array in case of error
-    }
-  }
-
   // Toggle workout expansion
   const toggleWorkoutExpansion = (workoutId) => {
     if (expandedWorkout === workoutId) {
@@ -136,7 +121,7 @@ function CompletedWorkoutsPage() {
       if (userData?._id) {
         await Promise.all([
           fetchCompletedWorkouts(userData._id),
-          getMovements()
+          // getMovements()
         ]);
       }
       setLoading(false);
