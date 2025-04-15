@@ -1,11 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { getQueryValue, createVideoArray } from '@/utils/utils';
-import { YouTubeEmbed } from "@next/third-parties/google";
 import ideaIcon from '@/public/icons/idea.svg';
-import { getAllMovements } from '@/lib/actions';
 
 function CompletedWorkoutsPage() {
   const [user, setUser] = useState(null);
@@ -146,9 +142,6 @@ function CompletedWorkoutsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-[rgba(0,0,0,0.3)] px-4 py-8 relative overflow-hidden mb-6">
-        <Link href="/programs" className='w-max text-center text-white px-4 py-2 rounded-md duration-300 hover:text-gray-400 flex items-center gap-2 justify-center'>
-          <span className="material-symbols-outlined">arrow_back</span>BACK
-        </Link>
         <Image src="/images/Vitinho.jpg" alt="background" width={200} height={200} className="absolute top-[-25%] -z-10 left-0 w-full h-auto" />
         <h1 className="font-bold text-2xl text-white uppercase text-center">Completed Workouts</h1>
       </div>
