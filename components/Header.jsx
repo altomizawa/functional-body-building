@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { logout } from '@/lib/auth'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 const Header = ({ session }) => {
   const [currentUser, setCurrentUser] = useState(null)
@@ -10,6 +12,11 @@ const Header = ({ session }) => {
     await logout()
     setCurrentUser(null)
     setIsOpen(false)
+  }
+
+  const goToPreviousWorkouts = () => {
+    setIsOpen(false)
+    redirect('/programs/completed')
   }
 
   useEffect(() => {
@@ -30,7 +37,7 @@ const Header = ({ session }) => {
           <h2>HI, {currentUser?.name}</h2>
           <ul className='mt-8 flex flex-col gap-4'>
             <li className='cursor-pointer hover:underline'>Profile</li>
-            <li className='cursor-pointer hover:underline pointer-events-none text-gray-400'>Previous Workouts</li>
+            <li onClick={goToPreviousWorkouts} className='cursor-pointer hover:underline'>Previous Workouts</li>
             <li className='cursor-pointer hover:underline' onClick={handleLogout} >Logout</li>
           </ul>
         </div>
