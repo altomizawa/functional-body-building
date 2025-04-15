@@ -19,6 +19,11 @@ const Header = ({ session }) => {
     redirect('/programs/completed')
   }
 
+  const goToWorkouts = () => {
+    setIsOpen(false)
+    redirect('/programs/pillars')
+  }
+
   useEffect(() => {
     setCurrentUser(session?.user)
   }, [session])
@@ -37,6 +42,7 @@ const Header = ({ session }) => {
           <h2>HI, {currentUser?.name}</h2>
           <ul className='mt-8 flex flex-col gap-4'>
             <li className='cursor-pointer hover:underline'>Profile</li>
+            <li onClick={goToWorkouts} className='cursor-pointer hover:underline'>Workouts</li>
             <li onClick={goToPreviousWorkouts} className='cursor-pointer hover:underline'>Previous Workouts</li>
             <li className='cursor-pointer hover:underline' onClick={handleLogout} >Logout</li>
           </ul>
