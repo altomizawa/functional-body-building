@@ -34,7 +34,9 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true 
+    required: true,
+    trim: true,
+    select: false
   },
   avatar: { type: String },
   completed:{
