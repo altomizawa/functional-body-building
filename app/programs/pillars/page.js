@@ -18,18 +18,13 @@ async function Page({ searchParams  }) {
   const session = await verifySessionForRequests();
   
   // Fetch all movements
-  const movements = await getAllMovements().data;
+  const movements = await getAllMovements()
   
   
   // Fetch user Data
   const userData = await getUserById(session?.user.id);
   
-  // If user has no workouts, fetch first workout
-  // if (userData.data.completed.length === 0) {
-  //   program = 0
-  //   week = 1
-  //   day = 1
-  // }
+
 
   // Fetch latest workout if searchParams is empty
   if ((!program || !week || !day) && userData.data.completed.length > 0) {
@@ -48,6 +43,7 @@ async function Page({ searchParams  }) {
     day = 1;
   }
 
+  // Fetch workout if searchParams is not empty
   if(program && week && day) {
     const newWorkout = await fetchWorkout(PROGRAM_LIST[program], week, day)
     workout = newWorkout.data;
