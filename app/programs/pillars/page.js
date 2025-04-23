@@ -6,7 +6,7 @@ import { verifySessionForRequests } from '@/lib/session';
 import ideaIcon from '@/public/icons/idea.svg';
 import { YouTubeEmbed } from "@next/third-parties/google";
 import Link from 'next/link';
-import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout, getAllMovements } from '@/lib/actions';
+import { fetchWorkout, getAllMovements } from '@/lib/actions';
 import { getQueryValue, createVideoArray, checkIfWorkoutCompleted } from '@/utils/utils';
 import WorkoutNavigation from '@/components/WorkoutNavigation';
 import MarkCompleteWorkoutButton from '@/components/MarkCompleteWorkoutButton';
@@ -127,7 +127,7 @@ async function Page({ searchParams  }) {
               )}
             </div>
           ))}
-          {!isWorkoutCompleted && <MarkCompleteWorkoutButton workout={workout} user={session.user} />}
+          {true && <MarkCompleteWorkoutButton workout={workout} user={session.user} />}
         </div>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">
