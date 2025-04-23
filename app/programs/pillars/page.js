@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout, getAllMovements } from '@/lib/actions';
 import { getQueryValue, createVideoArray } from '@/utils/utils';
 import WorkoutNavigation from '@/components/WorkoutNavigation';
+import MarkCompleteWorkoutButton from '@/components/MarkCompleteWorkoutButton';
 
 async function Page({ searchParams  }) {
   let { program, week, day } = await searchParams
@@ -48,58 +49,6 @@ async function Page({ searchParams  }) {
     const newWorkout = await fetchWorkout(PROGRAM_LIST[program], week, day)
     workout = newWorkout.data;
   }
-  
-
-  // Handle workout completion
-  const handleWorkoutCompletion = async (e) => {
-    e.preventDefault();
-    
-    if (!user?._id || !workoutData.workout?._id) {
-      toast({
-        title: "Error",
-        description: "Missing user or workout information",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    try {
-      const response = await markWorkoutAsCompleted({
-        userId: user._id, 
-        workoutId: workoutData.workout._id
-      });
-      
-      if (!response.success) throw new Error(response.message);
-      
-      // Update user state to include the newly completed workout
-      setUser(prevUser => {
-        const newCompleted = [...(prevUser.completed || []), {
-          pillarId: workoutData.workout._id,
-          date: new Date()
-        }];
-        
-        return {
-          ...prevUser,
-          completed: newCompleted
-        };
-      });
-      
-      toast({
-        title: "Success",
-        description: "Workout marked as completed!",
-      });
-      
-      // Advance to next workout
-      advanceToNextWorkout();
-      
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to mark workout as completed",
-        variant: "destructive"
-      });
-    }
-  };
 
   // Check if workout is completed
 const isWorkoutCompleted = () => {
@@ -110,9 +59,8 @@ const isWorkoutCompleted = () => {
   
   // Check if the workout ID exists in the user's completed workouts
   return userData.data.completed.some(entry => {
-    entry.pillarId.toString() === workout._id.toString()
-  }
-  );
+    return entry.pillarId._id.toString() === workout._id.toString();
+  });
 };
 
 
@@ -188,11 +136,7 @@ const isWorkoutCompleted = () => {
               )}
             </div>
           ))}
-          {!isWorkoutCompleted() && <button
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
-          >
-            Mark as Completed
-          </button>}
+          {!isWorkoutCompleted() && <MarkCompleteWorkoutButton workout={workout} user={session.user} />}
         </div>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">

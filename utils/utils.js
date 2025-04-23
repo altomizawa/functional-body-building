@@ -12,7 +12,6 @@ function convertPhoneToDisplay(phoneNumber) {
   const numericPhone = phoneNumber.replace(/\D/g, '');
   // Format the phone number
   const formattedPhone = numericPhone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-  console.log(formattedPhone, numericPhone)
 }
 
 function createVideoArray(movements, sectionDescription) {
