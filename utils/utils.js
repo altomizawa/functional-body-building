@@ -21,7 +21,7 @@ function createVideoArray(movements, sectionDescription) {
 }
 
 // Check if workout is completed
-const isWorkoutCompleted = (userData, workout) => {
+const checkIfWorkoutCompleted = (userData, workout) => {
   // Make sure we have all the required data
   if (!userData?.data?.completed || !workout?._id) {
     return false;
@@ -35,4 +35,4 @@ const isWorkoutCompleted = (userData, workout) => {
 
 
 
-export { cleanDate, getQueryValue, convertPhoneToDisplay, createVideoArray, isWorkoutCompleted }
+export { cleanDate, getQueryValue, convertPhoneToDisplay, createVideoArray, checkIfWorkoutCompleted }

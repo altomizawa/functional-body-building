@@ -7,7 +7,7 @@ import ideaIcon from '@/public/icons/idea.svg';
 import { YouTubeEmbed } from "@next/third-parties/google";
 import Link from 'next/link';
 import { markWorkoutAsCompleted, getLatestCompletedWorkout, fetchWorkout, getAllMovements } from '@/lib/actions';
-import { getQueryValue, createVideoArray, isWorkoutCompleted } from '@/utils/utils';
+import { getQueryValue, createVideoArray, checkIfWorkoutCompleted } from '@/utils/utils';
 import WorkoutNavigation from '@/components/WorkoutNavigation';
 import MarkCompleteWorkoutButton from '@/components/MarkCompleteWorkoutButton';
 
@@ -50,6 +50,11 @@ async function Page({ searchParams  }) {
     workout = newWorkout.data;
   }
 
+  // Check if workout is completed
+  const isWorkoutCompleted = checkIfWorkoutCompleted(userData, workout);
+
+
+
   return (
     <>
       {/* Header */}
@@ -80,7 +85,7 @@ async function Page({ searchParams  }) {
       <WorkoutNavigation program={program} week={week} day={day} />
 
       {/* Completion Form */}
-      {isWorkoutCompleted(userData, workout) && <p className='bg-green-500 w-full text-white text-center p-2 font-bold'>WORKOUT DONE</p>}
+      {isWorkoutCompleted && <p className='bg-green-500 w-full text-white text-center p-2 font-bold'>WORKOUT DONE</p>}
 
       {/* Workout Content */}
       {workout ? (
@@ -122,7 +127,7 @@ async function Page({ searchParams  }) {
               )}
             </div>
           ))}
-          {!isWorkoutCompleted() && <MarkCompleteWorkoutButton workout={workout} user={session.user} />}
+          {!isWorkoutCompleted && <MarkCompleteWorkoutButton workout={workout} user={session.user} />}
         </div>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">
