@@ -51,17 +51,17 @@ async function Page({ searchParams  }) {
   }
 
   // Check if workout is completed
-const isWorkoutCompleted = () => {
-  // Make sure we have all the required data
-  if (!userData?.data?.completed || !workout?._id) {
-    return false;
-  }
-  
-  // Check if the workout ID exists in the user's completed workouts
-  return userData.data.completed.some(entry => {
-    return entry.pillarId._id.toString() === workout._id.toString();
-  });
-};
+  const isWorkoutCompleted = () => {
+    // Make sure we have all the required data
+    if (!userData?.data?.completed || !workout?._id) {
+      return false;
+    }
+    
+    // Check if the workout ID exists in the user's completed workouts
+    return userData.data.completed.some(entry => {
+      return entry.pillarId._id.toString() === workout._id.toString();
+    });
+  };
 
 
   return (
