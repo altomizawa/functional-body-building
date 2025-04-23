@@ -42,17 +42,24 @@ const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
     } else return
   }
   const nextDay = () => {
+    console.log(MAX_DAYS)
     if (day < MAX_DAYS) {
       const nextDay = parseInt(day) + 1;
       router.push(`/programs/pillars?program=${program}&week=${week}&day=${nextDay}`);
-    } else return
+    } else {
+      const nextWeek = parseInt(week) + 1;
+      router.push(`/programs/pillars?program=${program}&week=${nextWeek}&day=${1}`);
+    }
   }
   const previousDay = () => {
     if (day > 1) {
       const previousDay = parseInt(day) - 1;
       router.push(`/programs/pillars?program=${program}&week=${week}&day=${previousDay}`);
 
-    } else return
+    } else {
+      const previousWeek = parseInt(week) - 1;
+      router.push(`/programs/pillars?program=${program}&week=${previousWeek}&day=${MAX_DAYS}`);
+    }
   }
 
  
