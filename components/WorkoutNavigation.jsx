@@ -1,6 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { PROGRAM_LIST, MAX_WEEKS, MAX_DAYS } from '@/lib/constants';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { parse } from 'date-fns';
+
 
 const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
   const [currentWorkout, setCurrentWorkout] = useState({
@@ -9,59 +12,45 @@ const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
     programIndex: 0
   });
   
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
 
   const nextProgram = () => {
-    if (currentWorkout.programIndex < PROGRAM_LIST.length - 1) {
-      setCurrentWorkout(prev => ({
-        ...prev,
-        programIndex: prev.programIndex + 1
-      }));
+    if (program < PROGRAM_LIST.length - 1) {
+      const nextProgram = parseInt(program) + 1;
+      router.push(`/programs/pillars?program=${nextProgram}&week=${week}&day=${day}`);
+
     } else return
   }
   const previousProgram = () => {
-    if (currentWorkout.programIndex > 0) {
-      setCurrentWorkout(prev => ({
-        ...prev,
-        programIndex: prev.programIndex - 1
-      }));
+    if (program > 0) {
+      const previousProgram = parseInt(program) - 1;
+      router.push(`/programs/pillars?program=${previousProgram}&week=${week}&day=${day}`);
     } else return
   }
   const nextWeek = () => {
-    if (currentWorkout.week < MAX_WEEKS) {
-      setCurrentWorkout(prev => ({
-        ...prev,
-        week: prev.week + 1
-      }));
-      handleFetchWorkout(program, week+1, day)
+    if (week < MAX_WEEKS) {
+      const nextWeek = parseInt(week) + 1;
+      router.push(`/programs/pillars?program=${program}&week=${nextWeek}&day=${day}`);
     } else return
   }
   const previousWeek = () => {
-    if (currentWorkout.week > 1) {
-      setCurrentWorkout(prev => ({
-        ...prev,
-        week: prev.week - 1
-      }));
-      handleFetchWorkout(program, week-1, day)
-
+    if (week > 1) {
+      const previousWeek = parseInt(week) - 1;
+      router.push(`/programs/pillars?program=${program}&week=${previousWeek}&day=${day}`);
     } else return
   }
   const nextDay = () => {
-    if (currentWorkout.day < MAX_DAYS) {
-      setCurrentWorkout(prev => ({
-        ...prev,
-        day: prev.day + 1
-      }));
-      handleFetchWorkout(program, week, day+1)
-
+    if (day < MAX_DAYS) {
+      const nextDay = parseInt(day) + 1;
+      router.push(`/programs/pillars?program=${program}&week=${week}&day=${nextDay}`);
     } else return
   }
   const previousDay = () => {
-    if (currentWorkout.day > 1) {
-      setCurrentWorkout(prev => ({
-        ...prev,
-        day: prev.day - 1
-      }));
-      handleFetchWorkout(program, week, day-1)
+    if (day > 1) {
+      const previousDay = parseInt(day) - 1;
+      router.push(`/programs/pillars?program=${program}&week=${week}&day=${previousDay}`);
 
     } else return
   }
@@ -75,7 +64,7 @@ const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
     <>
       <div className="flex justify-center items-center gap-8 py-4 bg-black">
         <button onClick={previousProgram} className='workout-button'>&lt;</button>
-        <p className="uppercase text-white text-xl">{program}</p>
+        <p className="uppercase text-white text-xl">{PROGRAM_LIST[program]}</p>
         <button onClick={nextProgram} className='workout-button'>&gt;</button>
       </div>
       
