@@ -55,10 +55,6 @@ const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
     } else return
   }
 
-  // useEffect(() => {
-  //   console.log(workout)
-  // }, []);
-
  
   return (
     <>
