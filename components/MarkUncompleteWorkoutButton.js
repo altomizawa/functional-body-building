@@ -49,7 +49,7 @@ const MarkUncompleteWorkoutButton = ({ workoutId, userId }) => {
   return (
     <>
       {confirmationVisible ? <div className='container bg-black  text-white px-4 py-4 rounded mx-auto block mb-4'>
-        <h1 className='uppercase text-center'>Mark Workout as UNCOMPLETED?</h1>
+        <h1 className='uppercase text-center'>Are you sure?</h1>
         <div className='flex justify-center gap-8 mt-6'>
           <button onClick={() => setConfirmationVisible(false)} className='bg-white text-black px-4 py-2 rounded'>NO</button>
           <button onClick={handleWorkoutUncompletion} className='bg-red-600 text-white px-4 py-2 rounded'>YES</button>
@@ -58,7 +58,7 @@ const MarkUncompleteWorkoutButton = ({ workoutId, userId }) => {
       <button onClick={() => setConfirmationVisible(true)}
         className="container bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded mx-auto block mb-4"
       >
-        Mark as UNCOMPLETED
+        Mark as INCOMPLETED
       </button>}
     </>
   )
