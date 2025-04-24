@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ideaIcon from '@/public/icons/idea.svg';
+import MarkUncompleteWorkoutButton from '@/components/MarkUncompleteWorkoutButton';
+
 
 function CompletedWorkoutsPage() {
   const [user, setUser] = useState(null);
@@ -207,7 +209,8 @@ function CompletedWorkoutsPage() {
 
               {/* Expanded Workout Details */}
               {expandedWorkout === workout._id && (
-                <div className="p-4 bg-white">
+                <div className="p-4">
+                  <MarkUncompleteWorkoutButton workoutId={workout._id} userId={user._id} />
                   {workout.sections?.map((section, index) => (
                     <div key={index} className="mb-6">
                       <div className="w-full bg-slate-800 px-4 py-2 mb-3">

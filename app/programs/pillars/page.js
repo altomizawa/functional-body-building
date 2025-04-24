@@ -10,6 +10,7 @@ import { fetchWorkout, getAllMovements } from '@/lib/actions';
 import { getQueryValue, createVideoArray, checkIfWorkoutCompleted } from '@/utils/utils';
 import WorkoutNavigation from '@/components/WorkoutNavigation';
 import MarkCompleteWorkoutButton from '@/components/MarkCompleteWorkoutButton';
+import MarkUncompleteWorkoutButton from '@/components/MarkUncompleteWorkoutButton';
 
 async function Page({ searchParams  }) {
   let { program, week, day } = await searchParams
@@ -127,14 +128,13 @@ async function Page({ searchParams  }) {
               )}
             </div>
           ))}
-          {true && <MarkCompleteWorkoutButton workout={workout} user={session.user} />}
+          {!isWorkoutCompleted && <MarkCompleteWorkoutButton workoutId={workout._id.toString()} user={session.user} />}
         </div>
       ) : (
         <div className="flex justify-center items-center h-[80vh]">
           <h1 className="font-bold text-2xl text-black uppercase">No workout found</h1>
         </div>
-      )}
-      
+      )}      
     </>
   );
 }
