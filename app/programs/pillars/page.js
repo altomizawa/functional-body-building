@@ -10,7 +10,8 @@ import { fetchWorkout, getAllMovements } from '@/lib/actions';
 import { getQueryValue, createVideoArray, checkIfWorkoutCompleted } from '@/utils/utils';
 import WorkoutNavigation from '@/components/WorkoutNavigation';
 import MarkCompleteWorkoutButton from '@/components/MarkCompleteWorkoutButton';
-import MarkUncompleteWorkoutButton from '@/components/MarkUncompleteWorkoutButton';
+import { CircleCheckBig } from 'lucide-react';
+
 
 async function Page({ searchParams  }) {
   let { program, week, day } = await searchParams
@@ -86,11 +87,14 @@ async function Page({ searchParams  }) {
       <WorkoutNavigation program={program} week={week} day={day} />
 
       {/* Completion Form */}
-      {isWorkoutCompleted && <p className='bg-green-500 w-full text-white text-center p-2 font-bold'>WORKOUT DONE</p>}
+      {isWorkoutCompleted && <div className='bg-green-500 w-full py-6 flex justify-center items-center gap-2'>
+        <CircleCheckBig color='white' />
+        <p className= 'text-white text-center font-bold'>WORKOUT DONE</p>
+        </div>}
 
       {/* Workout Content */}
       {workout ? (
-        <div className="mt-4 mb-12">
+        <div className="-mt-8 mb-12">
           {workout.sections?.map((section, index) => (
             <div key={index}>
               <div className="w-full bg-black px-4 py-2 mt-8">

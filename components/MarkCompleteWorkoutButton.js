@@ -2,6 +2,7 @@
 
 import { useToast } from '@/hooks/use-toast';
 import { markWorkoutAsCompleted, markWorkoutAsUncompleted } from '@/lib/actions';
+import { CircleCheckBig } from 'lucide-react';
 
 
 const MarkCompleteWorkoutButton = ({ workoutId, user }) => {
@@ -43,9 +44,8 @@ const MarkCompleteWorkoutButton = ({ workoutId, user }) => {
     };
   return (
     <>
-      <button onClick={handleWorkoutCompletion}
-        className="container bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto block"
-      >
+      <button onClick={handleWorkoutCompletion} className="container bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-8 mx-auto flex justify-center gap-4">
+        <CircleCheckBig />
         Mark as Completed
       </button>
     </>
