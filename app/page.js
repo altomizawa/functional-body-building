@@ -3,7 +3,6 @@ import Link from 'next/link';
 import KOR__logo from '@/public/images/KOR_Somente_Red.svg';
 import { verifySession } from '@/lib/session';
 import { redirect } from 'next/navigation';
-import { use } from 'react';
 
 export default async function ProgramSelection() {
   const session = await verifySession(); // CHECK IF THERE'S A SESSION AND REDIRECT TO LOGIN IF NOT

@@ -14,6 +14,7 @@ import { CircleCheckBig } from 'lucide-react';
 
 
 async function Page({ searchParams  }) {
+
   let { program, week, day } = await searchParams
   let workout
 

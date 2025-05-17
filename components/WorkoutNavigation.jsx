@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 import { PROGRAM_LIST, MAX_WEEKS, MAX_DAYS } from '@/lib/constants';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { parse } from 'date-fns';
-
+import { useUser } from '@/providers/Provider';
 
 const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
+  const { user } = useUser();
   const [currentWorkout, setCurrentWorkout] = useState({
     week: week,
     day: day,

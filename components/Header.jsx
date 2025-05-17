@@ -1,17 +1,22 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { logout } from '@/lib/auth'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { useUser } from '@/providers/Provider'
 
 const Header = ({ session }) => {
-  const [currentUser, setCurrentUser] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
+
+  const { user, setUser } = useUser()
   
   const handleLogout = async () => {
-    await logout()
-    setCurrentUser(null)
     setIsOpen(false)
+    await logout()
+  }
+
+  const goToProfile = () => {
+    setIsOpen(false)
+    redirect(`/profile/${user.id}`)
   }
 
   const goToPreviousWorkouts = () => {
@@ -24,9 +29,6 @@ const Header = ({ session }) => {
     redirect('/programs/pillars')
   }
 
-  useEffect(() => {
-    setCurrentUser(session?.user)
-  }, [session])
 
   if (!session) {
     return null
@@ -39,9 +41,9 @@ const Header = ({ session }) => {
       </button>
       {isOpen && 
         <div className='bg-white w-screen md:w-full h-screen p-8 pt-24'>
-          <h2>HI, {currentUser?.name}</h2>
+          <h2>HI, {user?.name}</h2>
           <ul className='mt-8 flex flex-col gap-4'>
-            <li className='cursor-pointer hover:underline'>Profile</li>
+            <li onClick={goToProfile} className='cursor-pointer hover:underline'>Profile</li>
             <li onClick={goToWorkouts} className='cursor-pointer hover:underline'>Workouts</li>
             <li onClick={goToPreviousWorkouts} className='cursor-pointer hover:underline'>Previous Workouts</li>
             <li className='cursor-pointer hover:underline' onClick={handleLogout} >Logout</li>
