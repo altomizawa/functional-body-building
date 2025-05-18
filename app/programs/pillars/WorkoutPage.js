@@ -15,7 +15,6 @@ const WorkoutPage = ({session, workout, movements, program, week, day, isWorkout
 
   useEffect(() => {
     workout && setIsLoading(false)
-    console.log('workout', workout) 
   },[workout])
   return (
     <>
@@ -33,22 +32,14 @@ const WorkoutPage = ({session, workout, movements, program, week, day, isWorkout
           height={200} 
           className="absolute top-[-25%] -z-10 left-0 w-full h-auto" 
         />
-        
-        {workout && (
-          <>
-            <h1 className="font-bold text-2xl text-white uppercase text-center">{workout.program}</h1>
-            <h2 className="font-bold text-lg text-white uppercase text-center">
-              Week {workout.week} | day {workout.day}
-            </h2>
-          </>
-        )}
+
       </div>
 
       <WorkoutNavigation program={program} week={week} day={day} setIsLoading={setIsLoading} />
 
       {isLoading && (
-        <div className="flex justify-center items-center h-[80vh]">
-          <h1 className="font-bold text-2xl text-black uppercase">Loading...</h1>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
         </div>
       )}
 
@@ -66,7 +57,7 @@ const WorkoutPage = ({session, workout, movements, program, week, day, isWorkout
             <div key={index}>
               <div className="w-full bg-black px-4 py-2 mt-8">
                 <h3 className="text-white font-bold text-base flex items-center uppercase">
-                  <Image src={ideaIcon} alt="icon" width={24} height={24} className="mr-2" />
+                  <Image src={ideaIcon} alt="icon" width={24} height={24} className="mr-2 w-6 h-6" />
                   {section.section}
                 </h3>
               </div>
