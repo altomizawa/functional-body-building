@@ -166,6 +166,10 @@ export default function PillarWorkoutForm() {
                 <input className='w-full' onChange={handleSectionChange} type="text" name="section" placeholder="Section" value={section.section} />
               </div>
               <div className='w-full space-y-2'>
+                <label htmlFor="description">DESCRIPTION:</label>
+                <textarea className='w-full min-h-48 p-2 border-2' onChange={handleSectionChange} type="text" name="description" placeholder="Description" value={section.description} />
+              </div>
+              <div className='w-full space-y-2'>
                 <label htmlFor="section">ADD MOVEMENTS TO SECTION:</label>
                 <input className='w-full' onChange={handleMovement} type="text" name="movements" placeholder="Movements" ref={movementInputRef}/>
                 <div className='flex flex-wrap gap-4'>
@@ -182,10 +186,6 @@ export default function PillarWorkoutForm() {
                     ))}
                   </ul>}
                 </div>
-              </div>
-              <div className='w-full space-y-2'>
-                <label htmlFor="description">DESCRIPTION:</label>
-                <textarea className='w-full min-h-48 p-2 border-2' onChange={handleSectionChange} type="text" name="description" placeholder="Description" value={section.description} />
               </div>
               <div className='w-full space-y-2'>
                 <label htmlFor="notes">NOTES:</label>

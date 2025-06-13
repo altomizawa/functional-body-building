@@ -7,11 +7,11 @@ const SectionSchema = new Schema({
   icon: { type: String, required: false },
   description: {type: String, required: false},
   movements: [
-     {
-      movement: { type: Schema.Types.ObjectId, ref: 'Movement' },
+    {
+      type: { type: Schema.Types.ObjectId, ref: 'Movement' },
       link: String,
-      name: String
-    }
+      name: String,
+    },
   ],
   notes: { type: String, required: false },
 });
