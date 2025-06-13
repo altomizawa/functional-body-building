@@ -1,15 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, use } from "react"
 import Preview from '@/components/Preview'
 import Link from 'next/link'
-import  { createWorkout } from '@/lib/actions'
+import  { createWorkout, getAllMovements } from '@/lib/actions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
+import { EthernetPort } from 'lucide-react'
 
 
 
 export default function PillarWorkoutForm() {
+  const [movements, setMovements] = useState([])
+  const [filteredMovements, setFilteredMovements] = useState(null)
+
   const [newWorkout, setNewWorkout] = useState({
     program: '',
     week: '',
@@ -20,6 +24,7 @@ export default function PillarWorkoutForm() {
     section: '',
     icon: '',
     description: '',
+    movements: [],
     notes: ''
   })
 
@@ -77,6 +82,28 @@ export default function PillarWorkoutForm() {
     }));
   }
 
+  // ADD MOVEMENT TO SECTION
+  const handleMovement = (e) => {
+    if (!e.target.value) {
+      setFilteredMovements(null)
+      return
+    }
+    setFilteredMovements(movements.filter(movement => movement.name.includes(e.target.value.toLowerCase())))  }
+
+  const addMovement = (movement) => {
+    setSection(prevSection => ({
+      ...prevSection, 
+      movements: [...prevSection.movements, movement]
+    }));
+    setFilteredMovements(null)
+  };
+  const removeMovement = (movement) => {
+    setSection(prevSection => ({
+      ...prevSection, 
+      movements: prevSection.movements.filter((prevMovement) => prevMovement.name !== movement.name)
+    }));
+  };
+
   const addNewSection = () => {
 
     setNewWorkout(prev => ({
@@ -91,6 +118,26 @@ export default function PillarWorkoutForm() {
       notes: ''
     })
   }
+
+  useEffect(() => {
+    const fetchMovements = async () => {
+      try {
+        const res = await getAllMovements()
+        if (!res.success) {
+          toast({
+            title: 'Error',
+            description: res.error,
+          })
+          return
+        }
+        setMovements(res.data)
+      } catch (error) {
+        console.error('Error fetching movements:', error)
+      }
+    }
+    fetchMovements()
+  }
+  , [])
 
   return (
       <form onSubmit={onSubmit} className='flex flex-col md:grid md:grid-cols-2 gap-12 h-full px-6 my-16 max-w-[1440px] mx-auto'>
@@ -114,6 +161,24 @@ export default function PillarWorkoutForm() {
               <div className='w-full space-y-2'>
                 <label htmlFor="section">SECTION NAME:</label>
                 <input className='w-full' onChange={handleSectionChange} type="text" name="section" placeholder="Section" value={section.section} />
+              </div>
+              <div className='w-full space-y-2'>
+                <label htmlFor="section">ADD MOVEMENTS TO SECTION:</label>
+                <input className='w-full' onChange={handleMovement} type="text" name="section" placeholder="Section" />
+                <div className='flex flex-wrap gap-4'>
+                  {section.movements.map((movement, index) => (
+                    <p key={index} className='border-[1px] border-black/20 px-2'>{movement.name}<span className='ml-2 cursor-pointer' onClick={()=>removeMovement(movement)}>X</span></p>
+                  ))}
+                </div>
+                <div className='relative'>
+                  {filteredMovements && filteredMovements.length>0 && <ul className='absolute top-4 left-0 bg-white border-[1px] border-black/20 shadow-md p-2'>
+                    {filteredMovements.map((movement, index) => (
+                      <div key={index} className='flex items-center gap-2 cursor-pointer hover:bg-black hover:text-white' onClick={() => addMovement(movement)}>
+                        <p>{movement.name}</p>
+                      </div>
+                    ))}
+                  </ul>}
+                </div>
               </div>
               <div className='w-full space-y-2'>
                 <label htmlFor="description">DESCRIPTION:</label>

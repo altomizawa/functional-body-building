@@ -6,6 +6,13 @@ const SectionSchema = new Schema({
   section: { type: String, required: false },
   icon: { type: String, required: false },
   description: {type: String, required: false},
+  movements: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Movement',
+      required: false
+    }
+  ],
   notes: { type: String, required: false },
 });
 
