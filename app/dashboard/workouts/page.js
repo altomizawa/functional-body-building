@@ -1,12 +1,11 @@
 "use client"
 
-import { useState, useEffect, use } from "react"
+import { useState, useEffect, useRef } from "react"
 import Preview from '@/components/Preview'
 import Link from 'next/link'
 import  { createWorkout, getAllMovements } from '@/lib/actions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
-import { EthernetPort } from 'lucide-react'
 
 
 
@@ -43,9 +42,12 @@ export default function PillarWorkoutForm() {
       section: '',
       icon: '',
       description: '',
+      movements: [],
       notes: ''
     })
   }
+
+  const movementInputRef = useRef(null)
   
 
 
@@ -96,6 +98,7 @@ export default function PillarWorkoutForm() {
       movements: [...prevSection.movements, movement]
     }));
     setFilteredMovements(null)
+    movementInputRef.current.value = ''
   };
   const removeMovement = (movement) => {
     setSection(prevSection => ({
@@ -114,7 +117,7 @@ export default function PillarWorkoutForm() {
       section: '',
       icon: '',
       description: '',
-      videoDemo: [],
+      movements: [],
       notes: ''
     })
   }
@@ -164,16 +167,16 @@ export default function PillarWorkoutForm() {
               </div>
               <div className='w-full space-y-2'>
                 <label htmlFor="section">ADD MOVEMENTS TO SECTION:</label>
-                <input className='w-full' onChange={handleMovement} type="text" name="section" placeholder="Section" />
+                <input className='w-full' onChange={handleMovement} type="text" name="movements" placeholder="Movements" ref={movementInputRef}/>
                 <div className='flex flex-wrap gap-4'>
-                  {section.movements.map((movement, index) => (
-                    <p key={index} className='border-[1px] border-black/20 px-2'>{movement.name}<span className='ml-2 cursor-pointer' onClick={()=>removeMovement(movement)}>X</span></p>
+                  {section.movements && section.movements.map((movement, index) => (
+                    <p key={index} className='border-[1px] border-black/20 px-2 cursor-pointer hover:bg-red-500 hover:text-white' onClick={() => removeMovement(movement)}>{movement.name}<span className='ml-2 cursor-pointer' onClick={()=>removeMovement(movement)}>X</span></p>
                   ))}
                 </div>
                 <div className='relative'>
-                  {filteredMovements && filteredMovements.length>0 && <ul className='absolute top-4 left-0 bg-white border-[1px] border-black/20 shadow-md p-2'>
-                    {filteredMovements.map((movement, index) => (
-                      <div key={index} className='flex items-center gap-2 cursor-pointer hover:bg-black hover:text-white' onClick={() => addMovement(movement)}>
+                  {filteredMovements && filteredMovements.length>0 && <ul className='absolute top-4 left-0 bg-white border-[1px] border-black/20 shadow-md'>
+                    {filteredMovements?.map((movement, index) => (
+                      <div key={index} className='px-2 py-2 flex items-center gap-2 cursor-pointer hover:bg-black hover:text-white' onClick={() => addMovement(movement)}>
                         <p>{movement.name}</p>
                       </div>
                     ))}
