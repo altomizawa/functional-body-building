@@ -3,17 +3,20 @@
 import { useState, useEffect, useRef } from "react"
 import Preview from '@/components/Preview'
 import Link from 'next/link'
-import { createWorkout, getAllMovements, fetchWorkout, updateWorkout } from '@/lib/actions'
+import { deleteWorkout, getAllMovements, fetchWorkout, updateWorkout } from '@/lib/actions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import { PROGRAM_LIST, MAX_DAYS, MAX_WEEKS } from '@/lib/constants'
+import { set } from 'mongoose'
+import DeletePopup from '@/components/DeletePopup'
 
 export default function EditWorkoutForm() {
   const [movements, setMovements] = useState([])
   const [filteredMovements, setFilteredMovements] = useState(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [searchText, setSearchText] = useState('')
-
+  const [deletePopup, setDeletePopup] = useState(false)
+  const [isThereAWorkout, setIsThereAWorkout] = useState(false)
   const [newWorkout, setNewWorkout] = useState({
     program: '',
     week: '',
@@ -36,15 +39,17 @@ export default function EditWorkoutForm() {
   const resetForm = () => {
     setNewWorkout({
       program: '',
-      week: '',
-      day: '',
-      sections: [{
-        section: '',
-        icon: '',
-        description: '',
-        movements: [],
-        notes: ''
-      }]
+        week: '',
+        day: '',
+        sections: [
+          {
+            section: '',
+            icon: '',
+            description: '',
+            movements: [],
+            notes: ''
+          },
+        ]
     })
     setCurrentSection(0)
   }
@@ -64,7 +69,7 @@ export default function EditWorkoutForm() {
         title: 'Success',
         description: 'Workout updated successfully',
       })
-      resetForm()
+      
     } catch (error) {
       toast({
         title: 'Error',
@@ -72,6 +77,8 @@ export default function EditWorkoutForm() {
       })
       console.error(error)
     }
+    resetForm()
+    setIsThereAWorkout(false)
   }
 
   const handleWorkoutChange = (e) => {
@@ -203,6 +210,7 @@ export default function EditWorkoutForm() {
     try {
       const workoutData = await fetchWorkout(selectedProgram, selectedWeek, selectedDay)
       if (!workoutData.success) {
+        resetForm()
         toast({
           title: 'Error',
           description: workoutData.error,
@@ -210,6 +218,7 @@ export default function EditWorkoutForm() {
         return
       }
       setNewWorkout(workoutData.data)
+      setIsThereAWorkout(true)
       toast({
         title: 'Success',
         description: 'Workout fetched successfully',
@@ -217,6 +226,7 @@ export default function EditWorkoutForm() {
       // resetForm();
     } catch (error) {
       console.error('Error fetching workout:', error)
+      // resetForm()
       toast({
         title: 'Error',
         description: 'Failed to fetch workout',
@@ -284,7 +294,7 @@ export default function EditWorkoutForm() {
         {/* FORM */}
         <div>
           <Toaster />
-          <h1 className="text-2xl md:text-3xl font-bold text-left">ADD NEW WORKOUT</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-left">EDIT WORKOUT</h1>
           <div className='flex items-center gap-2 mt-4'>
             <input
               className='w-full'
@@ -430,24 +440,22 @@ export default function EditWorkoutForm() {
                   >
                     Remove Section
                   </button>
-                {/* <div className="flex justify-between">
-                  <button
-                    type='button'
-                    className='button__main-menu my-2 uppercase bg-green-500 text-white px-4 py-2'
-                    onClick={addNewSection}
-                  >
-                    Add Section
-                  </button>
-                </div> */}
               </div>
             ))}
           </div>
         </div>
 
-        <div className='flex flex-col gap-4 mt-8'>
-          
+        {isThereAWorkout && <div className='grid md:grid-cols-2 gap-4 mt-8 px-6'>
+          <DeletePopup deletePopup={deletePopup} setDeletePopup={setDeletePopup} workoutId={newWorkout._id} />
+          <button
+            type='button'
+            className='w-full bg-red-600 text-center text-white px-4 py-2 rounded-md duration-300 hover:bg-red-500'
+            onClick={() => setDeletePopup(true)}
+            >
+            REMOVE WORKOUT
+          </button>
           <button type="submit" className='button__submit'>SUBMIT</button>
-        </div>
+        </div>}
       </form>
     </>
   )
