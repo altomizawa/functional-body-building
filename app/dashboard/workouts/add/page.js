@@ -7,7 +7,7 @@ import { createWorkout, getAllMovements } from '@/lib/actions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 
-export default function EditWorkoutForm() {
+export default function AddWorkoutForm() {
   const [movements, setMovements] = useState([])
   const [filteredMovements, setFilteredMovements] = useState(null)
   const [currentSection, setCurrentSection] = useState(0)
