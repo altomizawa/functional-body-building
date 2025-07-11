@@ -1,82 +1,110 @@
 # KOR FBB
 
-Sistema de gerenciamento de treinos, movimentos e usuários para academias, desenvolvido com Next.js, MongoDB e autenticação personalizada.
+Training, movement, and user management system for gyms, developed with Next.js, MongoDB, and custom authentication
 
 ## Sumário
 
-- [Visão Geral](#visão-geral)
-- [Funcionalidades](#funcionalidades)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Instalação](#instalação)
-- [Configuração](#configuração)
-- [Scripts Disponíveis](#scripts-disponíveis)
-- [Estrutura de Pastas](#estrutura-de-pastas)
-- [Como Contribuir](#como-contribuir)
-- [Licença](#licença)
+- [Overview](#visão-geral)
+- [Features](#funcionalidades)
+- [Technologies Used](#tecnologias-utilizadas)
+- [Installation](#instalação)
+- [Configuration](#configuração)
+- [Available Scripts](#scripts-disponíveis)
+- [Folder Structures](#estrutura-de-pastas)
+- [How to Contribute](#como-contribuir)
+- [License](#licença)
 
 ---
 
-## Visão Geral
+## Overview
 
-Este projeto permite o gerenciamento de treinos, movimentos, usuários e sessões, com autenticação e autorização baseada em papéis (admin/usuário). O sistema é voltado para academias e treinadores que desejam organizar programas de treino, registrar progresso e controlar acesso.
+This project enables management of workouts, movements, users, and sessions with role-based authentication and authorization (admin/user). It’s aimed at gyms and trainers who want to organize training programs, track progress, and control access.
 
-## Funcionalidades
+## Features
 
-- Cadastro, edição e exclusão de treinos (workouts) por programa, semana e dia.
-- Marcação de treinos como concluídos ou não concluídos por usuários.
-- Cadastro e listagem de movimentos (exercícios).
-- Gerenciamento de usuários (admin pode editar, listar e modificar usuários).
-- Autenticação e recuperação de senha.
-- Dashboard para visualização dos dados.
-- API RESTful para integração com frontend.
+- Create, edit, and delete workouts by program, week, and day
+- Users can mark workouts as completed or not completed
+- Register and list movements (exercises)
+- User management (admin can edit, list, and modify users)
+- Authentication and password recovery
+- Dashboard for data visualization
+- RESTful API for frontend integration
 
-## Tecnologias Utilizadas
+## Techonologies Used
 
-- **Next.js** (App Router)
-- **React**
-- **MongoDB** (via Mongoose)
-- **Tailwind CSS** (estilização)
-- **PostCSS**
-- **ESLint** (padronização de código)
-- **Node.js**
-- **JWT** (autenticação)
-- **Custom Error Handling**
+- Next.js (App Router)
+- React
+- MongoDB (via Mongoose)
+- Tailwind CSS (styling)
+- PostCSS
+- ESLint (code standardization)
+- Node.js
+- JWT (authentication)
+- Custom Error Handling
 
-## Instalação
+## Screenshots
+#### LOGIN:
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/450d8994-1889-4cc0-a9c3-67120cc63001" />
 
-1. Clone o repositório:
+#### SIGNUP
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/8152eb35-1554-40a8-9d02-2699867575bd" />
+
+#### RECOVER PASSWORD
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/d90c44de-a406-45d0-8ac6-70641c9dd337" />
+
+#### COMPLETED WORKOUTS
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/ca620fc6-bb24-47e3-b939-34021f55cc7c" />
+
+#### WORKOUTS
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/99b3ca5c-5684-4741-8880-8c4dd749419f" />
+
+
+#### ADD NEW EXERCISE/MOVEMENT
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/0217399a-9535-4611-9b05-18a34d0c5456" />
+
+#### UPDATE USER INFO
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/49d085c3-3781-4467-8593-e22be8a5173b" />
+
+#### EDIT WORKOUT
+<img width="640" height="445" alt="image" src="https://github.com/user-attachments/assets/4a5ec409-89bf-4d1d-b67c-83e798b1c8ce" />
+
+
+
+## Installation
+
+1. Clone the repository:
    ```bash
    git clone https://github.com/seu-usuario/kor-fbb.git
    cd kor-fbb
    ```
 
-2. Instale as dependências:
+2. Install the dependencies:
    ```bash
    npm install
    ```
 
-3. Configure as variáveis de ambiente:
-   - Crie um arquivo `.env.local` na raiz do projeto.
-   - Adicione as variáveis necessárias, por exemplo:
-     ```
-    MONGODB_URI = your MongoDB URI
-    DBACCESSTOKEN = your DB Access Token
-    JWT_SECRET = your JWT  secret
-     ```
+3. Configure environment variables
+   - Create a .env.local file at the root of the project
+   - Add required variables:
+  ```
+ MONGODB_URI = your MongoDB URI
+ DBACCESSTOKEN = your DB Access Token
+ JWT_SECRET = your JWT  secret
+  ```
 
-## Configuração
+## Configuration
+- Make sure MongoDB is running locally or provide a valid connection URI
+- Adjust Next.js and Tailwind settings in next.config.mjs and tailwind.config.mjs as needed
 
-- Certifique-se de que o MongoDB está rodando localmente ou forneça uma URI de conexão válida.
-- Ajuste as configurações do Next.js e Tailwind conforme necessário nos arquivos `next.config.mjs` e `tailwind.config.mjs`.
 
-## Scripts Disponíveis
+## Available Scripts
 
-- `npm run dev` — Inicia o servidor de desenvolvimento.
-- `npm run build` — Compila o projeto para produção.
-- `npm run start` — Inicia o servidor em modo produção.
-- `npm run lint` — Executa o ESLint para análise de código.
+- `npm run dev` — Starts the development server
+- `npm run build` — Builds the project for production
+- `npm run start` — Starts the production server
+- `npm run lint` — Runs ESLint for code analysis
 
-## Estrutura de Pastas
+## Folder Structure
 
 ```
 app/                # Páginas e rotas do Next.js
@@ -88,18 +116,15 @@ public/             # Arquivos estáticos e imagens
 utils/              # Utilitários diversos
 ```
 
-## Como Contribuir
+## How to Contribute
+- Fork the project
+- Create a feature/fix branch: git checkout -b my-feature
+- Commit your changes: git commit -m 'My feature'
+- Push to your branch: git push origin my-feature
+- Open a Pull Request
 
-1. Faça um fork do projeto.
-2. Crie uma branch para sua feature/fix: `git checkout -b minha-feature`
-3. Commit suas alterações: `git commit -m 'Minha feature'`
-4. Faça push para a branch: `git push origin minha-feature`
-5. Abra um Pull Request.
 
-## Licença
+## License
+This project is under the MIT license.
 
-Este projeto está sob a licença MIT.
-
----
-
-Se precisar de instruções específicas para deploy, integração ou dúvidas sobre endpoints da API, consulte os arquivos de configuração ou entre em contato com o mantenedor do projeto.
+If you need deployment instructions, API integration guidance, or details about endpoints, check the config files or contact the project maintainer.
