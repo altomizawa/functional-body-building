@@ -56,7 +56,6 @@ async function Page({ searchParams  }) {
   const isWorkoutCompleted = checkIfWorkoutCompleted(userData, workout);
 
 
-
   return (
     <>
       {/* Header */}
@@ -109,11 +108,11 @@ async function Page({ searchParams  }) {
               </div>
 
               {/* Videos */}
-              {movements && createVideoArray(movements, section.description).length > 0 && (
+              {section.movements && section.movements.length > 0 && (
                 <div className="w-[90%] mx-auto mt-4 space-y-2">
-                  <h3>VIDEOS ({createVideoArray(movements, section.description).length}):</h3>
+                  <h3>VIDEOS ({section.movements.length}):</h3>
                   <div className="w-full mx-auto mt-2 space-y-2 flex gap-4 items-center overflow-auto">
-                    {createVideoArray(movements, section.description).map((video, idx) => (
+                    {section.movements.map((video, idx) => (
                       <div key={idx} className="flex flex-col">
                         <p className="text-xs font-bold">{video.name.toUpperCase()}</p>
                         <YouTubeEmbed videoid={getQueryValue(video.link)} width={400} />
