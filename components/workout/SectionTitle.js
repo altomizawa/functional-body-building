@@ -7,7 +7,6 @@ const SectionTitle = ({ title }) => {
   const [icon, setIcon] = useState(<Lightbulb className="w-4 h-4 mr-2" />);
 
   useEffect(() => {
-    console.log('Section title', title)
     if (title.toLowerCase().includes('coach notes')) {
       setIcon(<Lightbulb className="w-4 h-4 mr-2" />);
     }
