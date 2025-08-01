@@ -15,6 +15,9 @@ function convertPhoneToDisplay(phoneNumber) {
 }
 
 function createVideoArray(movements, sectionDescription) {
+  if (!movements || !sectionDescription) {
+    return [];
+  }
   return movements?.data.filter(movement =>
     sectionDescription.toLowerCase().includes(movement.name.toLowerCase())
   );
