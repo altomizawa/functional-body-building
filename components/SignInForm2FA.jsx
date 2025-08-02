@@ -97,7 +97,7 @@ export default function SigninForm2FA() {
             {code.map((digit, index) => (
               <input
                 key={index}
-                type="text"
+                type="tel"
                 value={digit}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 ref={(el) => (inputRefs.current[index] = el)}
