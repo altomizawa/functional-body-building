@@ -10,10 +10,12 @@ export default function SigninForm2FA() {
   const [code, setCode] = useState(['', '', '', '']); // Array para armazenar os 4 dígitos
   const [step, setStep] = useState(1); // Step 1: Email input, Step 2: Code validation
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const inputRefs = useRef([]);
 
   const handleEmailSubmit = async (formdata) => {
+    setIsLoading(true);
     setError(null);
     const email = formdata.get('email');
     setEmail(email);
@@ -22,10 +24,11 @@ export default function SigninForm2FA() {
       if (!validationResponse.success) {
         throw new Error(validationResponse.error);
       }
-
+      setIsLoading(false);
       setStep(2); // Avançar para validação do código
     } catch (err) {
       setError('Erro ao verificar usuário.');
+      setIsLoading(false);
     }
   };
 
@@ -83,7 +86,7 @@ export default function SigninForm2FA() {
             type="submit"
             className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500"
           >
-            Enviar Código
+            {isLoading ? 'Enviando...' : 'Enviar Código'}
           </button>
         </FormContainer>
       )}
