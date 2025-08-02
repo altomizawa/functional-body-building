@@ -1,7 +1,7 @@
 import { SigninForm } from '@/components/SigninForm'
 import Image from 'next/image'
 import KOR__logo from '@/public/images/KOR_Somente_Red.svg'
-
+import SigninForm2FA from '@/components/SignInForm2FA'
 
 const Signin = () => {
   return (
@@ -11,11 +11,9 @@ const Signin = () => {
         <h1 className="text-sm md:text-xl text-center">FUNCTIONAL BODYBUILDING</h1>
       </div>
       <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold">Login</h1>
-          <p className="text-muted-foreground mt-2">Enter your credentials</p>
-        </div>
-        <SigninForm />
+       
+        {/* <SigninForm /> */}
+        <SigninForm2FA />
       </div>
     </main>
   )

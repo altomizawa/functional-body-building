@@ -26,7 +26,7 @@ export async function POST(req) {
 
     // Send reset email
     const resetLink = `${process.env.BASE_URL}/reset-password?token=${resetToken}`;
-    await sendResetEmail(email, resetLink);
+    await sendResetEmail(email, resetLink, 'reset', _);
 
     return NextResponse.json({ message: "Check your email for the reset link" }, { status: 200 });
   } catch (error) {

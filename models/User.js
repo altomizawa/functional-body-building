@@ -58,6 +58,8 @@ const UserSchema = new Schema({
   },
   resetToken: { type: String, default: null },
   resetTokenExpires: { type: Date, default: null },
+  TwoFAToken: { type: Number, default: null },
+  TwoFATokenExpires: { type: Date, default: null },
 }, {
   timestamps: true // Automatically adds createdAt and updatedAt fields
 });

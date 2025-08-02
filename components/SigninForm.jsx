@@ -3,6 +3,7 @@
 import { useState, useActionState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { signinUserAction } from '@/lib/auth';
+import FormContainer from './form/FormContainer';
 import Link from 'next/link';
 
 export function SigninForm() {
@@ -19,8 +20,7 @@ export function SigninForm() {
   }, [state]);
 
   return (
-    <form action={formAction} className="space-y-6 bg-white shadow-md rounded-md">
-      <div className="space-y-4 p-4 rounded-md">
+    <FormContainer formAction={formAction}>
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
           Email
           <input
@@ -60,16 +60,13 @@ export function SigninForm() {
         </button>
         {!state?.success && <p className="text-red-500 text-sm">{state?.error}</p>}
         {!state?.success && state?.error === 'Email or password is incorrect' && <Link href='/forgot-password' className="text-red-500 text-sm underline">Forgot your password?</Link>}
-        
-        <div className="flex justify-center p-4 ">
-          <div className="text-sm text-muted-foreground">
-            Not registered yet?{" "}
-            <Link href="/signup" className="underline underline-offset-4 text-black hover:text-primary">
-              Sign up
-            </Link>
-          </div>
-      </div>
-      </div>
-    </form>
+
+        <div className="text-sm text-muted-foreground p-4 flex justify-center">
+          Not registered yet?{" "}
+          <Link href="/signup" className="underline underline-offset-4 text-black hover:text-primary">
+            Sign up
+          </Link>
+        </div>
+    </FormContainer>
   );
 }
