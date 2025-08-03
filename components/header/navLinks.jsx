@@ -21,7 +21,7 @@ const NavLink = ({ children, handleClick, type }) => {
     },
     logout: {
       icon: LogOut,
-      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-red-600 hover:text-whitepx-4 cursor-pointer flex gap-4 items-center' // Estilo diferente para logout
+      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-red-600 hover:text-white px-4 cursor-pointer flex gap-4 items-center' // Estilo diferente para logout
     }
   }
   
