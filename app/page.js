@@ -16,10 +16,10 @@ export default async function ProgramSelection() {
         <h1 className="text-sm md:text-xl text-center">FUNCTIONAL BODYBUILDING</h1>
       </div>
       <main className="flex flex-col gap-8 items-center sm:items-start w-[90%] md:w-3/4 lg:w-1/2">
-        {session.role !=='user' && <Link href="/dashboard/users" className='button__main-menu'>USERS</Link>}
-        {session.role !=='user' && <Link href="/dashboard/workouts/add" className='button__main-menu'>ADD WORKOUT</Link>}
-        {session.role !=='user' && <Link href="/dashboard/workouts/edit" className='button__main-menu'>EDIT WORKOUT</Link>}
-        {session.role !== 'user' && <Link href="dashboard/movements" className='button__main-menu'>ADD EXERCISE</Link>}
+        <Link href="/dashboard/users" className='button__main-menu'>USERS</Link>
+        <Link href="/dashboard/workouts/add" className='button__main-menu'>ADD WORKOUT</Link>
+        <Link href="/dashboard/workouts/edit" className='button__main-menu'>EDIT WORKOUT</Link>
+        <Link href="dashboard/movements" className='button__main-menu'>ADD EXERCISE</Link>
         <Link href="/programs" className='button__main-menu'>GO TO WORKOUTS</Link>
       </main>
     </div>

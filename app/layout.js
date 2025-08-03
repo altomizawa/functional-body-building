@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from '@/components/Header';
+import Header from '@/components/header/Header';
 import { cookies } from 'next/headers'
 import { decrypt } from '@/lib/session'
 
@@ -25,18 +25,13 @@ export default async function RootLayout({ children }) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get('session')?.value
   const session = await decrypt(cookie)
-  const sanitizedUser = {
-    id: session?.user?.id,
-    name: session?.user?.name,
-    email: session?.user?.email,
-  }
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white z-0`}
       > 
-        <Header session={session} />
+        <Header user={session?.user} />
         {children}
       </body>
     </html>
