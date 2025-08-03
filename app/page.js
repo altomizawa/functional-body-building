@@ -1,5 +1,5 @@
 import Image from "next/image";
-import KOR__logo from '@/public/images/KOR_Somente_Red.svg';
+import KOR__logo from '@/public/logo_white.png';
 import { verifySession } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
@@ -16,7 +16,6 @@ export default async function ProgramSelection() {
       <Image src={background} alt="background" width={1920} height={1024} className="absolute inset-0 object-cover w-full h-full -z-10" />
       <div className='absolute top-8 lef-0 w-full'>
         <Image src={KOR__logo} alt="logo" width={200} height={200} className="w-16 md:w-[120px] h-auto mx-auto" />
-        <h1 className="text-sm md:text-xl text-center">FUNCTIONAL BODYBUILDING</h1>
       </div>
       <DashboardContainer>
         <DashboardLink type='users'>USERS</DashboardLink>

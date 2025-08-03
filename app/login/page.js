@@ -1,6 +1,6 @@
 import { SigninForm } from '@/components/SigninForm'
 import Image from 'next/image'
-import KOR__logo from '@/public/images/KOR_Somente_Red.svg'
+import KOR__logo from '@/public/logo_white.png';
 import SigninForm2FA from '@/components/SignInForm2FA'
 
 const Signin = () => {

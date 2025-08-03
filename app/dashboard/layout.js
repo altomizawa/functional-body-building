@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation'
 
 export default async function layout ({ children }) {
   const session = await verifySession()
-  // if (session.role !== 'admin') {
-  //   redirect('/')
-  // }
+  if (session.role !== 'admin') {
+    redirect('/')
+  }
 
   return (
     <div>
