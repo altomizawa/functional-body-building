@@ -9,14 +9,12 @@ import Divider from './Divider'
 const Header = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const router = useRouter()
-
   if (!user) {
     return null
   } else return (
     <div className='fixed top-0 right-0 h-[320px] z-10'>
       <MenuSandwich isOpen={isOpen} setIsOpen={setIsOpen} />
-      <NavOpen isOpen={isOpen} setIsOpen={setIsOpen} username={user.name} />
+      <NavOpen isOpen={isOpen} setIsOpen={setIsOpen} username={user.name} userRole={user.role} />
     </div>
   )
 }
@@ -32,10 +30,17 @@ const MenuSandwich = ({ isOpen, setIsOpen }) => {
   )
 }
 
-const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined' }) => {
+const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole }) => {
+  const router = useRouter()
+  console.log(userRole) 
+
   const goToPreviousWorkouts = () => {
     setIsOpen(false)
     router.push('/programs/completed')
+  }
+  const goToDashboard = () => {
+    setIsOpen(false)
+    router.push('/')
   }
 
   const goToWorkouts = () => {
@@ -51,6 +56,10 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined' }) => {
     <div className={`${isOpen ? 'right-0' : '-right-full'} duration-500  -z-10 fixed top-0 w-screen h-screen p-8 pt-24 grid place-content-center bg-black`}>
       <h2 className='text-4xl text-white'>HI, {username}</h2>
       <NavLinkContainer>
+        {userRole === 'admin' && <>
+          <NavLink handleClick={goToDashboard} type='dashboard'>Dashboard</NavLink>
+          <Divider />
+        </>}
         <NavLink handleClick={() => {}} type='profile'>Profile</NavLink>
         <Divider />
         <NavLink handleClick={goToWorkouts} type='workouts'>Workouts</NavLink>

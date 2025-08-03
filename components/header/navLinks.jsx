@@ -1,36 +1,41 @@
 import React from 'react'
-import { User, Dumbbell, History, LogOut } from 'lucide-react'
+import { User, Dumbbell, History, LogOut, LayoutDashboard } from 'lucide-react'
 
-const NavLink = ({children, handleClick, type}) => {
-  const liClass = 'text-white text-xl uppercase py-4 duration-500 hover:bg-gray-300 hover:text-black px-4 cursor-pointer flex gap-4 items-center';
-  
-  switch (type) {
-    case 'profile':
-      return (
-        <li onClick={handleClick} className={liClass}>
-          <User />{children}
-        </li>
-      )
-    case 'workouts':
-      return (
-        <li onClick={handleClick} className={liClass}>
-          <Dumbbell />{children}
-        </li>
-      )
-      case 'previous':
-        return (
-          <li onClick={handleClick} className={liClass}>
-            <History />{children}
-          </li>
-        )
-    case 'logout':
-      return (
-        <li onClick={handleClick} className={liClass}>
-          <LogOut />{children}
-        </li>
-      )
+const NavLink = ({ children, handleClick, type }) => {
+  const linkConfig = {
+    dashboard: {
+      icon: LayoutDashboard,
+      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-gray-300 hover:text-black px-4 cursor-pointer flex gap-4 items-center'
+    },
+    profile: {
+      icon: User,
+      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-gray-300 hover:text-black px-4 cursor-pointer flex gap-4 items-center'
+    },
+    workouts: {
+      icon: Dumbbell,
+      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-gray-300 hover:text-black px-4 cursor-pointer flex gap-4 items-center'
+    },
+    previous: {
+      icon: History,
+      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-gray-300 hover:text-black px-4 cursor-pointer flex gap-4 items-center'
+    },
+    logout: {
+      icon: LogOut,
+      className: 'text-white text-xl uppercase py-4 duration-500 hover:bg-red-300 hover:text-red-800 px-4 cursor-pointer flex gap-4 items-center' // Estilo diferente para logout
     }
-
+  }
+  
+  const config = linkConfig[type]
+  if (!config) return null
+  
+  const { icon: IconComponent, className } = config
+  
+  return (
+    <li onClick={handleClick} className={className}>
+      <IconComponent />
+      {children}
+    </li>
+  )
 }
 
 export default NavLink
