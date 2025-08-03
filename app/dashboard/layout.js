@@ -1,5 +1,4 @@
 import React from 'react'
-import LogoutButton from '@/components/LogoutButton'
 import { verifySession } from '@/lib/session'
 import { redirect } from 'next/navigation'
 

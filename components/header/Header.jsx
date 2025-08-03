@@ -14,7 +14,7 @@ const Header = ({ user }) => {
   } else return (
     <div className='fixed top-0 right-0 h-[320px] z-10'>
       <MenuSandwich isOpen={isOpen} setIsOpen={setIsOpen} />
-      <NavOpen isOpen={isOpen} setIsOpen={setIsOpen} username={user.name} userRole={user.role} />
+      <NavOpen isOpen={isOpen} setIsOpen={setIsOpen} username={user.name} userRole={user.role} userId={user.id} />
     </div>
   )
 }
@@ -30,9 +30,8 @@ const MenuSandwich = ({ isOpen, setIsOpen }) => {
   )
 }
 
-const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole }) => {
+const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole, userId }) => {
   const router = useRouter()
-  console.log(userRole) 
 
   const goToPreviousWorkouts = () => {
     setIsOpen(false)
@@ -41,6 +40,11 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole }) => {
   const goToDashboard = () => {
     setIsOpen(false)
     router.push('/')
+  }
+ 
+  const goToProfile = () => {
+    setIsOpen(false)
+    router.push('/user/' + userId)
   }
 
   const goToWorkouts = () => {
@@ -52,6 +56,20 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole }) => {
     setIsOpen(false)
     await logout()
   }
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => {
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [setIsOpen])
+
+
   return (
     <div className={`${isOpen ? 'right-0' : '-right-full'} duration-500  -z-10 fixed top-0 w-screen h-screen p-8 pt-24 grid place-content-center bg-black`}>
       <h2 className='text-4xl text-white'>HI, {username}</h2>
@@ -60,7 +78,7 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole }) => {
           <NavLink handleClick={goToDashboard} type='dashboard'>Dashboard</NavLink>
           <Divider />
         </>}
-        <NavLink handleClick={() => {}} type='profile'>Profile</NavLink>
+        <NavLink handleClick={goToProfile} type='profile'>Profile</NavLink>
         <Divider />
         <NavLink handleClick={goToWorkouts} type='workouts'>Workouts</NavLink>
         <Divider />

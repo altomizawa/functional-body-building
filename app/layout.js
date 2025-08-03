@@ -28,12 +28,12 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white z-0`}
-      > 
-        <Header user={session?.user} />
-        {children}
-      </body>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white z-0`}
+        > 
+          <Header user={session?.user} />
+          {children}
+        </body>
     </html>
   );
 }
