@@ -4,6 +4,7 @@ import { logout } from '@/lib/auth'
 import NavLink from './navLinks'
 import NavLinkContainer from './NavLinkContainer'
 import { useRouter } from 'next/navigation'
+import Divider from './Divider'
 
 const Header = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -51,8 +52,11 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined' }) => {
       <h2 className='text-4xl text-white'>HI, {username}</h2>
       <NavLinkContainer>
         <NavLink handleClick={() => {}} type='profile'>Profile</NavLink>
+        <Divider />
         <NavLink handleClick={goToWorkouts} type='workouts'>Workouts</NavLink>
+        <Divider />
         <NavLink handleClick={goToPreviousWorkouts} type='previous' >Previous Workouts</NavLink>
+        <Divider />
         <NavLink handleClick={handleLogout} type='logout' >Logout</NavLink>
       </NavLinkContainer>
     </div>
