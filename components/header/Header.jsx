@@ -1,12 +1,14 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { logout } from '@/lib/auth'
-import { redirect } from 'next/navigation'
 import NavLink from './navLinks'
 import NavLinkContainer from './NavLinkContainer'
+import { useRouter } from 'next/navigation'
 
 const Header = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const router = useRouter()
 
   if (!user) {
     return null
@@ -32,12 +34,12 @@ const MenuSandwich = ({ isOpen, setIsOpen }) => {
 const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined' }) => {
   const goToPreviousWorkouts = () => {
     setIsOpen(false)
-    redirect('/programs/completed')
+    router.push('/programs/completed')
   }
 
   const goToWorkouts = () => {
     setIsOpen(false)
-    redirect('/programs/pillars')
+    router.push('/programs/pillars')
   }
   
   const handleLogout = async () => {
