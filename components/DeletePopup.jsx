@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { deleteWorkout } from '@/lib/actions'
+import { deleteWorkout } from '@/lib/workoutActions'
 import { useToast } from '@/hooks/use-toast'
 
 

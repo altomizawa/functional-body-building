@@ -2,7 +2,7 @@
 
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
-import { markWorkoutAsCompleted, markWorkoutAsUncompleted } from '@/lib/actions';
+import { markWorkoutAsUncompleted } from '@/lib/workoutActions';
 
 
 const MarkUncompleteWorkoutButton = ({ workoutId, userId }) => {

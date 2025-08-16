@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import Preview from '@/components/Preview'
 import Link from 'next/link'
-import { deleteWorkout, getAllMovements, fetchWorkout, updateWorkout } from '@/lib/actions'
+import { fetchWorkout, updateWorkout } from '@/lib/workoutActions'
+import { getAllMovements } from '@/lib/movementActions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import { PROGRAM_LIST, MAX_DAYS, MAX_WEEKS } from '@/lib/constants'

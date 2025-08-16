@@ -3,6 +3,8 @@ import "./globals.css";
 import Header from '@/components/header/Header';
 import { cookies } from 'next/headers'
 import { decrypt } from '@/lib/session'
+import ToastProviderServer from '@/contexts/ToastProviderServer';
+import Toast from '@/components/Toast';
 
 
 const geistSans = Geist({
@@ -31,8 +33,10 @@ export default async function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white z-0`}
         > 
-          <Header user={session?.user} />
-          {children}
+          <ToastProviderServer>
+            <Header user={session?.user} />
+            {children}
+          </ToastProviderServer>
         </body>
     </html>
   );

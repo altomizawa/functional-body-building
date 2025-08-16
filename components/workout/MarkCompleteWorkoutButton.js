@@ -1,7 +1,7 @@
 'use client'
 
 import { useToast } from '@/hooks/use-toast';
-import { markWorkoutAsCompleted, markWorkoutAsUncompleted } from '@/lib/actions';
+import { markWorkoutAsCompleted } from '@/lib/workoutActions';
 import { CircleCheckBig } from 'lucide-react';
 
 

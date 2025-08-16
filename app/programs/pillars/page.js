@@ -1,7 +1,8 @@
 import { PROGRAM_LIST } from '@/lib/constants';
 import { getUserById} from '@/lib/actions';
 import { verifySessionForRequests } from '@/lib/session';
-import { fetchWorkout, getAllMovements } from '@/lib/actions';
+import { fetchWorkout } from '@/lib/workoutActions';
+import { getAllMovements } from '@/lib/movementActions';
 import { checkIfWorkoutCompleted } from '@/utils/utils';
 import WorkoutNavigation from '@/components/workout/WorkoutNavigation';
 import MarkCompleteWorkoutButton from '@/components/MarkCompleteWorkoutButton';

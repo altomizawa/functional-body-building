@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import Preview from '@/components/Preview'
 import Link from 'next/link'
-import { createWorkout, getAllMovements } from '@/lib/actions'
+import { createWorkout } from '@/lib/workoutActions'
+import { getAllMovements } from '@/lib/movementActions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 
