@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import AddNewMovementForm from '@/components/AddNewMovementForm'
 import { Toaster } from "@/components/ui/toaster"
 import Link from 'next/link'
@@ -7,18 +7,11 @@ import { getAllMovements, addNewMovement } from '@/lib/movementActions'
 import EditMovementForm from '@/components/EditMovementForm'
 import { findMovementByName, deleteMovement } from '@/lib/movementActions'
 import { debounce } from '@/utils/debounce'
-// import { useToast } from '@/hooks/use-toast'
 import useToast from '@/contexts/useToast'
 
 const AddNewMovement = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    link: ''
-  })
   const [movements, setMovements] = useState([])
-  const [showEditForm, setShowEditForm] = useState(false)
   const [currentMovement, setCurrentMovement] = useState(null)
-  // const toast = useToast().toast
   const { setToasts } = useToast()
 
 
@@ -65,10 +58,6 @@ const AddNewMovement = () => {
     }
   }
 
-  const handleEditMovement = (movement) => {
-    setShowEditForm(true)
-    setCurrentMovement(movement)
-  }
   
   const handleDeleteMovement = async (movement) => {
     console.log(movement._id)
@@ -96,22 +85,6 @@ const AddNewMovement = () => {
     }
     setMovements([])
   }
-  
-  async function fetchAllMovements() {
-    const response = await getAllMovements()
-    if (response.error) {
-      setToasts(prev => [
-        ...prev,
-        {
-          variant: 'destructive',
-          title: 'Error',
-          description: `${response.error}, status: ${response.status}`,
-          duration: 5000
-        }
-      ])
-    }
-    setMovements(response.data)
-  }
 
   const fetchMovements = debounce(async (e) => {
     if(e.target.value==='') setMovements([])
@@ -136,7 +109,7 @@ const AddNewMovement = () => {
                 <Link href={movement.link} target='_blank' className='rounded-md underline text-gray-400'>video</Link>
               </div>
               <div className='space-x-4 w-full flex justify-end'>
-                <button type='button' onClick={() => handleEditMovement(movement)} className='bg-blue-400 text-white px-4 py-1'>edit</button>
+                <button type='button' onClick={() => setCurrentMovement(movement)} className='bg-blue-400 text-white px-4 py-1'>edit</button>
                 <button type='button' onClick={() => handleDeleteMovement(movement)} className='rounded-md bg-red-400 text-white px-4 py-1'>delete</button>
               </div>
             </div>
