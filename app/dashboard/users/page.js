@@ -6,6 +6,8 @@ import { findUserByName} from '@/lib/actions'
 import { modifyUser } from '@/lib/actions'
 import { debounce } from '@/utils/debounce'
 import useToast from '@/contexts/useToast'
+import EditUserForm from '@/components/users/EditUserForm'
+import DropDownUserMenu from '@/components/users/DropDownUserMenu'
 
 export default function Users() {
   const [selectedUser, setSelectedUser] = useState(null)
@@ -42,7 +44,6 @@ export default function Users() {
     const response = await modifyUser(data)
     if (response.success) {
       setSelectedUser(null)
-      console.log(response.data)
       setToasts((prev) => [
         ...prev, 
         {
@@ -83,42 +84,19 @@ export default function Users() {
               ref={searchInputRef}
             />
             {users.length > 0 && (
-              <div className='absolute top-full left-0 w-full mt-1 border-[1px] border-gray-300 rounded-lg bg-white z-10 max-h-60 overflow-y-auto'>
-                {users.map((user, index) => (
-                  <div 
-                    key={index} 
-                    className='p-2 cursor-pointer hover:bg-gray-100 uppercase'
-                    onClick={() => {
-                      setSelectedUser(user)
-                      setUsers([])
-                      setStatus(user.status)
-                      searchInputRef.current.value = null
-                    }}
-                  >
-                    {user.name}
-                  </div>
-                ))}
-              </div>
+              <DropDownUserMenu 
+                users={users} 
+                setSelectedUser={setSelectedUser} 
+                setUsers={setUsers} 
+                setStatus={setStatus} 
+                searchInputRef={searchInputRef} 
+              />
             )}
           </div>
         </div>
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-left mx-auto">USER INFO</h1>
-          <form action={handleSubmit} className='rounded-lg mt-4 space-y-4'>
-            <input className='w-full' type="text" name="name" placeholder="Name" defaultValue={selectedUser ? selectedUser.name : ''} required />
-            <input className='w-full' type="email" name="email" placeholder="Email" defaultValue={selectedUser ? selectedUser.email : ''} required />
-            <input className='w-full' type="tel" id="phone" name="phone" pattern="\(\d{2}\) \d{4,5}-\d{4}" placeholder="(99) 99999-9999" defaultValue={selectedUser ? selectedUser.phone : ''} />
-            <select className='w-full border-2 p-2' id="status" name="status" onChange={(e) => setStatus(e.target.value)} value={status}>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="expired">Expired</option>
-            </select>
-            <input type="hidden" name="id" value={selectedUser ? selectedUser._id : ''} />
-            <div className='flex flex-col gap-4 mt-4'>
-              <Link href="/" className='button__back'>BACK</Link>
-              <button type='submit' className='button__submit'>SUBMIT</button>
-            </div>
-          </form>
+          <EditUserForm selectedUser={selectedUser} handleSubmit={handleSubmit} status={status} setStatus={setStatus}/>
         </div>
       </div>
   )
