@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useRef } from "react"
-import Link from 'next/link'
 import { findUserByName} from '@/lib/actions'
 import { modifyUser } from '@/lib/actions'
 import { debounce } from '@/utils/debounce'
@@ -15,11 +14,13 @@ export default function Users() {
   const [status, setStatus] = useState('expired')
   const { setToasts } = useToast()
 
+
   const searchInputRef = useRef(null)
 
   const handleInputChange = debounce( async (e) => {
     if (e.target.value.trim() === "") return setUsers([])
     if (e.target.value.length < 3) return
+    
     try{
       const response = await findUserByName(e.target.value);
       if (!response.success) {
