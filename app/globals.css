@@ -5,17 +5,35 @@
 @tailwind components;
 @tailwind utilities;
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Removes extra space created by the spin buttons */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* For Firefox */
+  appearance: textfield; /* Standard property */
+}
+
+:root{
+  --input: #474747
+}
+
+
 body {
   font-family: "Gidole", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 1rem;
+  color: white;
 }
 
 
-input{
-  @apply border border-gray-300 rounded-md p-2
+input, textarea, select{
+  @apply rounded-md p-2 bg-[var(--input)];
 }
+
 
 
 .programListItems {

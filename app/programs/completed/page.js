@@ -10,7 +10,6 @@ function CompletedWorkoutsPage() {
   const [completedWorkouts, setCompletedWorkouts] = useState([]);
   const [expandedWorkout, setExpandedWorkout] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredWorkouts, setFilteredWorkouts] = useState([]);
   
@@ -155,7 +154,7 @@ function CompletedWorkoutsPage() {
           placeholder="Search for exercises..."
           value={searchTerm}
           onChange={handleSearch}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border bg-neutral-800 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         
         <div className="flex justify-between items-center">
@@ -165,7 +164,7 @@ function CompletedWorkoutsPage() {
               id="itemsPerPage"
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border bg-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="5">5</option>
               <option value="10">10</option>
@@ -197,8 +196,8 @@ function CompletedWorkoutsPage() {
               >
                 <div className="text-white">
                   <h2 className="font-bold text-lg uppercase">{workout.program}</h2>
-                  <p className="text-sm">Week {workout.week} | Day {workout.day}</p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-base">Week {workout.week} | Day {workout.day}</p>
+                  <p className="text-base text-gray-400">
                     Completed on: {new Date(workout.completedAt).toLocaleDateString()}
                   </p>
                 </div>
@@ -212,6 +211,7 @@ function CompletedWorkoutsPage() {
                 <div className="p-4">
                   <MarkUncompleteWorkoutButton workoutId={workout._id} userId={user._id} />
                   {workout.sections?.map((section, index) => (
+                    
                     <div key={index} className="mb-6">
                       <div className="w-full bg-slate-800 px-4 py-2 mb-3">
                         <h3 className="text-white font-bold text-base flex items-center uppercase">

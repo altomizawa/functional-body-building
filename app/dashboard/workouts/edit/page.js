@@ -267,7 +267,7 @@ export default function EditWorkoutForm() {
         {/* <input type='text' name='currentProgram' placeholder='Choose a program'/> */}
         <div className='flex items-center gap-2 mt-4'>
           <label htmlFor="selectedProgram">CHOOSE A PROGRAM:</label>
-          <select name='selectedProgram' className='border-2 p-2'>
+          <select name='selectedProgram' className='p-2'>
             {PROGRAM_LIST.map((program, index) => (
               <option key={index} value={program}>{program}</option>
             ))}
@@ -372,7 +372,7 @@ export default function EditWorkoutForm() {
                 <div className='w-full space-y-2'>
                   <label htmlFor={`description-${index}`}>DESCRIPTION:</label>
                   <textarea
-                    className='w-full min-h-48 p-2 border-2'
+                    className='w-full min-h-48 p-2'
                     onChange={(e) => handleSectionChange(e, index)}
                     type="text"
                     name="description"
@@ -425,7 +425,7 @@ export default function EditWorkoutForm() {
                 <div className='w-full space-y-2'>
                   <label htmlFor={`notes-${index}`}>NOTES:</label>
                   <textarea
-                    className='w-full min-h-24 p-2 border-2'
+                    className='w-full min-h-24 p-2'
                     onChange={(e) => handleSectionChange(e, index)}
                     type="text"
                     name="notes"

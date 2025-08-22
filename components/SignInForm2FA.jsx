@@ -68,7 +68,7 @@ export default function SigninForm2FA() {
       {step === 1 && (
         <FormContainer formAction={handleEmailSubmit}>
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold uppercase">Login</h1>
+            <h1 className="text-3xl font-bold uppercase text-black">Login</h1>
           </div>
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
             Email
@@ -96,12 +96,13 @@ export default function SigninForm2FA() {
           <div className="flex gap-2">
             {code.map((digit, index) => (
               <input
+              
                 key={index}
                 type="tel"
                 value={digit}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 ref={(el) => (inputRefs.current[index] = el)}
-                className="border p-2 rounded text-2xl text-center w-12"
+                className="border p-2 rounded text-2xl text-center w-12 text-black"
                 maxLength={1}
                 required
               />

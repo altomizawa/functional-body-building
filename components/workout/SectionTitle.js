@@ -31,7 +31,7 @@ const SectionTitle = ({ title }) => {
   }, []);
 
   return (
-    <div className="w-full bg-black px-4 py-2 mt-8">
+    <div className="w-full bg-neutral-800 px-4 py-2 mt-8">
       <h3 className="text-white font-bold text-base flex items-center uppercase">
         {icon}
         {title}

@@ -248,6 +248,7 @@ export default function AddWorkoutForm() {
             value={newWorkout.week}
             min={1}
             required
+            autoComplete='off'
           />
           <input
             className='w-16'
@@ -259,6 +260,7 @@ export default function AddWorkoutForm() {
             max={7}
             min={1}
             required
+            autoComplete='off'
           />
         </div>
 
@@ -287,7 +289,7 @@ export default function AddWorkoutForm() {
           {/* SECTION */}
           {newWorkout.sections.map((section, index) => (
             <div 
-              className={`space-y-8 border-2 p-6 ${currentSection === index ? 'block' : 'hidden'}`} 
+              className={`space-y-8 bg-neutral-800 p-6 ${currentSection === index ? 'block' : 'hidden'}`} 
               key={index}
             >
               <div className='w-full space-y-2'>
@@ -300,12 +302,13 @@ export default function AddWorkoutForm() {
                   id={`section-${index}`}
                   placeholder="Section"
                   value={section.section}
+                  autoComplete='off'
                 />
               </div>
               <div className='w-full space-y-2'>
                 <label htmlFor={`description-${index}`}>DESCRIPTION:</label>
                 <textarea
-                  className='w-full min-h-48 p-2 border-2'
+                  className='w-full min-h-48 p-2'
                   onChange={(e) => handleSectionChange(e, index)}
                   type="text"
                   name="description"
@@ -325,6 +328,7 @@ export default function AddWorkoutForm() {
                   placeholder="Search movements"
                   value={currentSection === index ? searchText : ''}
                   ref={currentSection === index ? movementInputRef : null}
+                  autoComplete= 'off'
                 />
                 <div className='flex flex-wrap gap-4'>
                   {section.movements && section.movements.map((movement, movIdx) => (
@@ -358,7 +362,7 @@ export default function AddWorkoutForm() {
               <div className='w-full space-y-2'>
                 <label htmlFor={`notes-${index}`}>NOTES:</label>
                 <textarea
-                  className='w-full min-h-24 p-2 border-2'
+                  className='w-full min-h-24 p-2'
                   onChange={(e) => handleSectionChange(e, index)}
                   type="text"
                   name="notes"

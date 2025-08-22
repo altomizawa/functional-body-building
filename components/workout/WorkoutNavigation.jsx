@@ -71,7 +71,7 @@ const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
         <button onClick={nextProgram} className='workout-button'>&gt;</button>
       </div>
       
-      <div className="flex gap-12 justify-center items-center bg-slate-400 py-2">
+      <div className="flex gap-12 justify-center items-center bg-neutral-800 py-2">
         <div className="flex items-center gap-4 w-max">
           <button onClick={previousWeek} className='workout-button'>&lt;</button>
           <p className="uppercase text-white text-xl">WEEK {week}</p>
