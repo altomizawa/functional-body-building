@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast'
 import { PROGRAM_LIST, MAX_DAYS, MAX_WEEKS } from '@/lib/constants'
 import { set } from 'mongoose'
 import DeletePopup from '@/components/DeletePopup'
+import Dropdown from '@/components/form/Dropdown'
 
 export default function EditWorkoutForm() {
   const [movements, setMovements] = useState([])
@@ -408,17 +409,10 @@ export default function EditWorkoutForm() {
                   </div>
                   <div className='relative'>
                     {currentSection === index && filteredMovements && filteredMovements.length > 0 && (
-                      <ul className='absolute top-0 left-0 z-10 w-full bg-white border-[1px] border-black/20 shadow-md max-h-60 overflow-y-auto'>
-                        {filteredMovements.map((movement, movIdx) => (
-                          <li
-                            key={movIdx}
-                            className='px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-black hover:text-white'
-                            onClick={() => addMovement(movement)}
-                          >
-                            {movement.name}
-                          </li>
-                        ))}
-                      </ul>
+                      <Dropdown
+                        array={filteredMovements}
+                        action={addMovement}
+                      />
                     )}
                   </div>
                 </div>

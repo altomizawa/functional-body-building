@@ -7,6 +7,7 @@ import { createWorkout } from '@/lib/workoutActions'
 import { getAllMovements } from '@/lib/movementActions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
+import Dropdown from '@/components/form/Dropdown'
 
 export default function AddWorkoutForm() {
   const [movements, setMovements] = useState([])
@@ -332,7 +333,7 @@ export default function AddWorkoutForm() {
                 />
                 <div className='flex flex-wrap gap-4'>
                   {section.movements && section.movements.map((movement, movIdx) => (
-                    <div key={movIdx} className='border-[1px] border-black/20 px-2 py-1 flex items-center'>
+                    <div key={movIdx} className='border-[1px] border-white/40 px-2 py-1 flex items-center'>
                       <p>{movement.name}</p>
                       <span 
                         className='ml-2 cursor-pointer text-red-500 hover:text-red-700' 
@@ -345,17 +346,10 @@ export default function AddWorkoutForm() {
                 </div>
                 <div className='relative'>
                   {currentSection === index && filteredMovements && filteredMovements.length > 0 && (
-                    <ul className='absolute top-0 left-0 z-10 w-full bg-white border-[1px] border-black/20 shadow-md max-h-60 overflow-y-auto'>
-                      {filteredMovements.map((movement, movIdx) => (
-                        <li
-                          key={movIdx}
-                          className='px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-black hover:text-white'
-                          onClick={() => addMovement(movement)}
-                        >
-                          {movement.name}
-                        </li>
-                      ))}
-                    </ul>
+                    <Dropdown
+                      array={filteredMovements}
+                      action={addMovement}
+                    />
                   )}
                 </div>
               </div>
@@ -378,15 +372,6 @@ export default function AddWorkoutForm() {
                 >
                   Remove Section
                 </button>
-              {/* <div className="flex justify-between">
-                <button
-                  type='button'
-                  className='button__main-menu my-2 uppercase bg-green-500 text-white px-4 py-2'
-                  onClick={addNewSection}
-                >
-                  Add Section
-                </button>
-              </div> */}
             </div>
           ))}
         </div>

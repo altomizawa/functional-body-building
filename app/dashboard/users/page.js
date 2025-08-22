@@ -6,7 +6,7 @@ import { modifyUser } from '@/lib/actions'
 import { debounce } from '@/utils/debounce'
 import useToast from '@/contexts/useToast'
 import EditUserForm from '@/components/users/EditUserForm'
-import DropDownUserMenu from '@/components/users/DropDownUserMenu'
+import Dropdown from '@/components/form/Dropdown'
 
 export default function Users() {
   const [selectedUser, setSelectedUser] = useState(null)
@@ -65,7 +65,12 @@ export default function Users() {
       duration: 5000
     }])
   }
-
+  const addUser = (user) => {
+    setSelectedUser(user)
+    setUsers([])
+    setStatus(user.status)
+    searchInputRef.current.value = null
+  }
 
   return (
       <div className='flex flex-col md:grid md:grid-cols-2 gap-12 h-full px-6 my-16 max-w-[1440px] mx-auto'>
@@ -84,15 +89,15 @@ export default function Users() {
               autoComplete='off'
               ref={searchInputRef}
             />
-            {users.length > 0 && (
-              <DropDownUserMenu 
-                users={users} 
-                setSelectedUser={setSelectedUser} 
-                setUsers={setUsers} 
-                setStatus={setStatus} 
-                searchInputRef={searchInputRef} 
-              />
-            )}
+            <div className='relative'>
+              {users.length > 0 && (
+                <Dropdown 
+                  array={users} 
+                  action={addUser}
+                />
+              )}
+
+            </div>
           </div>
         </div>
         <div>
