@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { check2FACode, send2FACode } from '@/lib/auth';
 import FormContainer from './form/FormContainer';
+import { LoginButton } from './ui/login-button';
 
 export default function SigninForm2FA() {
   const [email, setEmail] = useState('');
@@ -18,6 +19,11 @@ export default function SigninForm2FA() {
     setIsLoading(true);
     setError(null);
     const email = formdata.get('email');
+    if(!email) {
+      setError('Por favor, insira um email válido.');
+      setIsLoading(false);
+      return;
+    }
     setEmail(email);
     try {
       const validationResponse = await send2FACode(email);
@@ -35,7 +41,6 @@ export default function SigninForm2FA() {
   const handleCodeSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
     try {
       const response = await check2FACode(email, code.join('')); // Junta os dígitos em uma string
 
@@ -77,17 +82,12 @@ export default function SigninForm2FA() {
               id="email"
               name="email"
               autoComplete="email"
-              className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+              className="bg-white block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
               placeholder="john.doe@email.com"
-              required
             />
           </label>
-          <button
-            type="submit"
-            className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500"
-          >
-            {isLoading ? 'Enviando...' : 'Enviar Código'}
-          </button>
+          <LoginButton size='large' variant='default'>{isLoading ? 'Enviando...' : 'Enviar Código'}</LoginButton>
+            {error && <p className="text-red-500">{error}</p>}
         </FormContainer>
       )}
 
@@ -102,22 +102,15 @@ export default function SigninForm2FA() {
                 value={digit}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 ref={(el) => (inputRefs.current[index] = el)}
-                className="border p-2 rounded text-2xl text-center w-12 text-black"
+                className="border p-2 rounded text-2xl text-center w-12 text-white"
                 maxLength={1}
                 required
               />
             ))}
           </div>
-          <button
-            type="submit"
-            className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500"
-          >
-            Validar Código
-          </button>
+          <LoginButton size='large' variant='default'>Validar Código</LoginButton>
         </form>
       )}
-
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
