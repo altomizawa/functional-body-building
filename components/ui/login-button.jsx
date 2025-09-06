@@ -46,4 +46,4 @@ const LoginButton = React.forwardRef(function LoginButton({ className, variant, 
 
 LoginButton.displayName = "LoginButton";
 
-export { LoginButton, loginButtonVariants };
+export { LoginButton };
