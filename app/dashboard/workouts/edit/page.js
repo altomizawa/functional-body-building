@@ -6,7 +6,6 @@ import Dropdown from '@/components/form/Dropdown'
 import useEditWorkout from '@/hooks/use-edit-workout'
 import WorkoutForm from '@/components/workout-form/index.js'
 import FetchWorkoutForm from '@/components/fetch-workout-form'
-import BackLink from '@/components/BackLink'
 
 export default function EditWorkoutForm() {
   const {
@@ -33,8 +32,6 @@ export default function EditWorkoutForm() {
   return (
     <>
       <Toaster />
-      <BackLink href="/">BACK</BackLink>
-      
       <FetchWorkoutForm getWorkout={getWorkout} />
 
       <WorkoutForm.Container onSubmit={onSubmit}>

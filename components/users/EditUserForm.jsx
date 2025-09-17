@@ -18,10 +18,8 @@ const EditUserForm = ({
         <option value="expired">Expired</option>
       </select>
       <input type="hidden" name="id" value={selectedUser ? selectedUser._id : ''} />
-      <div className='flex flex-col gap-4 mt-4'>
-        <Link href="/" className='button__back'>BACK</Link>
-        <button type='submit' className='button__submit'>SUBMIT</button>
-      </div>
+      <button type='submit' className='button__submit'>SUBMIT</button>
+
     </form>
   )
 }

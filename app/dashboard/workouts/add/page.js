@@ -223,9 +223,6 @@ export default function AddWorkoutForm() {
 
   return (
     <form onSubmit={onSubmit} className='h-full px-6 my-16 max-w-[1440px] mx-auto'>
-      <Link href="/" className='flex item-center justify-center w-min mb-12 '>
-        <span className="material-symbols-outlined">arrow_back</span>BACK
-      </Link>
       {/* FORM */}
       <div>
         <Toaster />

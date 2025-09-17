@@ -8,6 +8,7 @@ import EditMovementForm from '@/components/EditMovementForm'
 import { findMovementByName, deleteMovement } from '@/lib/movementActions'
 import { debounce } from '@/utils/debounce'
 import useToast from '@/contexts/useToast'
+import BackLink from '@/components/BackLink'
 
 const AddNewMovement = () => {
   const [movements, setMovements] = useState([])
