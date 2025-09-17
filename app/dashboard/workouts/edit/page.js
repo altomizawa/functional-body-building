@@ -6,6 +6,7 @@ import Dropdown from '@/components/form/Dropdown'
 import useEditWorkout from '@/hooks/use-edit-workout'
 import WorkoutForm from '@/components/workout-form/index.js'
 import FetchWorkoutForm from '@/components/fetch-workout-form'
+import BackLink from '@/components/BackLink'
 
 export default function EditWorkoutForm() {
   const {
@@ -32,9 +33,7 @@ export default function EditWorkoutForm() {
   return (
     <>
       <Toaster />
-      <Link href="/" className='flex item-center justify-center w-min my-12 ml-8 '>
-        <span className="material-symbols-outlined">arrow_back</span>BACK
-      </Link>
+      <BackLink href="/">BACK</BackLink>
       
       <FetchWorkoutForm getWorkout={getWorkout} />
 
