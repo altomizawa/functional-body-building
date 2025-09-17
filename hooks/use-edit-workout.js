@@ -1,11 +1,11 @@
 'use client'
-import { debounce } from '@/utils/debounce'
-import { findMovementByName } from '@/lib/movementActions'
 import { fetchWorkout, updateWorkout } from '@/lib/workoutActions'
 import { useToast } from '@/hooks/use-toast'
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
+import { getAllMovements } from '@/lib/movementActions'
 
 const useEditWorkout = (initialWorkout) => {
+  const [movements, setMovements] = useState([])
   const [filteredMovements, setFilteredMovements] = useState(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [searchText, setSearchText] = useState('')
@@ -84,19 +84,8 @@ const useEditWorkout = (initialWorkout) => {
       return
     }
     setCurrentSection(index)
-    fetchMovements(e, index)
+    setFilteredMovements(movements.filter(movement => movement.name.toLowerCase().includes(searchValue.toLowerCase())))
   }
-
-  // FETCH MOVEMENTS WITH DEBOUNCE
-  const fetchMovements = debounce(async (e, index) => {
-    if(e.target.value==='') setFilteredMovements(null)
-    if(e.target.value.length < 3) return;
-    setCurrentSection(index)
-  
-    const response = await findMovementByName(e.target.value)
-    console.log(response.data)
-    setFilteredMovements(response.data)
-  }, 500)
 
   const addMovement = (movement) => {
     setNewWorkout(prev => ({
@@ -206,6 +195,21 @@ const useEditWorkout = (initialWorkout) => {
       })
     }
   }
+
+  useEffect(() => {
+    const fetchAllMovements = async () => {
+      const response = await getAllMovements()
+      if (response.success) {
+        setMovements(response.data)
+      } else {
+        toast({
+          title: 'Error',
+          description: response.error,
+        })
+      }
+    }
+    fetchAllMovements() 
+  },[])
 
   return {
     filteredMovements,
