@@ -6,27 +6,27 @@ const FetchWorkoutForm = ({ getWorkout}) => {
   return (
     <form action={getWorkout} className='h-full w-full my-16 max-w-[1440px] mx-auto flex gap-4 justify-center border-b-2 pb-8'>
         <label htmlFor="selectedProgram" >CHOOSE A PROGRAM:
-        <select name='selectedProgram' className='ml-4'>
+        <select name='selectedProgram' className='ml-4 bg-transparent border-b-[1px]'>
           {PROGRAM_LIST.map((program, index) => (
-            <option key={index} value={program}>{program}</option>
+            <option key={index} value={program} className='bg-black'>{program}</option>
           ))}
         </select>
         </label>
         <label htmlFor="selectedWeek">WEEK:
-          <select name='selectedWeek' className='ml-4'>
+          <select name='selectedWeek' className='ml-4 bg-transparent border-b-[1px]'>
             {Array.from({ length: MAX_WEEKS }, (_, index) => index + 1).map((program, index) => (
-              <option key={index} value={program}>{program}</option>
+              <option key={index} value={program} className='bg-black'>{program}</option>
             ))}
           </select>
         </label>
         <label htmlFor="selectedDay">DAY:
-          <select name='selectedDay' className='ml-4'>
+          <select name='selectedDay' className='ml-4 bg-transparent border-b-[1px]'>
             {Array.from({ length: MAX_DAYS }, (_, index) => index + 1).map((program, index) => (
-              <option key={index} value={program}>{program}</option>
+              <option key={index} value={program} className='bg-black'>{program}</option>
             ))}
           </select>
         </label>
-      <WorkoutForm.Button type='submit' variant='ghost'>
+      <WorkoutForm.Button type='submit' variant='ghost' className='ml-4'>
         Fetch Workout
       </WorkoutForm.Button>
     </form>

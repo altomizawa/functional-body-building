@@ -33,7 +33,6 @@ export default function EditWorkoutForm() {
     <>
       <Toaster />
       <FetchWorkoutForm getWorkout={getWorkout} />
-
       <WorkoutForm.Container onSubmit={onSubmit}>
         
         {/* FORM */}

@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
 import DashboardLink from '@/components/dashboard/DashboardLink';
 import background from '@/public/images/bkg.jpg';
-import UserProviderClient from '@/hooks/useUserProvider';
 
 export default async function ProgramSelection() {
   const session = await verifySession(); // CHECK IF THERE'S A SESSION AND REDIRECT TO LOGIN IF NOT

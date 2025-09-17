@@ -4,7 +4,6 @@ import Header from '@/components/header/Header';
 import { cookies } from 'next/headers'
 import { decrypt } from '@/lib/session'
 import ToastProviderServer from '@/contexts/ToastProviderServer';
-import Toast from '@/components/Toast';
 
 
 const geistSans = Geist({

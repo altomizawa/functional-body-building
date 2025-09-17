@@ -3,12 +3,12 @@ import { useState } from 'react'
 import AddNewMovementForm from '@/components/AddNewMovementForm'
 import { Toaster } from "@/components/ui/toaster"
 import Link from 'next/link'
-import { getAllMovements, addNewMovement } from '@/lib/movementActions'
+import { addNewMovement } from '@/lib/movementActions'
 import EditMovementForm from '@/components/EditMovementForm'
 import { findMovementByName, deleteMovement } from '@/lib/movementActions'
 import { debounce } from '@/utils/debounce'
 import useToast from '@/contexts/useToast'
-import BackLink from '@/components/BackLink'
+
 
 const AddNewMovement = () => {
   const [movements, setMovements] = useState([])
