@@ -3,7 +3,7 @@ import { debounce } from '@/utils/debounce'
 import { findMovementByName } from '@/lib/movementActions'
 import { fetchWorkout, updateWorkout } from '@/lib/workoutActions'
 import { useToast } from '@/hooks/use-toast'
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback, useMemo } from "react"
 
 const useEditWorkout = (initialWorkout) => {
   const [filteredMovements, setFilteredMovements] = useState(null)
@@ -73,30 +73,35 @@ const useEditWorkout = (initialWorkout) => {
     }))
   }
 
+  // FETCH MOVEMENTS WITH DEBOUNCE
+  const fetchMovements = useMemo(
+    () => debounce(async (searchValue, index) => {
+      if(searchValue === '') {
+        setFilteredMovements(null)
+        return
+      }
+      if(searchValue.length < 3) return;
+      setCurrentSection(index)
+    
+      const response = await findMovementByName(searchValue)
+      console.log(response.data)
+      setFilteredMovements(response.data)
+    }, 1500),
+    []
+  )
+
   // HANDLE MOVEMENT SEARCH
   const handleMovementSearch = (e, index) => {
     const searchValue = e.target.value
     setSearchText(searchValue)
-    console.log(searchValue)
     
     if (!searchValue) {
       setFilteredMovements(null)
       return
     }
     setCurrentSection(index)
-    fetchMovements(e, index)
+    fetchMovements(searchValue, index)
   }
-
-  // FETCH MOVEMENTS WITH DEBOUNCE
-  const fetchMovements = debounce(async (e, index) => {
-    if(e.target.value==='') setFilteredMovements(null)
-    if(e.target.value.length < 3) return;
-    setCurrentSection(index)
-  
-    const response = await findMovementByName(e.target.value)
-    console.log(response.data)
-    setFilteredMovements(response.data)
-  }, 500)
 
   const addMovement = (movement) => {
     setNewWorkout(prev => ({
