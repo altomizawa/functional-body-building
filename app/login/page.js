@@ -11,7 +11,8 @@ const Signin = () => {
         <h1 className="text-sm md:text-xl text-center">FUNCTIONAL BODYBUILDING</h1>
       </div>
       <div className="w-full max-w-md">
-        <SigninForm2FA />
+        {/* <SigninForm2FA /> */}
+        <SigninForm />
       </div>
     </main>
   )
