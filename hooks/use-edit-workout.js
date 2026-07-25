@@ -1,7 +1,7 @@
 'use client'
 import { fetchWorkout, updateWorkout } from '@/lib/workoutActions'
 import { useToast } from '@/hooks/use-toast'
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { getAllMovements } from '@/lib/movementActions'
 
 const useEditWorkout = (initialWorkout) => {
@@ -37,7 +37,7 @@ const useEditWorkout = (initialWorkout) => {
         title: 'Success',
         description: 'Workout updated successfully',
       })
-      
+
     } catch (error) {
       toast({
         title: 'Error',
@@ -58,7 +58,7 @@ const useEditWorkout = (initialWorkout) => {
 
   const handleSectionChange = (e, sectionIndex) => {
     const index = sectionIndex !== undefined ? sectionIndex : currentSection
-    
+
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.map((section, idx) => {
@@ -73,19 +73,46 @@ const useEditWorkout = (initialWorkout) => {
     }))
   }
 
+  // FETCH MOVEMENTS WITH DEBOUNCE
+  const fetchMovements = useMemo(
+    () => debounce(async (searchValue, index) => {
+      if (searchValue === '') {
+        setFilteredMovements(null)
+        return
+      }
+      if (searchValue.length < 3) return;
+      setCurrentSection(index)
+
+      const response = await findMovementByName(searchValue)
+      console.log(response.data)
+      setFilteredMovements(response.data)
+    }, 1500),
+    []
+  )
+
   // HANDLE MOVEMENT SEARCH
   const handleMovementSearch = (e, index) => {
     const searchValue = e.target.value
     setSearchText(searchValue)
-    console.log(searchValue)
-    
+
     if (!searchValue) {
       setFilteredMovements(null)
       return
     }
     setCurrentSection(index)
-    setFilteredMovements(movements.filter(movement => movement.name.toLowerCase().includes(searchValue.toLowerCase())))
+    fetchMovements(e, index)
   }
+
+  // // FETCH MOVEMENTS WITH DEBOUNCE
+  // const fetchMovements = debounce(async (e, index) => {
+  //   if(e.target.value==='') setFilteredMovements(null)
+  //   if(e.target.value.length < 3) return;
+  //   setCurrentSection(index)
+
+  //   const response = await findMovementByName(e.target.value)
+  //   console.log(response.data)
+  //   setFilteredMovements(response.data)
+  // }, 500)
 
   const addMovement = (movement) => {
     setNewWorkout(prev => ({
@@ -118,7 +145,7 @@ const useEditWorkout = (initialWorkout) => {
         if (index === sectionIndex) {
           return {
             ...section,
-            movements: section.movements.filter(prevMovement => 
+            movements: section.movements.filter(prevMovement =>
               prevMovement._id !== movement._id
             )
           };
@@ -141,7 +168,7 @@ const useEditWorkout = (initialWorkout) => {
     }))
     setCurrentSection(newWorkout.sections.length)
   }
-  
+
   const removeSection = (indexToRemove) => {
     if (newWorkout.sections.length <= 1) {
       toast({
@@ -150,7 +177,7 @@ const useEditWorkout = (initialWorkout) => {
       })
       return
     }
-    
+
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.filter((_, index) => index !== indexToRemove)
@@ -166,7 +193,7 @@ const useEditWorkout = (initialWorkout) => {
     setSearchText('')
   }
 
-  const getWorkout = async(formData) => {
+  const getWorkout = async (formData) => {
     const selectedProgram = formData.get('selectedProgram')
     const selectedWeek = formData.get('selectedWeek')
     const selectedDay = formData.get('selectedDay')
@@ -208,8 +235,8 @@ const useEditWorkout = (initialWorkout) => {
         })
       }
     }
-    fetchAllMovements() 
-  },[])
+    fetchAllMovements()
+  }, [])
 
   return {
     filteredMovements,

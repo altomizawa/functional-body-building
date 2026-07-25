@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useActionState, useEffect} from 'react';
+import { useState, useActionState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signinUserAction } from '@/lib/auth';
 import FormContainer from './form/FormContainer';
@@ -21,52 +21,52 @@ export function SigninForm() {
 
   return (
     <FormContainer formAction={formAction}>
-        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-          Email
-          <input
-            type="email"
-            id="email"
-            name="email"
-            autoComplete="email"
-            className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-            placeholder="john.doe@email.com"
-            required
-          />
-        </label>
-        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-          Password
-          <input
-            type={showPassword ? 'text' : 'password'}
-            id="password"
-            name="password"
-            autoComplete="current-password"
-            className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-            placeholder="*************"
-            required
-          />
-          <button
-            onClick={() => setShowPassword((prev) => !prev)}
-            type="button"
-            className="underline text-sm"
-          >
-            show password
-          </button>
-        </label>
+      <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+        Email
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autoComplete="email"
+          className="block bg-white w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+          placeholder="john.doe@email.com"
+          required
+        />
+      </label>
+      <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+        Password
+        <input
+          type={showPassword ? 'text' : 'password'}
+          id="password"
+          name="password"
+          autoComplete="current-password"
+          className="block bg-white w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+          placeholder="*************"
+          required
+        />
         <button
-          type="submit"
-          className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500"
+          onClick={() => setShowPassword((prev) => !prev)}
+          type="button"
+          className="underline text-sm"
         >
-          {isPending ? 'Loading...' : 'Let me in'}
+          show password
         </button>
-        {!state?.success && <p className="text-red-500 text-sm">{state?.error}</p>}
-        {!state?.success && state?.error === 'Email or password is incorrect' && <Link href='/forgot-password' className="text-red-500 text-sm underline">Forgot your password?</Link>}
+      </label>
+      <button
+        type="submit"
+        className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500"
+      >
+        {isPending ? 'Loading...' : 'Let me in'}
+      </button>
+      {!state?.success && <p className="text-red-500 text-sm">{state?.error}</p>}
+      {!state?.success && state?.error === 'Email or password is incorrect' && <Link href='/forgot-password' className="text-red-500 text-sm underline">Forgot your password?</Link>}
 
-        <div className="text-sm text-muted-foreground p-4 flex justify-center">
-          Not registered yet?{" "}
-          <Link href="/signup" className="underline underline-offset-4 text-black hover:text-primary">
-            Sign up
-          </Link>
-        </div>
+      <div className="text-sm  p-4 flex justify-center text-gray-500">
+        Not registered yet?{" "}
+        <Link href="/signup" className="ml-2 underline underline-offset-4 text-black hover:text-primary">
+          Sign up
+        </Link>
+      </div>
     </FormContainer>
   );
 }

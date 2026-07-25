@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import KOR__logo from '@/public/logo_white.png';
 import { verifySession } from '@/lib/session';
 import { redirect } from 'next/navigation';
@@ -22,6 +23,7 @@ export default async function ProgramSelection() {
         <DashboardLink type='addWorkout'>ADD WORKOUT</DashboardLink>
         <DashboardLink type='editWorkout'>EDIT WORKOUT</DashboardLink>
         <DashboardLink type='addExercise'>ADD EXERCISE</DashboardLink>
+        <DashboardLink type='goToWorkouts'>GO TO WORKOUTS</DashboardLink>
         <DashboardLink type='goToWorkouts'>GO TO WORKOUTS</DashboardLink>
       </DashboardContainer>
     </div>

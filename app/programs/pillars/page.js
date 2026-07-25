@@ -9,7 +9,7 @@ import WorkoutContainer from '@/components/workout/WorkoutContainer';
 import VideosContainer from '@/components/workout/VideosContainer';
 import SectionTitle from '@/components/workout/SectionTitle';
 import SectionDescription from '@/components/workout/SectionDescription';
-import React from 'react';
+import React , {Suspense, use} from 'react';
 import NotesContainer from '@/components/workout/NotesContainer';
 import WorkoutComplete from '@/components/workout/WorkoutComplete';
 import NoWorkoutFound from '@/components/workout/NoWorkoutFound';
@@ -28,14 +28,39 @@ async function Page({ searchParams  }) {
   const userData = await getUserById(session?.user.id);
   
 
-  // Fetch latest workout if searchParams is empty
+  // Fetch next workout after latest completed if searchParams is empty
   if ((!program || !week || !day) && userData.data.completed.length > 0) {
     const latestWorkout = userData.data.completed[userData.data.completed.length - 1]
-    workout = latestWorkout.pillarId;
-    program = PROGRAM_LIST.indexOf(latestWorkout.pillarId.program);
-    week = latestWorkout.pillarId.week;
-    day = latestWorkout.pillarId.day;
+    const latestProgram = PROGRAM_LIST.indexOf(latestWorkout.pillarId.program);
+    const latestWeek = latestWorkout.pillarId.week;
+    const latestDay = latestWorkout.pillarId.day;
+    
+    // Try to fetch next day
+    let nextWorkout = await fetchWorkout(PROGRAM_LIST[latestProgram], latestWeek, latestDay + 1);
+    
+    // If next day doesn't exist, try next week day 1
+    if (!nextWorkout.data) {
+      nextWorkout = await fetchWorkout(PROGRAM_LIST[latestProgram], latestWeek + 1, 1);
     }
+    
+    // If next week doesn't exist, try next program week 1 day 1
+    if (!nextWorkout.data && latestProgram + 1 < PROGRAM_LIST.length) {
+      nextWorkout = await fetchWorkout(PROGRAM_LIST[latestProgram + 1], 1, 1);
+    }
+    
+    // If still no workout, fallback to latest completed
+    if (!nextWorkout.data) {
+      workout = latestWorkout.pillarId;
+      program = latestProgram;
+      week = latestWeek;
+      day = latestDay;
+    } else {
+      workout = nextWorkout.data;
+      program = PROGRAM_LIST.indexOf(nextWorkout.data.program);
+      week = nextWorkout.data.week;
+      day = nextWorkout.data.day;
+    }
+  }
   // If user has no workouts AND searchParams is empty, fetch first workout
   if ((!program || !week || !day) && userData.data.completed.length === 0) {
     const firstWorkout = await fetchWorkout(PROGRAM_LIST[0], 1, 1)
@@ -57,7 +82,6 @@ async function Page({ searchParams  }) {
 
   return (
     <>
-      {/* Header */}
       <WorkoutHeader session={session} workout={workout} />
 
       <WorkoutNavigation program={program} week={week} day={day} />
@@ -66,7 +90,7 @@ async function Page({ searchParams  }) {
       {isWorkoutCompleted && <WorkoutComplete />}
 
       {/* Workout Content */}
-      {workout ? (
+      <Suspense fallback={<div>Loading...</div>}>
         <WorkoutContainer>
           {/* SECTIONS */}
           {workout.sections?.map((section, index) => (
@@ -94,10 +118,8 @@ async function Page({ searchParams  }) {
           ))}
           {/* COMPLETE BUTTON */}
           {!isWorkoutCompleted && <MarkCompleteWorkoutButton workoutId={workout._id.toString()} user={session.user} />}
-        </WorkoutContainer>
-      ) : (
-        <NoWorkoutFound />
-      )}      
+        </WorkoutContainer>   
+        </Suspense>
     </>
   );
 }
