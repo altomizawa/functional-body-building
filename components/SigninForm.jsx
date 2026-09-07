@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { signinUserAction } from '@/lib/auth';
 import FormContainer from './form/FormContainer';
 import Link from 'next/link';
+import PasskeyLoginButton from '@/components/passkey/PasskeyLoginButton';
 
 export function SigninForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,13 +22,21 @@ export function SigninForm() {
 
   return (
     <FormContainer formAction={formAction}>
+      <PasskeyLoginButton />
+
+      <div className="relative flex items-center justify-center my-2">
+        <div className="border-t border-gray-300 w-full" />
+        <span className="bg-white px-2 text-xs text-gray-400 uppercase tracking-wider">Or with password</span>
+        <div className="border-t border-gray-300 w-full" />
+      </div>
+
       <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
         Email
         <input
           type="email"
           id="email"
           name="email"
-          autoComplete="email"
+          autoComplete="username webauthn"
           className="block bg-white w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
           placeholder="john.doe@email.com"
           required

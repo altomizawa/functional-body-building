@@ -1,5 +1,6 @@
 'use server'
 import mongoose from 'mongoose';
+import Pillar from '@/models/Pillar';
 const { Schema } = mongoose;
 
 // Simplified CompletedWorkout - only store what's needed
@@ -60,6 +61,22 @@ const UserSchema = new Schema({
   resetTokenExpires: { type: Date, default: null },
   TwoFAToken: { type: String, default: null },
   TwoFATokenExpires: { type: Date, default: null },
+  passkeys: {
+    type: [
+      new Schema({
+        credentialID: { type: String, required: true },
+        credentialPublicKey: { type: String, required: true },
+        counter: { type: Number, required: true, default: 0 },
+        credentialDeviceType: { type: String, required: true },
+        credentialBackedUp: { type: Boolean, required: true },
+        transports: [{ type: String }],
+        name: { type: String, default: 'Passkey' },
+        createdAt: { type: Date, default: Date.now },
+        lastUsedAt: { type: Date, default: Date.now },
+      })
+    ],
+    default: []
+  },
 }, {
   timestamps: true // Automatically adds createdAt and updatedAt fields
 });

@@ -4,6 +4,7 @@ import Header from '@/components/header/Header';
 import { cookies } from 'next/headers'
 import { decrypt } from '@/lib/session'
 import ToastProviderServer from '@/contexts/ToastProviderServer';
+import PasskeyRegisterPrompt from '@/components/passkey/PasskeyRegisterPrompt';
 
 
 const geistSans = Geist({
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }) {
           <ToastProviderServer>
             <Header user={session?.user} />
             {children}
+            <PasskeyRegisterPrompt user={session?.user} />
           </ToastProviderServer>
         </body>
     </html>
