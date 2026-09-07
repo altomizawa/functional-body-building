@@ -1,4 +1,3 @@
-'use server'
 import mongoose from 'mongoose';
 import Movement from '@/models/Movement';
 const { Schema } = mongoose;
