@@ -386,7 +386,7 @@ export default function AddWorkoutForm() {
             <button
               key={index}
               type="button"
-              className={`px-4 py-2 border ${currentSection === index ? 'bg-black text-white' : 'bg-white'}`}
+              className={`px-4 py-2 border ${currentSection === index ? 'bg-black text-white' : 'bg-white text-black'}`}
               onClick={() => selectSection(index)}
             >
               {section.section || `Section ${index + 1}`}
@@ -464,12 +464,12 @@ export default function AddWorkoutForm() {
                   searchText.trim().length > 0 &&
                   !isSearching &&
                   filteredMovements !== null &&
-                  filteredMovements.length === 0 && (
+                  filteredMovements && (
                     <AddNewMovementSmall
                       movementName={searchText}
                       onMovementAdded={(movement) => addMovement(movement, index)}
                     />
-                )}
+                  )}
                 <div className='relative'>
                   {currentSection === index && filteredMovements && filteredMovements.length > 0 && (
                     <Dropdown
