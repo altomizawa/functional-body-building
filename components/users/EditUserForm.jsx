@@ -35,7 +35,7 @@ const EditUserForm = ({
   }
 
   return (
-    <form action={handleSubmit} className='rounded-lg mt-4 space-y-4 w-full'>
+    <form action={handleSubmit} className='rounded-lg mt-4 space-y-4 w-full md:w-2/3 max-w-[1080]'>
       <h1 className="text-2xl font-bold w-full text-left text-7xl mb-12">EDIT USER</h1>
       <FormInput
         name="name"
@@ -63,6 +63,7 @@ const EditUserForm = ({
         defaultValue={selectedUser.status}
         required={true}
         options={['active', 'inactive', 'expired']}
+        hasChip={true}
         variant
       />
       <input type="hidden" name="id" value={selectedUser ? selectedUser._id : ''} />
