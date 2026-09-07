@@ -1,5 +1,5 @@
 'use client'
-import { fetchWorkout, updateWorkout } from '@/lib/workoutActions'
+import { fetchWorkout, updateWorkout, getPumpWorkout } from '@/lib/workoutActions'
 import { useToast } from '@/hooks/use-toast'
 import { useState, useRef, useEffect } from "react"
 import { getAllMovements } from '@/lib/movementActions'
@@ -167,28 +167,49 @@ const useEditWorkout = (initialWorkout) => {
   }
 
   const getWorkout = async (formData) => {
-    const selectedProgram = formData.get('selectedProgram')
-    const selectedWeek = formData.get('selectedWeek')
-    const selectedDay = formData.get('selectedDay')
+    const workoutType = formData.get('workoutType') || 'pillars'
     try {
-      const workoutData = await fetchWorkout(selectedProgram, selectedWeek, selectedDay)
-      if (!workoutData.success) {
-        toast({
-          title: 'Error',
-          description: workoutData.error,
+      let workoutData;
+      if (workoutType === 'pump4x') {
+        const selectedDate = formData.get('selectedDate')
+        workoutData = await getPumpWorkout({ date: selectedDate })
+        if (!workoutData.success) {
+          toast({
+            title: 'Error',
+            description: workoutData.error || 'No Pump 4x workout found for this date',
+          })
+          return
+        }
+        setNewWorkout({
+          ...workoutData.data,
+          workoutType: 'pump4x',
+          date: workoutData.data.date ? new Date(workoutData.data.date).toISOString().split('T')[0] : '',
         })
-        return
+      } else {
+        const selectedProgram = formData.get('selectedProgram')
+        const selectedWeek = formData.get('selectedWeek')
+        const selectedDay = formData.get('selectedDay')
+        workoutData = await fetchWorkout(selectedProgram, selectedWeek, selectedDay)
+        if (!workoutData.success) {
+          toast({
+            title: 'Error',
+            description: workoutData.error,
+          })
+          return
+        }
+        setNewWorkout({
+          ...workoutData.data,
+          workoutType: 'pillars',
+        })
       }
-      setNewWorkout(workoutData.data)
+
       setIsThereAWorkout(true)
       toast({
         title: 'Success',
         description: 'Workout fetched successfully',
       })
-      // resetForm();
     } catch (error) {
       console.error('Error fetching workout:', error)
-      // resetForm()
       toast({
         title: 'Error',
         description: 'Failed to fetch workout',

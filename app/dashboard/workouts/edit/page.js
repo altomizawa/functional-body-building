@@ -37,39 +37,98 @@ export default function EditWorkoutForm() {
         
         {/* FORM */}
         {newWorkout && <div>
-          <WorkoutForm.Title>EDIT WORKOUT</WorkoutForm.Title>
-          <div className='flex items-center gap-2 mt-4'>
-            <input
-              className='w-[300px]'
-              onChange={handleWorkoutChange}
-              type="text"
-              name="program"
-              placeholder="Program"
-              value={newWorkout?.program || ''}
-              required
-            />
-            <input
-              className='w-16'
-              onChange={handleWorkoutChange}
-              type="number"
-              name="week"
-              placeholder="Week"
-              value={newWorkout?.week || ''}
-              min={1}
-              required
-            />
-            <input
-              className='w-16'
-              onChange={handleWorkoutChange}
-              type="number"
-              name="day"
-              placeholder="Day"
-              value={newWorkout?.day || ''}
-              max={7}
-              min={1}
-              required
-            />
+          <div className="flex items-center justify-between">
+            <WorkoutForm.Title>EDIT WORKOUT</WorkoutForm.Title>
+            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-neutral-800 text-neutral-300 border border-neutral-700">
+              {newWorkout?.workoutType === 'pump4x' ? 'Pump 4x' : 'Pillars'}
+            </span>
           </div>
+
+          {newWorkout?.workoutType === 'pump4x' ? (
+            <div className='flex flex-wrap items-center gap-4 mt-4'>
+              <div className="flex-1 min-w-[200px]">
+                <label className="block text-xs uppercase text-neutral-400 mb-1">Workout Date:</label>
+                <input
+                  className='w-full bg-neutral-900 border border-neutral-700 rounded px-3 py-2 text-white'
+                  onChange={handleWorkoutChange}
+                  type="date"
+                  name="date"
+                  value={newWorkout?.date || ''}
+                  required
+                />
+              </div>
+              <div className="flex-1 min-w-[200px]">
+                <label className="block text-xs uppercase text-neutral-400 mb-1">Cycle:</label>
+                <input
+                  className='w-full bg-neutral-900 border border-neutral-700 rounded px-3 py-2 text-white'
+                  onChange={handleWorkoutChange}
+                  type="text"
+                  name="cycle"
+                  placeholder="Cycle name (e.g. PERSIST PUMP)"
+                  value={newWorkout?.cycle || ''}
+                  required
+                />
+              </div>
+              <div className="w-24">
+                <label className="block text-xs uppercase text-neutral-400 mb-1">Week (Opt):</label>
+                <input
+                  className='w-full bg-neutral-900 border border-neutral-700 rounded px-3 py-2 text-white'
+                  onChange={handleWorkoutChange}
+                  type="number"
+                  name="week"
+                  placeholder="Week"
+                  value={newWorkout?.week || ''}
+                  min={1}
+                />
+              </div>
+              <div className="w-24">
+                <label className="block text-xs uppercase text-neutral-400 mb-1">Day (Opt):</label>
+                <input
+                  className='w-full bg-neutral-900 border border-neutral-700 rounded px-3 py-2 text-white'
+                  onChange={handleWorkoutChange}
+                  type="number"
+                  name="day"
+                  placeholder="Day"
+                  value={newWorkout?.day || ''}
+                  max={7}
+                  min={1}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className='flex items-center gap-2 mt-4'>
+              <input
+                className='w-[300px]'
+                onChange={handleWorkoutChange}
+                type="text"
+                name="program"
+                placeholder="Program"
+                value={newWorkout?.program || ''}
+                required
+              />
+              <input
+                className='w-16'
+                onChange={handleWorkoutChange}
+                type="number"
+                name="week"
+                placeholder="Week"
+                value={newWorkout?.week || ''}
+                min={1}
+                required
+              />
+              <input
+                className='w-16'
+                onChange={handleWorkoutChange}
+                type="number"
+                name="day"
+                placeholder="Day"
+                value={newWorkout?.day || ''}
+                max={7}
+                min={1}
+                required
+              />
+            </div>
+          )}
 
           {/* Section tabs */}
           <WorkoutForm.Title variant='small' className='mt-12'>SECTIONS:</WorkoutForm.Title>
