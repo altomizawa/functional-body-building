@@ -3,8 +3,18 @@ const cleanDate = (date) => {
 }
 
 function getQueryValue (url) {
+  if (!url || typeof url !== 'string') return null;
+  // Match YouTube Video IDs from various URL formats (watch?v=, youtu.be/, embed/, etc.)
+  const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  if (match && match[1] && match[1].length === 11) {
+    return match[1];
+  }
   const parts = url.split("=");
-  return parts.length > 1 ? parts[1] : null;
+  if (parts.length > 1) {
+    return parts[1].split("&")[0];
+  }
+  return url;
 }
 
 function convertPhoneToDisplay(phoneNumber) {

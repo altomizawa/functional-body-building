@@ -1,25 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import Popup from '@/components/ui/Popup'
+import { useToast } from '@/hooks/use-toast'
+import { deleteUser } from '@/lib/actions'
+import FormInput from '../ui/FormInput'
+import DropdownInput from '../ui/DropdownInput'
+
 
 const EditUserForm = ({
-  selectedUser, 
-  setStatus, 
-  status, 
+  selectedUser,
+  setStatus,
+  status,
   handleSubmit
 }) => {
+  const [deletePopup, setDeletePopup] = useState(false)
+
+  const toast = useToast().toast
+
+
+  const DeleteUser = async (userId) => {
+    const { error } = await deleteUser(userId)
+    if (error) {
+      toast({
+        title: 'Error',
+        description: error,
+      })
+      return
+    }
+    setDeletePopup(false)
+    toast({
+      title: 'Success',
+      description: 'User deleted successfully',
+    })
+  }
+
   return (
     <form action={handleSubmit} className='rounded-lg mt-4 space-y-4'>
-      <input className='w-full' type="text" name="name" placeholder="Name" defaultValue={selectedUser ? selectedUser.name : ''} required />
-      <input className='w-full' type="email" name="email" placeholder="Email" defaultValue={selectedUser ? selectedUser.email : ''} required />
-      <input className='w-full' type="tel" id="phone" name="phone" pattern="\(\d{2}\) \d{4,5}-\d{4}" placeholder="(99) 99999-9999" defaultValue={selectedUser ? selectedUser.phone : ''} />
-      <select className='w-full border-2 p-2' id="status" name="status" onChange={(e) => setStatus(e.target.value)} value={status}>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-        <option value="expired">Expired</option>
-      </select>
+      <FormInput
+        name="name"
+        placeholder="Name"
+        defaultValue={selectedUser ? selectedUser.name : ''}
+        required={true}
+        uppercase
+      />
+      <FormInput
+        name="email"
+        placeholder="Email"
+        defaultValue={selectedUser ? selectedUser.email : ''}
+        required={true}
+      />
+      {console.log('selectedUser: ', selectedUser)}
+      <FormInput
+        name="phone"
+        placeholder="Phone"
+        defaultValue={selectedUser.phone ? selectedUser.phone : '(55) 5555-5555'}
+        required={false}
+      />
+      <DropdownInput
+        name="status"
+        placeholder="Status"
+        defaultValue={status}
+        required={true}
+        options={['active', 'inactive', 'expired']}
+      />
       <input type="hidden" name="id" value={selectedUser ? selectedUser._id : ''} />
-      <button type='submit' className='button__submit'>SUBMIT</button>
-
+      <Button type='submit' variant='primary' className='w-full'>UPDATE</Button>
+      <Button type='button' variant='destructive' className='w-full' onClick={() => setDeletePopup(true)}>DELETE USER</Button>
+      {deletePopup && <Popup title='Delete user' onClose={() => setDeletePopup(false)} action={() => DeleteUser(selectedUser._id)}>
+        <p>Are you sure you want to delete this user?</p>
+      </Popup>}
     </form>
   )
 }

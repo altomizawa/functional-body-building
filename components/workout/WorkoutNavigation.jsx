@@ -1,8 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PROGRAM_LIST, MAX_WEEKS, MAX_DAYS } from '@/lib/constants';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { parse } from 'date-fns';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 
 const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
@@ -14,51 +13,52 @@ const WorkoutNavigation = ({ program, week, day, handleFetchWorkout }) => {
   
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
 
 
   const nextProgram = () => {
     if (program < PROGRAM_LIST.length - 1) {
       const nextProgram = parseInt(program) + 1;
-      router.push(`/programs/pillars?program=${nextProgram}&week=${week}&day=${day}`);
+      router.push(`${pathname}?program=${nextProgram}&week=${week}&day=${day}`);
 
     } else return
   }
   const previousProgram = () => {
     if (program > 0) {
       const previousProgram = parseInt(program) - 1;
-      router.push(`/programs/pillars?program=${previousProgram}&week=${week}&day=${day}`);
+      router.push(`${pathname}?program=${previousProgram}&week=${week}&day=${day}`);
     } else return
   }
   const nextWeek = () => {
     if (week < MAX_WEEKS) {
       const nextWeek = parseInt(week) + 1;
-      router.push(`/programs/pillars?program=${program}&week=${nextWeek}&day=${day}`);
+      router.push(`${pathname}?program=${program}&week=${nextWeek}&day=${day}`);
     } else return
   }
   const previousWeek = () => {
     if (week > 1) {
       const previousWeek = parseInt(week) - 1;
-      router.push(`/programs/pillars?program=${program}&week=${previousWeek}&day=${day}`);
+      router.push(`${pathname}?program=${program}&week=${previousWeek}&day=${day}`);
     } else return
   }
   const nextDay = () => {
     console.log(MAX_DAYS)
     if (day < MAX_DAYS) {
       const nextDay = parseInt(day) + 1;
-      router.push(`/programs/pillars?program=${program}&week=${week}&day=${nextDay}`);
+      router.push(`${pathname}?program=${program}&week=${week}&day=${nextDay}`);
     } else {
       const nextWeek = parseInt(week) + 1;
-      router.push(`/programs/pillars?program=${program}&week=${nextWeek}&day=${1}`);
+      router.push(`${pathname}?program=${program}&week=${nextWeek}&day=${1}`);
     }
   }
   const previousDay = () => {
     if (day > 1) {
       const previousDay = parseInt(day) - 1;
-      router.push(`/programs/pillars?program=${program}&week=${week}&day=${previousDay}`);
+      router.push(`${pathname}?program=${program}&week=${week}&day=${previousDay}`);
 
     } else {
       const previousWeek = parseInt(week) - 1;
-      router.push(`/programs/pillars?program=${program}&week=${previousWeek}&day=${MAX_DAYS}`);
+      router.push(`${pathname}?program=${program}&week=${previousWeek}&day=${MAX_DAYS}`);
     }
   }
 

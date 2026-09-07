@@ -159,7 +159,7 @@ export function SignupForm() {
 
             {error && <div className="text-sm font-medium text-destructive">{error}</div>}
 
-            <Button type="submit" className="w-full border-2 py-2 rounded-md bg-black text-white hover:bg-gray-500" disabled={isSubmitting}>
+            <Button type="submit" variant='primary' className='w-full' disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -172,10 +172,10 @@ export function SignupForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center border-t p-4">
-        <div className="text-sm text-muted-foreground">
+      <CardFooter className="flex justify-center p-4">
+        <div className="text-sm text-neutral-500">
           Already have an account?{" "}
-          <Button variant="link" className="p-0 h-auto" onClick={() => router.push("/login")}>
+          <Button variant="link" className="p-0 h-auto text-white underline" onClick={() => router.push("/login")}>
             Sign in
           </Button>
         </div>

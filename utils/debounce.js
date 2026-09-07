@@ -1,7 +1,7 @@
 export function debounce(func, delay) {
   let timeoutId;
 
-  return (...args) => {
+  const debounced = (...args) => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -9,4 +9,13 @@ export function debounce(func, delay) {
       func(...args);
     }, delay);
   };
-}
+
+  debounced.cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  return debounced;
+}

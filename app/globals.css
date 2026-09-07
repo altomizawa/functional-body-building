@@ -8,18 +8,36 @@
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0; /* Removes extra space created by the spin buttons */
+  margin: 0;
+  /* Removes extra space created by the spin buttons */
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; /* For Firefox */
-  appearance: textfield; /* Standard property */
+  -moz-appearance: textfield;
+  /* For Firefox */
+  appearance: textfield;
+  /* Standard property */
 }
 
-:root{
+:root {
   --input: #474747
 }
 
+/* Width of the entire scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* The track (background) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1d1;
+}
+
+/* The draggable scrolling piece */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
 
 body {
   font-family: "Gidole", sans-serif;
@@ -30,7 +48,9 @@ body {
 }
 
 
-input, textarea, select{
+input,
+textarea,
+select {
   @apply rounded-md p-2 bg-[var(--input)];
 }
 
@@ -40,7 +60,7 @@ input, textarea, select{
   @apply text-sm text-gray-500 border-t-[1px] border-gray-300 py-2
 }
 
-h3{
+h3 {
   @apply font-bold
 }
 
@@ -48,30 +68,31 @@ h3{
   @apply text-base font-normal
 }
 
-.workout-button{
+.workout-button {
   @apply text-white uppercase text-3xl font-bold
 }
 
-.button__main-menu{
+.button__main-menu {
   @apply w-full border-[1px] border-black text-center text-black px-4 py-2 rounded-md duration-300 hover:bg-slate-200
 }
 
-.button__back{
-  @apply w-full bg-red-400 text-center text-white px-4 py-2 rounded-md duration-300 hover:bg-red-300 
+.button__back {
+  @apply w-full bg-red-400 text-center text-white px-4 py-2 rounded-md duration-300 hover:bg-red-300
 }
-.button__submit{
+
+.button__submit {
   @apply w-full bg-green-500 text-center text-white px-4 py-2 rounded-md duration-300 hover:bg-green-400
 }
 
-h2{
+h2 {
   @apply text-2xl font-bold uppercase
 }
 
 
 .material-symbols-outlined {
   font-variation-settings:
-  'FILL' 0,
-  'wght' 100,
-  'GRAD' 0,
-  'opsz' 24
+    'FILL' 0,
+    'wght' 100,
+    'GRAD' 0,
+    'opsz' 24
 }
