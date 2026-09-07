@@ -12,6 +12,7 @@ import AddNewMovementSmall from "@/components/add-movements/AddMovementSmall"
 
 export default function AddWorkoutForm() {
   const [filteredMovements, setFilteredMovements] = useState(null)
+  const [isSearching, setIsSearching] = useState(false)
   const [workoutType, setWorkoutType] = useState('pillars')
   const [currentSection, setCurrentSection] = useState(0)
   const [searchText, setSearchText] = useState('')
@@ -53,6 +54,10 @@ export default function AddWorkoutForm() {
         if (currentId !== searchIdRef.current) return
         console.error('Error finding movement by name:', error)
         setFilteredMovements([])
+      } finally {
+        if (currentId === searchIdRef.current) {
+          setIsSearching(false)
+        }
       }
     }, 300),
     []
@@ -77,6 +82,7 @@ export default function AddWorkoutForm() {
   const resetForm = () => {
     debouncedSearch.cancel?.()
     setFilteredMovements(null)
+    setIsSearching(false)
     setSearchText('')
     setNewWorkout({
       workoutType,
@@ -155,9 +161,11 @@ export default function AddWorkoutForm() {
     if (!searchValue || searchValue.trim().length === 0) {
       debouncedSearch.cancel?.()
       setFilteredMovements(null)
+      setIsSearching(false)
       return
     }
 
+    setIsSearching(true)
     debouncedSearch(searchValue)
   }
 
@@ -182,6 +190,7 @@ export default function AddWorkoutForm() {
 
     debouncedSearch.cancel?.();
     setFilteredMovements(null);
+    setIsSearching(false);
     setSearchText('');
     if (movementInputRef.current) {
       movementInputRef.current.value = '';
@@ -242,6 +251,7 @@ export default function AddWorkoutForm() {
     setCurrentSection(index)
     debouncedSearch.cancel?.()
     setFilteredMovements(null)
+    setIsSearching(false)
     setSearchText('')
   }
 
@@ -449,11 +459,16 @@ export default function AddWorkoutForm() {
                     </div>
                   ))}
                 </div>
-                {currentSection === index && section.movements && searchText.length > 0 && (
-                  <AddNewMovementSmall
-                    initialName={searchText}
-                    onMovementAdded={(movement) => addMovement(movement, index)}
-                  />
+                {currentSection === index &&
+                  section.movements &&
+                  searchText.trim().length > 0 &&
+                  !isSearching &&
+                  filteredMovements !== null &&
+                  filteredMovements.length === 0 && (
+                    <AddNewMovementSmall
+                      movementName={searchText}
+                      onMovementAdded={(movement) => addMovement(movement, index)}
+                    />
                 )}
                 <div className='relative'>
                   {currentSection === index && filteredMovements && filteredMovements.length > 0 && (

@@ -1,35 +1,38 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { PlusCircle, Loader2 } from "lucide-react"
 import { addNewMovement } from "@/lib/movementActions"
 import { useToast } from "@/hooks/use-toast"
 
-const AddNewMovementSmall = ({ initialName = '', onMovementAdded }) => {
-  const [name, setName] = useState(initialName)
+const AddNewMovementSmall = ({ movementName = '', initialName = '', onMovementAdded }) => {
+  const nameToUse = movementName || initialName
   const [link, setLink] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
-
-  useEffect(() => {
-    if (initialName !== undefined) {
-      setName(initialName)
-    }
-  }, [initialName])
 
   const handleSubmit = async (e) => {
     if (e && e.preventDefault) {
       e.preventDefault()
     }
 
-    const trimmedName = name.trim()
+    const trimmedName = nameToUse.trim()
     const trimmedLink = link.trim()
 
-    if (!trimmedName || !trimmedLink) {
+    if (!trimmedName) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Please enter a movement name and a video link',
+        description: 'Movement name is missing',
+      })
+      return
+    }
+
+    if (!trimmedLink) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Please enter a video link',
       })
       return
     }
@@ -55,7 +58,6 @@ const AddNewMovementSmall = ({ initialName = '', onMovementAdded }) => {
         description: `${response.data.name} added successfully.`,
       })
 
-      setName('')
       setLink('')
 
       if (onMovementAdded && response.data) {
@@ -82,17 +84,9 @@ const AddNewMovementSmall = ({ initialName = '', onMovementAdded }) => {
   return (
     <div className='border-b-[1px] border-white/40 p-2 w-full flex items-center gap-2'>
       <div className='flex gap-4 items-center w-full'>
-        <input
-          type="text"
-          name='name'
-          placeholder='Movement Name'
-          autoComplete='off'
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={isLoading}
-          className='w-full p-2 bg-transparent border-b border-neutral-700 focus:outline-none focus:border-white'
-        />
+        <p className='text-MD font-medium text-neutral-300 whitespace-nowrap min-w-max'>
+          <span className='text-red-400 mr-2'>CAN'T FIND?! </span>ADD MOVEMENT:
+        </p>
         <input
           type="text"
           name='link'
@@ -108,7 +102,7 @@ const AddNewMovementSmall = ({ initialName = '', onMovementAdded }) => {
           type='button'
           onClick={handleSubmit}
           disabled={isLoading}
-          className='text-white cursor-pointer w-min disabled:opacity-50 hover:text-neutral-300 transition-colors'
+          className='text-white cursor-pointer w-min disabled:opacity-50 hover:text-neutral-300 transition-colors shrink-0'
           title='Add movement'
         >
           {isLoading ? (
