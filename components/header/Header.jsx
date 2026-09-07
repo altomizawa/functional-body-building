@@ -21,10 +21,10 @@ const Header = ({ user }) => {
 
 const MenuSandwich = ({ isOpen, setIsOpen }) => {
   return (
-     <button className='fixed top-6 right-6 flex flex-col gap-2  border-black w-8 aspect-square' onClick={() => setIsOpen(!isOpen)}>
+    <button className='fixed top-6 right-6 flex flex-col gap-2  border-black w-8 aspect-square' onClick={() => setIsOpen(!isOpen)}>
       <div className={`${isOpen ? "absolute top-4 left-0 rotate-45 w-full h-[2px] bg-gray-400 duration-300" : "h-[2px] bg-gray-400 duration-300"}`}></div>
       <div className={`${isOpen ? "hidden" : "w-full h-[2px] bg-gray-400"}`}></div>
-      <div className={`${isOpen ? "absolute top-4 left-0 -rotate-45 w-full h-[2px] bg-gray-400 duration-300" :"h-[2px] bg-gray-400 duration-300" }`}></div>
+      <div className={`${isOpen ? "absolute top-4 left-0 -rotate-45 w-full h-[2px] bg-gray-400 duration-300" : "h-[2px] bg-gray-400 duration-300"}`}></div>
     </button>
 
   )
@@ -41,7 +41,7 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole, userId }
     setIsOpen(false)
     router.push('/')
   }
- 
+
   const goToProfile = () => {
     setIsOpen(false)
     router.push('/user/' + userId)
@@ -49,9 +49,9 @@ const NavOpen = ({ isOpen, setIsOpen, username = 'Undefined', userRole, userId }
 
   const goToWorkouts = () => {
     setIsOpen(false)
-    router.push('/programs/pillars')
+    router.push('/programs')
   }
-  
+
   const handleLogout = async () => {
     setIsOpen(false)
     await logout()

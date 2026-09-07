@@ -2,19 +2,23 @@ const cleanDate = (date) => {
   return date.split('T')[0]
 }
 
-function getQueryValue (url) {
+function getQueryValue(url) {
   if (!url || typeof url !== 'string') return null;
-  // Match YouTube Video IDs from various URL formats (watch?v=, youtu.be/, embed/, etc.)
-  const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  if (match && match[1] && match[1].length === 11) {
+  const cleanUrl = url.trim();
+
+  // If already an 11-character YouTube ID
+  if (/^[a-zA-Z0-9_-]{11}$/.test(cleanUrl)) {
+    return cleanUrl;
+  }
+
+  // Matches all YouTube URL formats (watch?v=, youtu.be/, shorts/, embed/, live/)
+  const regExp = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts|live)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = cleanUrl.match(regExp);
+  if (match && match[1]) {
     return match[1];
   }
-  const parts = url.split("=");
-  if (parts.length > 1) {
-    return parts[1].split("&")[0];
-  }
-  return url;
+
+  return null;
 }
 
 function convertPhoneToDisplay(phoneNumber) {
@@ -39,7 +43,7 @@ const checkIfWorkoutCompleted = (userData, workout) => {
   if (!userData?.data?.completed || !workout?._id) {
     return false;
   }
-  
+
   // Check if the workout ID exists in the user's completed workouts
   return userData.data.completed.some(entry => {
     return entry.pillarId._id.toString() === workout._id.toString();

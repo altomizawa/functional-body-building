@@ -10,7 +10,7 @@ import background from '@/public/images/bkg.jpg';
 export default async function ProgramSelection() {
   const session = await verifySession(); // CHECK IF THERE'S A SESSION AND REDIRECT TO LOGIN IF NOT
   if (session?.role !== 'admin') {
-    redirect('/programs/pillars')
+    redirect('/programs')
   }
   return (
     <div className="h-screen flex flex-col justify-center items-center z-0 bg-neutral-900/80">

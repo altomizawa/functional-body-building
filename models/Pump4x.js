@@ -19,6 +19,8 @@ const SectionSchema = new Schema({
 
 const Pump4xSchema = new Schema({
   program: { type: String, required: false },
+  cycle: { type: String, required: true },
+  date: { type: Date, required: true },
   week: { type: Number, required: false },
   day: { type: Number, required: false },
   sections: [SectionSchema]
