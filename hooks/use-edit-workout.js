@@ -1,11 +1,11 @@
 'use client'
 import { fetchWorkout, updateWorkout, getPumpWorkout } from '@/lib/workoutActions'
 import { useToast } from '@/hooks/use-toast'
-import { useState, useRef, useEffect } from "react"
-import { getAllMovements } from '@/lib/movementActions'
+import { useState, useRef, useEffect, useMemo } from "react"
+import { findMovementByName } from '@/lib/movementActions'
+import { debounce } from '@/utils/debounce'
 
 const useEditWorkout = (initialWorkout) => {
-  const [movements, setMovements] = useState([])
   const [filteredMovements, setFilteredMovements] = useState(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [searchText, setSearchText] = useState('')
@@ -15,9 +15,39 @@ const useEditWorkout = (initialWorkout) => {
 
   const toast = useToast().toast
   const movementInputRef = useRef(null)
+  const searchIdRef = useRef(0)
+
+  const debouncedSearch = useMemo(
+    () => debounce(async (term) => {
+      const currentId = ++searchIdRef.current
+      try {
+        const response = await findMovementByName(term.trim())
+        if (currentId !== searchIdRef.current) return
+        if (response?.success && response?.data) {
+          setFilteredMovements(response.data)
+        } else {
+          setFilteredMovements([])
+        }
+      } catch (error) {
+        if (currentId !== searchIdRef.current) return
+        console.error('Error finding movement by name:', error)
+        setFilteredMovements([])
+      }
+    }, 300),
+    []
+  )
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel?.()
+    }
+  }, [debouncedSearch])
 
   // RESET ALL FORMS
   const resetForm = () => {
+    debouncedSearch.cancel?.()
+    setFilteredMovements(null)
+    setSearchText('')
     setNewWorkout(null)
     setCurrentSection(0)
   }
@@ -77,14 +107,15 @@ const useEditWorkout = (initialWorkout) => {
   const handleMovementSearch = (e, index) => {
     const searchValue = e.target.value
     setSearchText(searchValue)
-    console.log(searchValue)
+    setCurrentSection(index)
 
-    if (!searchValue) {
+    if (!searchValue || searchValue.trim().length === 0) {
+      debouncedSearch.cancel?.()
       setFilteredMovements(null)
       return
     }
-    setCurrentSection(index)
-    setFilteredMovements(movements.filter(movement => movement.name.toLowerCase().includes(searchValue.toLowerCase())))
+
+    debouncedSearch(searchValue)
   }
 
   const addMovement = (movement) => {
@@ -104,6 +135,7 @@ const useEditWorkout = (initialWorkout) => {
       })
     }));
 
+    debouncedSearch.cancel?.();
     setFilteredMovements(null);
     setSearchText('');
     if (movementInputRef.current) {
@@ -162,6 +194,7 @@ const useEditWorkout = (initialWorkout) => {
 
   const selectSection = (index) => {
     setCurrentSection(index)
+    debouncedSearch.cancel?.()
     setFilteredMovements(null)
     setSearchText('')
   }
@@ -216,21 +249,6 @@ const useEditWorkout = (initialWorkout) => {
       })
     }
   }
-
-  useEffect(() => {
-    const fetchAllMovements = async () => {
-      const response = await getAllMovements()
-      if (response.success) {
-        setMovements(response.data)
-      } else {
-        toast({
-          title: 'Error',
-          description: response.error,
-        })
-      }
-    }
-    fetchAllMovements()
-  }, [])
 
   return {
     filteredMovements,

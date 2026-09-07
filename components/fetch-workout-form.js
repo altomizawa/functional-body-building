@@ -15,22 +15,20 @@ const FetchWorkoutForm = ({ getWorkout }) => {
           <button
             type="button"
             onClick={() => setWorkoutType('pillars')}
-            className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${
-              workoutType === 'pillars'
+            className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${workoutType === 'pillars'
                 ? 'bg-white text-black shadow'
                 : 'text-neutral-400 hover:text-white'
-            }`}
+              }`}
           >
             Pillars
           </button>
           <button
             type="button"
             onClick={() => setWorkoutType('pump4x')}
-            className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${
-              workoutType === 'pump4x'
+            className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${workoutType === 'pump4x'
                 ? 'bg-white text-black shadow'
                 : 'text-neutral-400 hover:text-white'
-            }`}
+              }`}
           >
             Pump 4x
           </button>

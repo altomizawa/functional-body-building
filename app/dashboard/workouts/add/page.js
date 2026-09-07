@@ -1,16 +1,16 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import Preview from '@/components/Preview'
-import Link from 'next/link'
+import { useState, useEffect, useRef, useMemo } from "react"
 import { createWorkout } from '@/lib/workoutActions'
-import { getAllMovements } from '@/lib/movementActions'
+import { findMovementByName } from '@/lib/movementActions'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from '@/hooks/use-toast'
 import Dropdown from '@/components/form/Dropdown'
+import { debounce } from "@/utils/debounce"
+import { PlusCircle } from "lucide-react"
+import AddNewMovementSmall from "@/components/add-movements/AddMovementSmall"
 
 export default function AddWorkoutForm() {
-  const [movements, setMovements] = useState([])
   const [filteredMovements, setFilteredMovements] = useState(null)
   const [workoutType, setWorkoutType] = useState('pillars')
   const [currentSection, setCurrentSection] = useState(0)
@@ -36,6 +36,33 @@ export default function AddWorkoutForm() {
 
   const toast = useToast().toast
   const movementInputRef = useRef(null)
+  const searchIdRef = useRef(0)
+
+  const debouncedSearch = useMemo(
+    () => debounce(async (term) => {
+      const currentId = ++searchIdRef.current
+      try {
+        const response = await findMovementByName(term.trim())
+        if (currentId !== searchIdRef.current) return
+        if (response?.success && response?.data) {
+          setFilteredMovements(response.data)
+        } else {
+          setFilteredMovements([])
+        }
+      } catch (error) {
+        if (currentId !== searchIdRef.current) return
+        console.error('Error finding movement by name:', error)
+        setFilteredMovements([])
+      }
+    }, 300),
+    []
+  )
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel?.()
+    }
+  }, [debouncedSearch])
 
   const handleWorkoutTypeChange = (type) => {
     setWorkoutType(type)
@@ -48,6 +75,9 @@ export default function AddWorkoutForm() {
 
   // RESET ALL FORMS
   const resetForm = () => {
+    debouncedSearch.cancel?.()
+    setFilteredMovements(null)
+    setSearchText('')
     setNewWorkout({
       workoutType,
       program: '',
@@ -101,7 +131,7 @@ export default function AddWorkoutForm() {
 
   const handleSectionChange = (e, sectionIndex) => {
     const index = sectionIndex !== undefined ? sectionIndex : currentSection
-    
+
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.map((section, idx) => {
@@ -120,28 +150,26 @@ export default function AddWorkoutForm() {
   const handleMovementSearch = (e, index) => {
     const searchValue = e.target.value
     setSearchText(searchValue)
-    
-    if (!searchValue) {
+    setCurrentSection(index)
+
+    if (!searchValue || searchValue.trim().length === 0) {
+      debouncedSearch.cancel?.()
       setFilteredMovements(null)
       return
     }
-    
-    setCurrentSection(index)
-    
-    setFilteredMovements(
-      movements.filter(movement =>
-        movement.name.toLowerCase().includes(searchValue.toLowerCase())
-      )
-    )
+
+    debouncedSearch(searchValue)
   }
 
-  const addMovement = (movement) => {
+  const addMovement = (movement, sectionIndex) => {
+    const targetSection = sectionIndex !== undefined ? sectionIndex : currentSection;
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.map((section, index) => {
-        if (index === currentSection) {
+        if (index === targetSection) {
           // Check if movement already exists in this section
-          if (!section.movements.some(m => m._id === movement._id)) {
+          const targetId = movement._id || movement.id;
+          if (!section.movements.some(m => (m._id || m.id) === targetId)) {
             return {
               ...section,
               movements: [...section.movements, movement]
@@ -152,6 +180,7 @@ export default function AddWorkoutForm() {
       })
     }));
 
+    debouncedSearch.cancel?.();
     setFilteredMovements(null);
     setSearchText('');
     if (movementInputRef.current) {
@@ -160,14 +189,15 @@ export default function AddWorkoutForm() {
   };
 
   const removeMovement = (movement, sectionIndex) => {
+    const targetId = movement._id || movement.id;
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.map((section, index) => {
         if (index === sectionIndex) {
           return {
             ...section,
-            movements: section.movements.filter(prevMovement => 
-              prevMovement._id !== movement._id
+            movements: section.movements.filter(prevMovement =>
+              (prevMovement._id || prevMovement.id) !== targetId
             )
           };
         }
@@ -189,7 +219,7 @@ export default function AddWorkoutForm() {
     }))
     setCurrentSection(newWorkout.sections.length)
   }
-  
+
   const removeSection = (indexToRemove) => {
     if (newWorkout.sections.length <= 1) {
       toast({
@@ -198,7 +228,7 @@ export default function AddWorkoutForm() {
       })
       return
     }
-    
+
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.filter((_, index) => index !== indexToRemove)
@@ -210,32 +240,10 @@ export default function AddWorkoutForm() {
 
   const selectSection = (index) => {
     setCurrentSection(index)
+    debouncedSearch.cancel?.()
     setFilteredMovements(null)
     setSearchText('')
   }
-
-  useEffect(() => {
-    const fetchMovements = async () => {
-      try {
-        const res = await getAllMovements()
-        if (!res.success) {
-          toast({
-            title: 'Error',
-            description: res.error,
-          })
-          return
-        }
-        setMovements(res.data)
-      } catch (error) {
-        console.error('Error fetching movements:', error)
-        toast({
-          title: 'Error',
-          description: 'Failed to fetch movements',
-        })
-      }
-    }
-    fetchMovements()
-  }, [])
 
   return (
     <form onSubmit={onSubmit} className='h-full px-6 my-16 max-w-[1440px] mx-auto'>
@@ -245,30 +253,26 @@ export default function AddWorkoutForm() {
         <h1 className="text-2xl md:text-3xl font-bold text-left mb-6">ADD NEW WORKOUT</h1>
 
         {/* WORKOUT TYPE SELECTOR */}
-        <div className="mb-6">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
-            SELECT WORKOUT TYPE:
-          </label>
-          <div className="flex gap-4">
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-xs uppercase tracking-wider text-neutral-400 font-semibold">WORKOUT TYPE:</span>
+          <div className="flex gap-2 bg-neutral-900 p-1 rounded-lg border border-neutral-800">
             <button
               type="button"
               onClick={() => handleWorkoutTypeChange('pillars')}
-              className={`px-6 py-2.5 rounded-lg font-bold text-sm uppercase tracking-wider transition-all border ${
-                workoutType === 'pillars'
-                  ? 'bg-white text-black border-white shadow-lg'
-                  : 'bg-neutral-900 text-neutral-400 border-neutral-700 hover:border-neutral-500 hover:text-white'
-              }`}
+              className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${workoutType === 'pillars'
+                ? 'bg-white text-black shadow'
+                : 'text-neutral-400 hover:text-white'
+                }`}
             >
               Pillars
             </button>
             <button
               type="button"
               onClick={() => handleWorkoutTypeChange('pump4x')}
-              className={`px-6 py-2.5 rounded-lg font-bold text-sm uppercase tracking-wider transition-all border ${
-                workoutType === 'pump4x'
-                  ? 'bg-white text-black border-white shadow-lg'
-                  : 'bg-neutral-900 text-neutral-400 border-neutral-700 hover:border-neutral-500 hover:text-white'
-              }`}
+              className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${workoutType === 'pump4x'
+                ? 'bg-white text-black shadow'
+                : 'text-neutral-400 hover:text-white'
+                }`}
             >
               Pump 4x
             </button>
@@ -390,8 +394,8 @@ export default function AddWorkoutForm() {
         <div id='sections' className='my-4 space-y-8'>
           {/* SECTION */}
           {newWorkout.sections.map((section, index) => (
-            <div 
-              className={`space-y-8 bg-neutral-800 p-6 ${currentSection === index ? 'block' : 'hidden'}`} 
+            <div
+              className={`space-y-8 bg-neutral-800 p-6 ${currentSection === index ? 'block' : 'hidden'}`}
               key={index}
             >
               <div className='w-full space-y-2'>
@@ -419,7 +423,7 @@ export default function AddWorkoutForm() {
                   value={section.description}
                 />
               </div>
-              <div className='w-full space-y-2'>
+              <div className='w-full'>
                 <label htmlFor={`movements-${index}`}>ADD MOVEMENTS TO SECTION:</label>
                 <input
                   className='w-full'
@@ -430,14 +434,14 @@ export default function AddWorkoutForm() {
                   placeholder="Search movements"
                   value={currentSection === index ? searchText : ''}
                   ref={currentSection === index ? movementInputRef : null}
-                  autoComplete= 'off'
+                  autoComplete='off'
                 />
-                <div className='flex flex-wrap gap-4'>
+                <div className='flex flex-wrap gap-4 mt-2'>
                   {section.movements && section.movements.map((movement, movIdx) => (
                     <div key={movIdx} className='border-[1px] border-white/40 px-2 py-1 flex items-center'>
-                      <p>{movement.name}</p>
-                      <span 
-                        className='ml-2 cursor-pointer text-red-500 hover:text-red-700' 
+                      <p className='text-neutral-400'>{movement.name}</p>
+                      <span
+                        className='ml-2 cursor-pointer text-red-500 hover:text-red-700'
                         onClick={() => removeMovement(movement, index)}
                       >
                         ✕
@@ -445,6 +449,12 @@ export default function AddWorkoutForm() {
                     </div>
                   ))}
                 </div>
+                {currentSection === index && section.movements && searchText.length > 0 && (
+                  <AddNewMovementSmall
+                    initialName={searchText}
+                    onMovementAdded={(movement) => addMovement(movement, index)}
+                  />
+                )}
                 <div className='relative'>
                   {currentSection === index && filteredMovements && filteredMovements.length > 0 && (
                     <Dropdown
@@ -466,20 +476,20 @@ export default function AddWorkoutForm() {
                   value={section.notes}
                 />
               </div>
-                <button
-                  type='button'
-                  className='w-full my-2 uppercase bg-red-600 text-white px-4 py-2 duration-300 hover:bg-red-500'
-                  onClick={() => removeSection(index)}
-                >
-                  Remove Section
-                </button>
+              <button
+                type='button'
+                className='w-full my-2 uppercase bg-red-600 text-white px-4 py-2 duration-300 hover:bg-red-500'
+                onClick={() => removeSection(index)}
+              >
+                Remove Section
+              </button>
             </div>
           ))}
         </div>
       </div>
 
       <div className='flex flex-col gap-4 mt-8'>
-        
+
         <button type="submit" className='button__submit'>SUBMIT</button>
       </div>
     </form>

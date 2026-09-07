@@ -27,14 +27,14 @@ export default function EditWorkoutForm() {
     movementInputRef,
     setDeletePopup
   } = useEditWorkout();
-  
+
 
   return (
     <>
       <Toaster />
       <FetchWorkoutForm getWorkout={getWorkout} />
       <WorkoutForm.Container onSubmit={onSubmit}>
-        
+
         {/* FORM */}
         {newWorkout && <div>
           <div className="flex items-center justify-between">
@@ -135,7 +135,7 @@ export default function EditWorkoutForm() {
           <WorkoutForm.Sections>
             {newWorkout && newWorkout.sections.map((section, index) => (
               <WorkoutForm.Button key={index} type='button' variant={currentSection === index ? 'ghost' : 'secondary'} onClick={() => selectSection(index)}>
-                 {section.section}
+                {section.section}
               </WorkoutForm.Button>
             ))}
             <WorkoutForm.Button type="button" variant='primary' onClick={addNewSection}>
@@ -188,8 +188,8 @@ export default function EditWorkoutForm() {
                     {section.movements && section.movements.map((movement, movIdx) => (
                       <div key={movIdx} className='border-[1px] border-white/20 px-2 py-1 flex items-center'>
                         <p>{movement.name}</p>
-                        <span 
-                          className='ml-2 cursor-pointer text-red-500 hover:text-red-700' 
+                        <span
+                          className='ml-2 cursor-pointer text-red-500 hover:text-red-700'
                           onClick={() => removeMovement(movement, index)}
                         >
                           ✕
@@ -224,7 +224,7 @@ export default function EditWorkoutForm() {
                   />
                 </div>
                 <WorkoutForm.Button type='button' variant='danger' onClick={() => removeSection(index)}>
-                   REMOVE SECTION
+                  REMOVE SECTION
                 </WorkoutForm.Button>
               </WorkoutForm.Section>
             ))}
@@ -233,7 +233,7 @@ export default function EditWorkoutForm() {
 
         {isThereAWorkout && <WorkoutForm.Buttons>
           <DeletePopup deletePopup={deletePopup} setDeletePopup={setDeletePopup} workoutId={newWorkout._id} />
-          <WorkoutForm.Button variant='danger' type='button 'onClick={() => setDeletePopup(true)}>
+          <WorkoutForm.Button variant='danger' type='button ' onClick={() => setDeletePopup(true)}>
             REMOVE WORKOUT
           </WorkoutForm.Button>
           <WorkoutForm.Button variant='ghost' type='submit'>
