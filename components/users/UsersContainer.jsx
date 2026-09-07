@@ -92,7 +92,7 @@ export default function UsersContainer({ users }) {
     <div className='flex flex-col gap-12 h-full px-6 my-16 max-w-[1440px] mx-auto'>
       {/* USER LIST */}
       <div>
-        <h1 className="text-5xl md:text-3xl font-bold text-right mb-4">USERS</h1>
+        <h1 className="text-5xl font-bold text-right mb-4">USERS</h1>
         <SearchInput
           id="userSearch"
           ref={searchInputRef}
