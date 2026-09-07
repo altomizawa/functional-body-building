@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -36,7 +37,7 @@ export default function ForgotPasswordPage() {
           required
         />
         <Link href="/" className='button__back'>BACK</Link>
-        <button className='px-4 py-2 border-[1px] border-black rounded-lg hover:bg-white' type="submit">Send Reset Link</button>
+        <Button variant='primary' type="submit">Send Reset Link</Button>
       </form>
       {message && <p>{message}</p>}
     </div>
