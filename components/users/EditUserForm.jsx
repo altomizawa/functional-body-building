@@ -10,8 +10,7 @@ import DropdownInput from '../ui/DropdownInput'
 
 const EditUserForm = ({
   selectedUser,
-  setStatus,
-  status,
+  onClose,
   handleSubmit
 }) => {
   const [deletePopup, setDeletePopup] = useState(false)
@@ -36,7 +35,8 @@ const EditUserForm = ({
   }
 
   return (
-    <form action={handleSubmit} className='rounded-lg mt-4 space-y-4'>
+    <form action={handleSubmit} className='rounded-lg mt-4 space-y-4 w-full'>
+      <h1 className="text-2xl font-bold w-full text-left text-7xl mb-12">EDIT USER</h1>
       <FormInput
         name="name"
         placeholder="Name"
@@ -60,12 +60,16 @@ const EditUserForm = ({
       <DropdownInput
         name="status"
         placeholder="Status"
-        defaultValue={status}
+        defaultValue={selectedUser.status}
         required={true}
         options={['active', 'inactive', 'expired']}
+        variant
       />
       <input type="hidden" name="id" value={selectedUser ? selectedUser._id : ''} />
-      <Button type='submit' variant='primary' className='w-full'>UPDATE</Button>
+      <div className='flex w-full gap-2'>
+        <Button type='button' variant='outline' className='flex-1' onClick={onClose}>CANCEL</Button>
+        <Button type='submit' variant='primary' className='flex-1'>UPDATE</Button>
+      </div>
       <Button type='button' variant='destructive' className='w-full' onClick={() => setDeletePopup(true)}>DELETE USER</Button>
       {deletePopup && <Popup title='Delete user' onClose={() => setDeletePopup(false)} action={() => DeleteUser(selectedUser._id)}>
         <p>Are you sure you want to delete this user?</p>

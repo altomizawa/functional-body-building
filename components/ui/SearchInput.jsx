@@ -5,7 +5,6 @@ import { Search } from "lucide-react"
 const SearchInput = React.forwardRef(({ className, placeholder = "Search...", ...props }, ref) => {
   return (
     <div className=' border-b border-neutral-300 flex justify-between items-center'>
-      <Search className='h-5 w-5 text-neutral-300' />
       <input
         ref={ref}
         type="text"
@@ -16,6 +15,7 @@ const SearchInput = React.forwardRef(({ className, placeholder = "Search...", ..
         )}
         {...props}
       />
+      <Search className='h-5 w-5 text-neutral-300' />
     </div>
   )
 })
