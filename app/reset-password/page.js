@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-
+import { Button } from "@/components/ui/button";
 const ResetPasswordContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -15,11 +15,11 @@ const ResetPasswordContent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(password !== confirmation) {
+    if (password !== confirmation) {
       setMessage("Passwords do not match");
       return;
     }
-    
+
     setMessage("");
 
     const res = await fetch("/api/auth/reset-password", {
@@ -55,8 +55,8 @@ const ResetPasswordContent = () => {
           onChange={(e) => setConfirmation(e.target.value)}
           required
         />
-        <button className='text-left underline' type='button' onClick={() => setShowPassword(!showPassword)}>show password</button>
-        <button className='px-4 py-2 border-[1px] border-black rounded-lg hover:bg-white' type="submit">Reset Password</button>
+        <Button variant='link' type='button' className='text-left w-min' size='sm' onClick={() => setShowPassword(!showPassword)}>show password</Button>
+        <Button variant='primary' type="submit">Reset Password</Button>
       </form>
       {message && <p>{message}</p>}
     </div>
