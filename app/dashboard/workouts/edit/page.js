@@ -1,4 +1,5 @@
 "use client"
+import { Suspense } from "react"
 import { Toaster } from "@/components/ui/toaster"
 import DeletePopup from '@/components/DeletePopup'
 import Dropdown from '@/components/form/Dropdown'
@@ -32,7 +33,9 @@ export default function EditWorkoutForm() {
   return (
     <>
       <Toaster />
-      <FetchWorkoutForm getWorkout={getWorkout} />
+      <Suspense fallback={null}>
+        <FetchWorkoutForm getWorkout={getWorkout} />
+      </Suspense>
       <WorkoutForm.Container onSubmit={onSubmit}>
 
         {/* FORM */}

@@ -63,20 +63,24 @@ const useEditWorkout = (initialWorkout) => {
         })
         return
       }
+      if (response.workout) {
+        setNewWorkout(prev => ({
+          ...prev,
+          ...response.workout,
+          date: response.workout.date ? new Date(response.workout.date).toISOString().split('T')[0] : prev?.date
+        }))
+      }
       toast({
         title: 'Success',
         description: 'Workout updated successfully',
       })
-
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Failed to create workout',
+        description: 'Failed to update workout',
       })
       console.error(error)
     }
-    resetForm()
-    setIsThereAWorkout(false)
   }
 
   const handleWorkoutChange = (e) => {
