@@ -47,17 +47,6 @@ export default function EditWorkoutForm() {
           {newWorkout?.workoutType === 'pump4x' ? (
             <div className='flex flex-wrap items-center gap-4 mt-4'>
               <div className="flex-1 min-w-[200px]">
-                <label className="block text-xs uppercase text-neutral-400 mb-1">Workout Date:</label>
-                <input
-                  className='w-full bg-neutral-900 border border-neutral-700 rounded px-3 py-2 text-white'
-                  onChange={handleWorkoutChange}
-                  type="date"
-                  name="date"
-                  value={newWorkout?.date || ''}
-                  required
-                />
-              </div>
-              <div className="flex-1 min-w-[200px]">
                 <label className="block text-xs uppercase text-neutral-400 mb-1">Cycle:</label>
                 <input
                   className='w-full bg-neutral-900 border border-neutral-700 rounded px-3 py-2 text-white'
@@ -237,7 +226,7 @@ export default function EditWorkoutForm() {
             REMOVE WORKOUT
           </WorkoutForm.Button>
           <WorkoutForm.Button variant='ghost' type='submit'>
-            SUBMIT
+            UPDATE WORKOUT
           </WorkoutForm.Button>
         </WorkoutForm.Buttons>}
       </WorkoutForm.Container>

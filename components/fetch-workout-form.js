@@ -2,9 +2,12 @@
 import React, { useState } from 'react'
 import { PROGRAM_LIST, MAX_WEEKS, MAX_DAYS } from '@/lib/constants'
 import WorkoutForm from './workout-form'
+import { useSearchParams } from 'next/navigation'
 
 const FetchWorkoutForm = ({ getWorkout }) => {
   const [workoutType, setWorkoutType] = useState('pillars')
+  const searchParams = useSearchParams()
+  console.log('searchParams: ', searchParams.keys())
 
   return (
     <div className='w-full my-8 max-w-[1440px] mx-auto border-b border-neutral-800 pb-8'>
@@ -16,8 +19,8 @@ const FetchWorkoutForm = ({ getWorkout }) => {
             type="button"
             onClick={() => setWorkoutType('pillars')}
             className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${workoutType === 'pillars'
-                ? 'bg-white text-black shadow'
-                : 'text-neutral-400 hover:text-white'
+              ? 'bg-white text-black shadow'
+              : 'text-neutral-400 hover:text-white'
               }`}
           >
             Pillars
@@ -26,8 +29,8 @@ const FetchWorkoutForm = ({ getWorkout }) => {
             type="button"
             onClick={() => setWorkoutType('pump4x')}
             className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${workoutType === 'pump4x'
-                ? 'bg-white text-black shadow'
-                : 'text-neutral-400 hover:text-white'
+              ? 'bg-white text-black shadow'
+              : 'text-neutral-400 hover:text-white'
               }`}
           >
             Pump 4x
