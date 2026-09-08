@@ -11,12 +11,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const DateSelector = ({date, setDate}) => {
+const DateSelector = ({ date, setDate }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleDateSelect = (selectedDate) => {
     setDate(selectedDate)
-    console.log(selectedDate.toISOString().split('T')[0])
+
     setIsOpen(false)
   }
 
@@ -34,32 +34,32 @@ const DateSelector = ({date, setDate}) => {
   return (
     <div>
       <div className='flex gap-3 ml-4'>
-          <button onClick={removeOneDay} className='font-bold text-2xl' href="/programs">&lt;</button>
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[180px] justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={handleDateSelect}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+        <button onClick={removeOneDay} className='font-bold text-2xl' href="/programs">&lt;</button>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-[180px] justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={handleDateSelect}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
 
-          <button onClick={addOneDay} className='font-bold text-2xl' href="/programs">&gt;</button>
-        </div>
+        <button onClick={addOneDay} className='font-bold text-2xl' href="/programs">&gt;</button>
+      </div>
     </div>
   )
 }

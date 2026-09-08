@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useMemo } from "react"
-import { modifyUser } from '@/lib/actions'
+import { modifyUser, deleteUser } from '@/lib/actions'
 import useToast from '@/contexts/useToast'
 import EditUserForm from '@/components/users/EditUserForm'
 import { debounce } from '@/utils/debounce'
@@ -88,6 +88,34 @@ export default function UsersContainer({ users }) {
     }
   }
 
+  const handleDeleteUser = async (userId) => {
+    const res = await deleteUser(userId)
+    if (res.error) {
+      setToasts((prev) => [
+        ...prev,
+        {
+          title: 'Error',
+          description: res.error,
+          variant: 'error',
+          duration: 5000
+        }
+      ])
+      return
+    }
+    setSelectedUser(null)
+    searchIdRef.current++
+    setToasts((prev) => [
+      ...prev,
+      {
+        title: 'Success',
+        description: 'User deleted successfully',
+        variant: 'success',
+        duration: 5000
+      }
+    ])
+  }
+
+
   return (
     <div className='flex flex-col gap-12 h-full px-6 my-16 max-w-[1440px] mx-auto'>
       {/* USER LIST */}
@@ -116,7 +144,7 @@ export default function UsersContainer({ users }) {
       <UserDetails
         selectedUser={selectedUser}
         handleSubmit={handleSubmit}
-        // status={status}
+        handleDeleteUser={handleDeleteUser}
         onClose={() => {
           setSelectedUser(null)
           searchIdRef.current++
@@ -131,13 +159,13 @@ export default function UsersContainer({ users }) {
 const UserDetails = ({
   selectedUser,
   handleSubmit,
-  // status,
+  handleDeleteUser,
   onClose
 }) => {
-  console.log('selected User: ', selectedUser)
+
   return (
     <div className={`fixed top-0 duration-500 ${selectedUser ? 'right-0' : '-right-full'} w-screen h-screen bg-black flex items-center justify-center flex-col px-8 transition-all duration-500`}>
-      {selectedUser ? <EditUserForm key={selectedUser._id} selectedUser={selectedUser} handleSubmit={handleSubmit} onClose={onClose} /> : <NoSelectedUser />}
+      {selectedUser ? <EditUserForm key={selectedUser._id} selectedUser={selectedUser} handleSubmit={handleSubmit} onUserDelete={handleDeleteUser} onClose={onClose} /> : <NoSelectedUser />}
     </div>
   )
 }
