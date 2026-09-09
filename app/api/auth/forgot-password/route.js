@@ -8,7 +8,7 @@ export async function POST(req) {
   try {
     await connectDB();
     const { email } = await req.json();
-    
+
     if (!email) return NextResponse.json({ error: "Email is required" }, { status: 400 });
 
     // Check if the email exists in the database
@@ -26,7 +26,7 @@ export async function POST(req) {
 
     // Send reset email
     const resetLink = `${process.env.BASE_URL}/reset-password?token=${resetToken}`;
-    await sendResetEmail(email, resetLink, 'reset', _);
+    await sendResetEmail(email, resetLink, 'reset', resetToken);
 
     return NextResponse.json({ message: "Check your email for the reset link" }, { status: 200 });
   } catch (error) {
