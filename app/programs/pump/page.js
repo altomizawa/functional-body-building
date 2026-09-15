@@ -29,18 +29,27 @@ async function Page({ searchParams }) {
   // Fetch user Data
   const userData = session?.user?.id ? await getUserById(session.user.id) : null;
 
-  // Fetch workout by date (or latest if no date specified)
+  // Fetch workout by date (defaults to today's workout if no date specified)
   const workoutResponse = await getPumpWorkout({
     date: dateParam,
-    fallbackToLatest: !dateParam,
   });
 
   const workout = workoutResponse?.data;
 
   // Determine active date string for navigation
   let activeDate = dateParam;
-  if (!activeDate && workout?.date) {
-    activeDate = workout.date.split('T')[0];
+  if (!activeDate) {
+    if (workout?.date) {
+      activeDate = typeof workout.date === 'string'
+        ? workout.date.split('T')[0]
+        : new Date(workout.date).toISOString().split('T')[0];
+    } else {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      activeDate = `${year}-${month}-${day}`;
+    }
   }
 
   // Check if workout is completed
