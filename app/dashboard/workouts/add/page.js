@@ -446,7 +446,8 @@ export default function AddWorkoutForm() {
                   ref={currentSection === index ? movementInputRef : null}
                   autoComplete='off'
                 />
-                <div className='flex flex-wrap gap-4 mt-2'>
+                {console.log('section movements: ', section.movements, 'filteredMovements: ', filteredMovements)}
+                <div className={`${filteredMovements ? 'hidden' : 'flex flex-wrap gap-4 mt-2'}`}>
                   {section.movements && section.movements.map((movement, movIdx) => (
                     <div key={movIdx} className='border-[1px] border-white/40 px-2 py-1 flex items-center'>
                       <p className='text-neutral-400'>{movement.name}</p>
