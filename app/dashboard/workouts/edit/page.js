@@ -6,10 +6,12 @@ import Dropdown from '@/components/form/Dropdown'
 import useEditWorkout from '@/hooks/use-edit-workout'
 import WorkoutForm from '@/components/workout-form/index.js'
 import FetchWorkoutForm from '@/components/fetch-workout-form'
+import AddNewMovementSmall from '@/components/add-movements/AddMovementSmall'
 
 export default function EditWorkoutForm() {
   const {
     filteredMovements,
+    isSearching,
     currentSection,
     searchText,
     deletePopup,
@@ -176,7 +178,7 @@ export default function EditWorkoutForm() {
                     value={currentSection === index ? searchText : ''}
                     ref={currentSection === index ? movementInputRef : null}
                   />
-                  <div className='flex flex-wrap gap-4'>
+                  <div className={`${filteredMovements ? 'hidden' : 'flex flex-wrap gap-4 mt-2'}`}>
                     {section.movements && section.movements.map((movement, movIdx) => (
                       <div key={movIdx} className='border-[1px] border-white/20 px-2 py-1 flex items-center'>
                         <p>{movement.name}</p>
@@ -189,17 +191,23 @@ export default function EditWorkoutForm() {
                       </div>
                     ))}
                   </div>
+                  {currentSection === index &&
+                    section.movements &&
+                    searchText.trim().length > 0 &&
+                    !isSearching &&
+                    filteredMovements !== null &&
+                    filteredMovements && (
+                      <AddNewMovementSmall
+                        movementName={searchText}
+                        onMovementAdded={(movement) => addMovement(movement, index)}
+                      />
+                    )}
                   <div className='relative'>
                     {currentSection === index && filteredMovements && filteredMovements.length > 0 && (
                       <Dropdown
                         array={filteredMovements}
                         action={addMovement}
                       />
-                    )}
-                    {currentSection === index && !filteredMovements && searchText && (
-                      <div className='flex justify-end'>
-                        <button>+ Add new movement to DB</button>
-                      </div>
                     )}
                   </div>
                 </div>

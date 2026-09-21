@@ -7,6 +7,7 @@ import { debounce } from '@/utils/debounce'
 
 const useEditWorkout = (initialWorkout) => {
   const [filteredMovements, setFilteredMovements] = useState(null)
+  const [isSearching, setIsSearching] = useState(false)
   const [currentSection, setCurrentSection] = useState(0)
   const [searchText, setSearchText] = useState('')
   const [deletePopup, setDeletePopup] = useState(false)
@@ -32,6 +33,10 @@ const useEditWorkout = (initialWorkout) => {
         if (currentId !== searchIdRef.current) return
         console.error('Error finding movement by name:', error)
         setFilteredMovements([])
+      } finally {
+        if (currentId === searchIdRef.current) {
+          setIsSearching(false)
+        }
       }
     }, 300),
     []
@@ -47,6 +52,7 @@ const useEditWorkout = (initialWorkout) => {
   const resetForm = () => {
     debouncedSearch.cancel?.()
     setFilteredMovements(null)
+    setIsSearching(false)
     setSearchText('')
     setNewWorkout(null)
     setCurrentSection(0)
@@ -116,19 +122,23 @@ const useEditWorkout = (initialWorkout) => {
     if (!searchValue || searchValue.trim().length === 0) {
       debouncedSearch.cancel?.()
       setFilteredMovements(null)
+      setIsSearching(false)
       return
     }
 
+    setIsSearching(true)
     debouncedSearch(searchValue)
   }
 
-  const addMovement = (movement) => {
+  const addMovement = (movement, sectionIndex) => {
+    const targetSection = sectionIndex !== undefined ? sectionIndex : currentSection;
     setNewWorkout(prev => ({
       ...prev,
       sections: prev.sections.map((section, index) => {
-        if (index === currentSection) {
+        if (index === targetSection) {
           // Check if movement already exists in this section
-          if (!section.movements.some(m => m._id === movement._id)) {
+          const targetId = movement._id || movement.id;
+          if (!section.movements.some(m => (m._id || m.id) === targetId)) {
             return {
               ...section,
               movements: [...section.movements, movement]
@@ -141,6 +151,7 @@ const useEditWorkout = (initialWorkout) => {
 
     debouncedSearch.cancel?.();
     setFilteredMovements(null);
+    setIsSearching(false);
     setSearchText('');
     if (movementInputRef.current) {
       movementInputRef.current.value = '';
@@ -256,6 +267,8 @@ const useEditWorkout = (initialWorkout) => {
 
   return {
     filteredMovements,
+    isSearching,
+    movementInputRef,
     currentSection,
     searchText,
     deletePopup,
