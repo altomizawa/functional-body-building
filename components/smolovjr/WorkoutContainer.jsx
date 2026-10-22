@@ -1,6 +1,7 @@
 'use client'
 import WorkoutCard from "./WorkoutCard";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function WorkoutContainer({ data }) {
   const [currentDay, setCurrentDay] = useState(null);
@@ -15,9 +16,10 @@ export default function WorkoutContainer({ data }) {
         <button onClick={() => setMovement('bench-press')} className={`text-[2rem] font-bold text-center sm:text-left ${isBenchPress ? 'underline' : ''}`}>BENCH PRESS</button>
       </div>
       <div className='flex justify-between items-center w-full'>
-        <div className='text-center border-b border-white w-full flex justify-center gap-8'>
+        <div className='text-center w-full flex justify-center items-center gap-8'>
           <h2 className='text-xl pb-2'>PREVIOUS 1RM: 250 </h2>
           <h2 className='text-xl pb-2'>1RM: 250 </h2>
+          <Button variant='primary'>Edit 1RM</Button>
         </div>
       </div>
       <ul className='flex flex-wrap gap-8 justify-center max-w-[1300px]'>
