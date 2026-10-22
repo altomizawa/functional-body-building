@@ -117,16 +117,7 @@ export default async function SmolovJrPage() {
   return (
     <div>
       <WorkoutHeader session={session} />
-      <main className='flex flex-col gap-12 items-center justify-center'>
-        <div className='flex gap-4'>
-          <Button variant="outline">Bench Press</Button>
-          <Button variant="outline">Back Squat</Button>
-        </div>
-        <div className='text-center border-b border-white w-full'>
-          <h2 className='text-3xl pb-2'>1RM: 250 </h2>
-        </div>
-        <WorkoutContainer data={days} />
-      </main>
+      <WorkoutContainer data={days} />
     </div>
   )
 } 
