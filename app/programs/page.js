@@ -19,6 +19,7 @@ const programs = async () => {
         <div className='w-full flex flex-col gap-4'>
           <Link href="/programs/pillars" className='button__main-menu bg-white'>PILLARS</Link>
           <Link href="/programs/pump" className='button__main-menu bg-white'>PUMP 4x</Link>
+          <Link href="/programs/smolovjr" className='button__main-menu bg-white'>SMOLOV JR.</Link>
           {session.user.role === 'admin' && <Link href="/" className='button__back flex items-center gap-2 justify-center'>
             <span className="material-symbols-outlined">arrow_back</span>BACK
           </Link>}
